@@ -1,0 +1,7 @@
+#ifndef GLOBALCONSTS_H
+#define GLOBALCONSTS_H
+
+const int CHUNK_WIDTH = 16;
+const int CHUNK_VOLUME = CHUNK_WIDTH * CHUNK_WIDTH * CHUNK_WIDTH;
+
+#endif
