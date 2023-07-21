@@ -12,18 +12,17 @@ std::size_t IntPosHash::operator () (const IntPos &pos) const {
     return (hash1 ^ (hash2 << 1)) ^ (hash3 << 1);
 }
 
-void ChunkLoader::update() {
+void ChunkLoader::init() {
     for (int x = -3; x < 3; x++) {
         for (int z = -3; z < 3; z++) {
             for (int y = -3; y < 3; y++) {
-                IntPos chunkPos(x, y, z);
-                if (!chunkLoaded(chunkPos)) {
-                    loadChunk(chunkPos);
-                }
+                loadChunk(IntPos(x, y, z));
             }
         }
     }
+}
 
+void ChunkLoader::update() {
     for (auto &chunk: chunks) {
         if (!chunk.second->isMeshUpdateRequested()) {
             continue;

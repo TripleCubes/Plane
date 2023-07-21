@@ -14,6 +14,7 @@ struct IntPosHash {
 
 class ChunkLoader {
 public:
+    static void init();
     static void update();
     
     static const std::unordered_map<IntPos, std::unique_ptr<Chunk>, IntPosHash> &getChunkList();

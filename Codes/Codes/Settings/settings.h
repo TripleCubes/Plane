@@ -7,10 +7,12 @@ class Settings {
 public:
     static bool isFreeCam();
     static bool isWireframeMode();
+    static bool isPerspectiveProjection();
 
 private:
     static bool freeCam;
     static bool wireframeMode;
+    static bool perspectiveProjection;
 };
 
 #endif

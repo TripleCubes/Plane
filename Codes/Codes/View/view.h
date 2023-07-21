@@ -8,6 +8,7 @@
 class View {
 public:
     static void init();
+    static void update();
     static void draw();
 
 private:
@@ -21,7 +22,11 @@ private:
     static Framebuffer framebuffer_view;
     static Shader shader_view;
 
+    static Shader shader_boxFrame;
+    static Mesh mesh_boxFrame;
+
     static void drawChunks();
+    static void drawBlockSelection();
 };
 
 #endif

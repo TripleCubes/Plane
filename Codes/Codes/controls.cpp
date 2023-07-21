@@ -23,6 +23,10 @@ void Controls::updateSettings() {
     if (Input::justPressed("M")) {
         Settings::wireframeMode = !Settings::wireframeMode;
     }
+
+    if (Input::justPressed("N")) {
+        Settings::perspectiveProjection = !Settings::perspectiveProjection;
+    }
 }
 
 void Controls::updateCameraDir() {

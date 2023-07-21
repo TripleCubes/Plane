@@ -84,6 +84,8 @@ int main() {
     GlobalGraphics::init();
     View::init();
 
+    ChunkLoader::init();
+
     while (!glfwWindowShouldClose(glfwWindow)) {
         Time::setFrameStartTime();
 
@@ -92,6 +94,7 @@ int main() {
         Controls::update();
 
         ChunkLoader::update();
+        View::update();
 
         View::draw();
         glfwSwapBuffers(glfwWindow);
