@@ -6,7 +6,8 @@
 #include <Codes/Chunks/chunk.h>
 #include <Codes/RayCast/blockRayCast.h>
 #include <Codes/Types/color.h>
-#include <glm/glm.hpp>
+#include <Codes/Types/vec2.h>
+#include <Codes/input.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glad/glad.h>
 #include <vector>
@@ -25,6 +26,9 @@ extern BlockRayCastResult savedBlockRayCastResult;
 const int View::GBUFFER_POS = 0;
 const int View::GBUFFER_NORMAL = 1;
 const int View::GBUFFER_COLOR = 2;
+
+glm::mat4 View::projectionMat(1.0f);
+glm::mat4 View::viewMat(1.0f);
 
 Framebuffer View::framebuffer_gBuffer;
 Shader View::shader_gBuffer_colorPallete;
@@ -72,23 +76,39 @@ void View::init() {
 }
 
 void View::update() {
-    savedBlockRayCastResult = BlockRayCast::cast(Camera::getPos(), Camera::getDir(), 10);
-}
-
-void View::draw() {
-    glm::mat4 projectionMat = glm::mat4(1.0f);
     if (Settings::isPerspectiveProjection()) {
         projectionMat = glm::perspective(glm::radians(70.0f), 
                                             (float)currentWindowWidth / (float)currentWindowHeight, 
                                             0.1f, 300.0f);
     } else {
-        projectionMat = glm::ortho(-125.0f, 125.0f, -75.0f, 75.0f, -150.0f, 150.0f);
+        projectionMat = glm::ortho(-125.0f/2.0f, 125.0f/2.0f, -75.0f/2.0f, 75.0f/2.0f, -150.0f, 150.0f);
     }
 
-    glm::mat4 viewMat = glm::lookAt((Camera::getPos()).toGlmVec3(),
+    viewMat = glm::lookAt((Camera::getPos()).toGlmVec3(),
                                         (Camera::getPos() + Camera::getDir()).toGlmVec3(),
                                         glm::vec3(0.0f, 1.0f, 0.0f));
 
+    if (Settings::isFreeCam()) {
+        savedBlockRayCastResult = BlockRayCast::cast(Camera::getPos(), Camera::getDir(), 30);
+
+        return;
+    }
+
+    Vec2 normalizedScreenCoord = Input::getMousePos().toNormalizedScreenCoord();
+    glm::vec4 v4(normalizedScreenCoord.x, normalizedScreenCoord.y, -1.0f, 1.0f);
+    v4 = glm::inverse(projectionMat) * v4;
+    v4.z = Settings::isPerspectiveProjection() ? -1.0f : 0.0f;
+    v4.w = 0.0f;
+    v4 = glm::inverse(viewMat) * v4;
+
+    if (Settings::isPerspectiveProjection()) {
+        savedBlockRayCastResult = BlockRayCast::cast(Camera::getPos(), Vec3(v4.x, v4.y, v4.z), 30);
+    } else {
+        savedBlockRayCastResult = BlockRayCast::cast(Camera::getPos() + Vec3(v4.x, v4.y, v4.z), Camera::getDir(), 30);
+    }
+}
+
+void View::draw() {
     shader_gBuffer_colorPallete.useProgram();
     shader_gBuffer_colorPallete.setUniform("projectionMat", projectionMat);
     shader_gBuffer_colorPallete.setUniform("viewMat", viewMat);

@@ -34,6 +34,9 @@ struct Vec3 {
     Vec3 rotateX(float deg) const;
     Vec3 rotateY(float deg) const;
     Vec3 rotateXY(float degX, float degY) const;
+    Vec3 rotateXRad(float rad) const;
+    Vec3 rotateYRad(float rad) const;
+    Vec3 rotateXYRad(float radX, float radY) const;
 };
 
 #endif

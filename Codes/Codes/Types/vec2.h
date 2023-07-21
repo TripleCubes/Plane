@@ -17,6 +17,7 @@ struct Vec2 {
     float lengthSqr() const;
     Vec2 normalize() const;
     float getYFromX(Vec2 vec, float x) const;
+    Vec2 toNormalizedScreenCoord() const;
 };
 
 #endif

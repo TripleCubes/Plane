@@ -100,30 +100,18 @@ Vec3 Vec3::normalize() const {
 }
 
 Vec3 Vec3::rotateX(float deg) const {
-    if (*this == Vec3(0, 0, 0)) {
-        LINEINFORMATION();
-        PRINTLN("Cant rotate Vec3(0, 0, 0)");
-        return Vec3(0, 0, 0);
-    }
-
-    glm::vec3 glmVec = glm::vec3(x, y, z);
-    glmVec = glm::rotateX(glmVec, glm::radians(deg));
-    return Vec3(glmVec);
+    return rotateXRad(glm::radians(deg));
 }
 
 Vec3 Vec3::rotateY(float deg) const {
-    if (*this == Vec3(0, 0, 0)) {
-        LINEINFORMATION();
-        PRINTLN("Cant rotate Vec3(0, 0, 0)");
-        return Vec3(0, 0, 0);
-    }
-
-    glm::vec3 glmVec = glm::vec3(x, y, z);
-    glmVec = glm::rotateY(glmVec, glm::radians(deg));
-    return Vec3(glmVec);
+    return rotateYRad(glm::radians(deg));
 }
 
 Vec3 Vec3::rotateXY(float degX, float degY) const {
+    return rotateXYRad(glm::radians(degX), glm::radians(degY));
+}
+
+Vec3 Vec3::rotateXRad(float rad) const {
     if (*this == Vec3(0, 0, 0)) {
         LINEINFORMATION();
         PRINTLN("Cant rotate Vec3(0, 0, 0)");
@@ -131,7 +119,31 @@ Vec3 Vec3::rotateXY(float degX, float degY) const {
     }
 
     glm::vec3 glmVec = glm::vec3(x, y, z);
-    glmVec = glm::rotateX(glmVec, glm::radians(degX));
-    glmVec = glm::rotateY(glmVec, glm::radians(degY));
+    glmVec = glm::rotateX(glmVec, rad);
+    return Vec3(glmVec);
+}
+
+Vec3 Vec3::rotateYRad(float rad) const {
+    if (*this == Vec3(0, 0, 0)) {
+        LINEINFORMATION();
+        PRINTLN("Cant rotate Vec3(0, 0, 0)");
+        return Vec3(0, 0, 0);
+    }
+
+    glm::vec3 glmVec = glm::vec3(x, y, z);
+    glmVec = glm::rotateY(glmVec, rad);
+    return Vec3(glmVec);
+}
+
+Vec3 Vec3::rotateXYRad(float radX, float radY) const {
+    if (*this == Vec3(0, 0, 0)) {
+        LINEINFORMATION();
+        PRINTLN("Cant rotate Vec3(0, 0, 0)");
+        return Vec3(0, 0, 0);
+    }
+
+    glm::vec3 glmVec = glm::vec3(x, y, z);
+    glmVec = glm::rotateX(glmVec, radX);
+    glmVec = glm::rotateY(glmVec, radY);
     return Vec3(glmVec);
 }

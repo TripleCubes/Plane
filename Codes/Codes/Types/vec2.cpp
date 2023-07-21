@@ -3,6 +3,9 @@
 #include <cmath>
 #include <Codes/Debug/print.h>
 
+extern int currentWindowWidth;
+extern int currentWindowHeight;
+
 Vec2::Vec2(float x, float y): x(x), y(y) {}
 Vec2::Vec2() {}
 
@@ -68,4 +71,9 @@ float Vec2::getYFromX(Vec2 vec, float x) const {
     float m = (this->y - vec.y)/(this->x - vec.x);
     float a = this->y - m*this->x;
     return m*x + a;
+}
+
+Vec2 Vec2::toNormalizedScreenCoord() const {
+    return Vec2((x / (float)currentWindowWidth) * 2 - 1,
+                - ((y / (float)currentWindowHeight) * 2 - 1));
 }

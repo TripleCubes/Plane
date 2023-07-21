@@ -1,22 +1,31 @@
 #include <Codes/controls.h>
 
+#include <Codes/Settings/settings.h>
+#include <Codes/View/camera.h>
 #include <Codes/input.h>
 #include <Codes/Time/time.h>
 #include <Codes/Types/vec2.h>
-
-#include <Codes/Settings/settings.h>
-#include <Codes/View/camera.h>
+#include <GLFW/glfw3.h>
 
 #include <Codes/Debug/print.h>
+
+extern bool mouseLocked;
+extern GLFWwindow *glfwWindow;
+extern int currentWindowWidth;
+extern int currentWindowHeight;
 
 float Controls::cameraRotationX = 0;
 float Controls::cameraRotationY = 0;
 
 void Controls::update() {
     updateSettings();
-    updateCameraDir();
-    updateMovements();
-    placeBreakBlock();
+
+    if (Settings::isFreeCam()) {
+        updateCameraDir();
+        updateMovements();
+    }
+
+    // placeBreakBlock();
 }
 
 void Controls::updateSettings() {
@@ -26,6 +35,15 @@ void Controls::updateSettings() {
 
     if (Input::justPressed("N")) {
         Settings::perspectiveProjection = !Settings::perspectiveProjection;
+    }
+
+    if (Input::justPressed("B")) {
+        Settings::freeCam = !Settings::freeCam;
+        if (Settings::isFreeCam()) {
+            lockMouse();
+        } else {
+            unlockMouse();
+        }
     }
 }
 
@@ -78,4 +96,23 @@ void Controls::updateMovements() {
 
 void Controls::placeBreakBlock() {
 
+}
+
+void Controls::lockMouse() {
+    if (mouseLocked) {
+        return;
+    }
+
+    glfwSetInputMode(glfwWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    mouseLocked = true;
+}
+
+void Controls::unlockMouse() {
+    if (!mouseLocked) {
+        return;
+    }
+
+    glfwSetInputMode(glfwWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    glfwSetCursorPos(glfwWindow, (double)currentWindowWidth/2, (double)currentWindowHeight/2);
+    mouseLocked = false;
 }
