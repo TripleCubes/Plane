@@ -4,6 +4,7 @@
 #include <Codes/GraphicTypes/graphicTypesManager.h>
 #include <Codes/input.h>
 #include <Codes/Time/time.h>
+#include <Codes/UI/ui.h>
 #include <Codes/View/view.h>
 #include <Codes/controls.h>
 #include <Codes/Chunks/chunkLoader.h>
@@ -82,6 +83,7 @@ int main() {
 
     Input::init();
     GlobalGraphics::init();
+    UI::init();
     View::init();
 
     ChunkLoader::init();
@@ -93,10 +95,12 @@ int main() {
         Input::update();
         Controls::update();
 
+        UI::update();
         ChunkLoader::update();
         View::update();
 
         View::draw();
+        UI::draw();
         glfwSwapBuffers(glfwWindow);
 
         Time::syncFrame();
