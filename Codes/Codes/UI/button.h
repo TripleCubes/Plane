@@ -22,9 +22,11 @@ public:
 
     bool pressed() const;
     bool justPressed() const;
-    void stickToMousePressX(float minCap, float maxCap);
-    void stickToMousePressY(float minCap, float maxCap);
-    void stickToMousePress(float minCapX, float maxCapX, float minCapY, float maxCapY);
+    void stickToMousePressX();
+    void stickToMousePressY();
+    void stickToMousePress();
+    void capPosX(float minCap, float maxCap);
+    void capPosY(float minCap, float maxCap);
 
 private:
     std::string buttonTitle;

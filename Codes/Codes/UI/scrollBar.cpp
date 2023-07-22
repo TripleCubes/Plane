@@ -2,6 +2,7 @@
 
 #include <Codes/UI/ui.h>
 #include <Codes/Types/vec2.h>
+#include <Codes/input.h>
 
 #include <Codes/Debug/print.h>
 
@@ -29,7 +30,9 @@ void ScrollBar::update() {
     }
 
     button.update();
-    button.stickToMousePressY(y, y + h);
+    button.setPos(x, button.getPos().y - Input::getMouseScrollOffset().y);
+    button.stickToMousePressY();
+    button.capPosY(y, y + h);
 
     scrollValuePercentage = (button.getPos().y - y) / (h - button.getSize().y);
 }

@@ -47,6 +47,14 @@ void onMouseMove(GLFWwindow* window, double mousex, double mousey) {
     onMouseMove(mousex, mousey);
 }
 
+void onMouseScroll(double xoffset, double yoffset) {
+    Input::updateMouseScrollOffset(xoffset, yoffset);
+}
+
+void onMouseScroll(GLFWwindow* window, double xoffset, double yoffset) {
+    onMouseScroll(xoffset, yoffset);
+}
+
 void initOpenGl() {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -71,6 +79,7 @@ void initOpenGl() {
     glViewport(0, 0, 1000, 600);
 
     glfwSetCursorPosCallback(glfwWindow, onMouseMove);
+    glfwSetScrollCallback(glfwWindow, onMouseScroll);
 
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);

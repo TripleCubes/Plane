@@ -71,7 +71,7 @@ bool Button::justPressed() const {
     return status_justPressed;
 }
 
-void Button::stickToMousePressX(float minCap, float maxCap) {
+void Button::stickToMousePressX() {
     if (justPressed()) {
         Vec2 mousePos = Input::getMousePos();
         mousePressOffsetX = mousePos.x - x;
@@ -82,18 +82,12 @@ void Button::stickToMousePressX(float minCap, float maxCap) {
     if (pressed()) {
         Vec2 mousePos = Input::getMousePos();
         x = mousePos.x - mousePressOffsetX;
-        if (x < minCap) {
-            x = minCap;
-        }
-        if (x + w > maxCap) {
-            x = maxCap - w;
-        }
 
         return;
     }
 }
 
-void Button::stickToMousePressY(float minCap, float maxCap) {
+void Button::stickToMousePressY() {
     if (justPressed()) {
         Vec2 mousePos = Input::getMousePos();
         mousePressOffsetY = mousePos.y - y;
@@ -105,18 +99,27 @@ void Button::stickToMousePressY(float minCap, float maxCap) {
         Vec2 mousePos = Input::getMousePos();
         y = mousePos.y - mousePressOffsetY;
 
-        if (y < minCap) {
-            y = minCap;
-        }
-        if (y + h > maxCap) {
-            y = maxCap - h;
-        }
-
         return;
     }
 }
 
-void Button::stickToMousePress(float minCapX, float maxCapX, float minCapY, float maxCapY) {
-    stickToMousePressX(minCapX, maxCapX);
-    stickToMousePressY(minCapY, maxCapY);
+void Button::stickToMousePress() {
+    stickToMousePressX();
+    stickToMousePressY();
+}
+
+void Button::capPosX(float minCap, float maxCap) {
+    if (x < minCap) {
+        x = minCap;
+    } else if (x + w > maxCap) {
+        x = maxCap - w;
+    }
+}
+
+void Button::capPosY(float minCap, float maxCap) {
+    if (y < minCap) {
+        y = minCap;
+    } else if (y + h > maxCap) {
+        y = maxCap - h;
+    }
 }

@@ -13,6 +13,7 @@ enum class MouseButton {
 
 class Input {
     friend void onMouseMove(double mousex, double mousey);
+    friend void onMouseScroll(double xoffset, double yoffset);
 
 public:
     static void init();
@@ -23,6 +24,7 @@ public:
 
     static Vec2 getMousePos();
     static Vec2 getMouseMoveOffset();
+    static Vec2 getMouseScrollOffset();
     static bool pressed(MouseButton mouseButton);
     static bool justPressed(MouseButton mouseButton);
 
@@ -46,6 +48,11 @@ private:
     static float mouseMoveOffsetY;
     static bool resetMouseMoveOffset;
     static void updateMouseMoveOffset(float x, float y);
+
+    static float mouseScrollOffsetX;
+    static float mouseScrollOffsetY;
+    static bool resetMouseScrollOffset;
+    static void updateMouseScrollOffset(float x, float y);
 };
 
 #endif

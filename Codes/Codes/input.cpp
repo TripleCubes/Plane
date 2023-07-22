@@ -15,6 +15,9 @@ bool Input::rightJustPressed = false;
 float Input::mouseMoveOffsetX = 0;
 float Input::mouseMoveOffsetY = 0;
 bool Input::resetMouseMoveOffset = false;
+float Input::mouseScrollOffsetX = 0;
+float Input::mouseScrollOffsetY = 0;
+bool Input::resetMouseScrollOffset = false;
 
 void Input::addKey(const std::string &keyString, int glfwKey) {
     if (keys.find(keyString) != keys.end()) {
@@ -31,6 +34,11 @@ void Input::addKey(const std::string &keyString, int glfwKey) {
 void Input::updateMouseMoveOffset(float x, float y) {
     mouseMoveOffsetX = x;
     mouseMoveOffsetY = y;
+}
+
+void Input::updateMouseScrollOffset(float x, float y) {
+    mouseScrollOffsetX = x;
+    mouseScrollOffsetY = y;
 }
 
 void Input::init() {
@@ -92,6 +100,15 @@ void Input::update() {
     if (mouseMoveOffsetX != 0 || mouseMoveOffsetY != 0) {
         resetMouseMoveOffset = true;
     }
+
+    if (resetMouseScrollOffset) {
+        resetMouseScrollOffset = false;
+        mouseScrollOffsetX = 0;
+        mouseScrollOffsetY = 0;
+    }
+    if (mouseScrollOffsetX != 0 || mouseScrollOffsetY != 0) {
+        resetMouseScrollOffset = true;
+    }
 }
 
 bool Input::pressed(const std::string &key) {
@@ -123,6 +140,10 @@ Vec2 Input::getMousePos() {
 
 Vec2 Input::getMouseMoveOffset() {
     return Vec2(mouseMoveOffsetX, mouseMoveOffsetY);
+}
+
+Vec2 Input::getMouseScrollOffset() {
+    return Vec2(mouseScrollOffsetX * 7, mouseScrollOffsetY * 7);
 }
 
 bool Input::pressed(MouseButton mouseButton) {
