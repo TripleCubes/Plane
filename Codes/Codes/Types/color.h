@@ -7,6 +7,7 @@ struct Color {
     float b = 0;
     float a = 1;
     Color(float r, float g, float b, float a);
+    Color();
     Color operator + (Color color) const;
     Color operator - (Color color) const;
 };

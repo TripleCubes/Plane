@@ -17,6 +17,7 @@ public:
     void updateUIElement() override;
     void drawUIElement() const override;
     void setUIElementRelativePos(float x, float y) override;
+    void setScrolledY(float scrolledY) override;
 
 private:
     Button button;

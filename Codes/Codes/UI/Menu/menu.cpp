@@ -9,12 +9,12 @@
 extern int currentWindowWidth;
 extern int currentWindowHeight;
 
-//
 const float PADDING_LEFT = 50;
 const float PADDING_TOP = 50;
 const float UIELEMENT_YCURSOR_STEP = 60;
 
-Menu::Menu(const std::string &menuTitle): menuTitle(menuTitle), openMenuButton(OpenMenuButton(menuTitle)) {
+Menu::Menu(const std::string &menuTitle): menuTitle(menuTitle), openMenuButton(menuTitle),
+scrollBar(currentWindowWidth - SCROLLBAR_WIDTH, 0, currentWindowHeight, Color(1, 0.65, 0.57, 1)) {
     uiElementYCursor = 100;
 }
 
@@ -38,11 +38,14 @@ void Menu::addUIElement(const MenuUIElement &uiElement) {
     uiElementList.push_back(uiElementPtr);
 
     uiElementYCursor += UIELEMENT_YCURSOR_STEP;
+
+    scrollBar.setPageHeight(currentWindowHeight, uiElementYCursor + PADDING_TOP);
 }
 
 void Menu::addSubMenu(const std::string &subMenuTitle) {
     if (!selfSharedPtrAdded) {
-        PRINTLN("Menu::addSubMenu(): selfSharedPtr not added");
+        LINEINFORMATION();
+        PRINTLN("selfSharedPtr not added");
         return;
     }
 
@@ -56,11 +59,14 @@ void Menu::addSubMenu(const std::string &subMenuTitle) {
     uiElementList.push_back(subMenu);
 
     uiElementYCursor += UIELEMENT_YCURSOR_STEP;
+
+    scrollBar.setPageHeight(currentWindowHeight, uiElementYCursor + PADDING_TOP);
 }
 
 void Menu::getFullMenuTitle() {
     if (root) {
-        PRINTLN("Menu::getFullMenuTitle(): cant call getFullMenuTitle() on root menu");
+        LINEINFORMATION();
+        PRINTLN("Cant call getFullMenuTitle() on root menu");
         return;
     }
 
@@ -79,7 +85,8 @@ Menu *Menu::getSubMenu(const std::string &subMenuTitle) const {
         }
     }
 
-    PRINTLN("Menu::getSubMenu(): submenu not found");
+    LINEINFORMATION();
+    PRINTLN("Submenu not found");
     return NULL;
 }
 
@@ -97,14 +104,19 @@ void Menu::goBackOneMenu() const {
 }
 
 void Menu::updateMenu() {
+    scrollBar.update();
+
     for (const auto &uiElement: uiElementList) {
         uiElement->updateUIElement();
+        uiElement->setScrolledY(scrollBar.getScrollValue());
     }
 }
 
 void Menu::drawMenu() const {
     UI::drawRectWH(0, 0, currentWindowWidth, currentWindowHeight, Color(0, 0, 0, 0.3));
-    UI::drawTextBox(PADDING_LEFT, PADDING_TOP, fullMenuTitle, Color(1, 1, 1, 1));
+    UI::drawTextBox(PADDING_LEFT, PADDING_TOP + scrollBar.getScrollValue(), fullMenuTitle, Color(1, 1, 1, 1));
+
+    scrollBar.draw();
 
     for (const auto &uiElement: uiElementList) {
         uiElement->drawUIElement();
@@ -121,4 +133,8 @@ void Menu::drawUIElement() const {
 
 void Menu::setUIElementRelativePos(float x, float y) {
     openMenuButton.setUIElementRelativePos(x, y);
+}
+
+void Menu::setScrolledY(float scrolledY) {
+    openMenuButton.setScrolledY(scrolledY);
 }

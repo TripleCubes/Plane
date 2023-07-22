@@ -10,6 +10,8 @@ float min(float a, float b) {
 
 Color::Color(float r, float g, float b, float a): r(r), g(g), b(b), a(a) {}
 
+Color::Color(): r(0), g(0), b(0), a(1) {}
+
 Color Color::operator + (Color color) const {
     return Color(min(r + color.r, 1), 
                 min(g + color.g, 1), 

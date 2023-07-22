@@ -3,6 +3,7 @@
 
 #include <Codes/UI/Menu/MenuUIElement.h>
 #include <Codes/UI/Menu/openMenuButton.h>
+#include <Codes/UI/scrollBar.h>
 #include <string>
 #include <vector>
 #include <memory>
@@ -23,6 +24,7 @@ public:
     void updateUIElement() override;
     void drawUIElement() const override;
     void setUIElementRelativePos(float x, float y) override;
+    void setScrolledY(float scrolledY) override;
 
 private:
     void addUpperLevelMenu(std::shared_ptr<Menu> upperLevelMenu);
@@ -40,6 +42,7 @@ private:
     std::string fullMenuTitle;
 
     OpenMenuButton openMenuButton;
+    ScrollBar scrollBar;
 
     float uiElementYCursor = 100;
 };

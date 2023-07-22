@@ -5,3 +5,5 @@ void MenuUIElement::updateUIElement() {}
 void MenuUIElement::drawUIElement() const {}
 
 void MenuUIElement::setUIElementRelativePos(float x, float y) {}
+
+void MenuUIElement::setScrolledY(float scrolledY) {}
