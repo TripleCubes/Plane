@@ -2,12 +2,15 @@
 #define UI_H
 
 #include <string>
+#include <memory>
 
 class Vec2;
 class Color;
 class Texture;
 class Mesh;
 class Shader;
+class Menu;
+struct TextCharacter;
 
 class UI {
 public:
@@ -23,9 +26,9 @@ public:
                             unsigned int textureId, int textureWidth, int textureHeight, 
                             bool centered = false);
 
-    // static Vec2 getTextBoxSize(const std::string &text);
-    // static void drawTextBox(float x, float y, const std::string &text, Color color);
-    // static void drawTextBox(float x, float y, const char *text, Color color);
+    static Vec2 getTextBoxSize(const std::string &text);
+    static void drawTextBox(float x, float y, const std::string &text, Color color);
+    static void drawTextBox(float x, float y, const char *text, Color color);
 
 private:
     static const int DRAWMODE_RECT = 0;
@@ -40,10 +43,10 @@ private:
     static void drawTexture(bool isTextTexture, float x, float y, float w, float h, 
                             unsigned int textureId, int textureWidth, int textureHeight, 
                             Color textColor, bool centered);
-    // static Text::Character drawTextChar(float x, float y, char characterCode, Color color);
+    static TextCharacter drawTextChar(float x, float y, char characterCode, Color color);
 
-    // static std::shared_ptr<Menu> rootMenu;
-    // static void initMenus();
+    static std::shared_ptr<Menu> rootMenu;
+    static void initMenus();
 };
 
 #endif

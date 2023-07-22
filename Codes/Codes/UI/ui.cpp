@@ -6,8 +6,10 @@
 #include <Codes/Types/vec2.h>
 #include <Codes/Types/color.h>
 #include <Codes/Settings/settings.h>
-// #include <Codes/UI/Menu/menuManager.h>
-// #include <Codes/input.h>
+#include <Codes/UI/Menu/menu.h>
+#include <Codes/UI/Menu/menuManager.h>
+#include <Codes/input.h>
+#include <Codes/Graphics/text.h>
 
 #include <Codes/Debug/print.h>
 
@@ -19,7 +21,7 @@ Shader UI::shader_rect;
 
 Texture UI::texture_crosshair;
 
-// std::shared_ptr<Menu> UI::rootMenu = std::make_shared<Menu>("Root");
+std::shared_ptr<Menu> UI::rootMenu = std::make_shared<Menu>("Root");
 
 void UI::init() {
     mesh_rect.init();
@@ -40,32 +42,32 @@ void UI::init() {
 
     texture_crosshair.init("Textures/UI/crosshair.png");
 
-    // initMenus();
+    initMenus();
 }
 
-// void UI::initMenus() {
-//     rootMenu->addSelfSharedPtr(rootMenu);
+void UI::initMenus() {
+    rootMenu->addSelfSharedPtr(rootMenu);
 
-//     rootMenu->addSubMenu("Pause");
+    rootMenu->addSubMenu("Pause");
 
-//     rootMenu->getSubMenu("Pause")->addSubMenu("Settings");
-//     rootMenu->getSubMenu("Pause")->getSubMenu("Settings")->addSubMenu("SubSub1");
-//     rootMenu->getSubMenu("Pause")->getSubMenu("Settings")->addSubMenu("SubSub2");
+    rootMenu->getSubMenu("Pause")->addSubMenu("Settings");
+    rootMenu->getSubMenu("Pause")->getSubMenu("Settings")->addSubMenu("SubSub1");
+    rootMenu->getSubMenu("Pause")->getSubMenu("Settings")->addSubMenu("SubSub2");
 
-//     rootMenu->getSubMenu("Pause")->addSubMenu("Settings 2");
-//     rootMenu->getSubMenu("Pause")->addSubMenu("Settings 3");
-// }
+    rootMenu->getSubMenu("Pause")->addSubMenu("Settings 2");
+    rootMenu->getSubMenu("Pause")->addSubMenu("Settings 3");
+}
 
 void UI::update() {
-    // MenuManager::update();
+    MenuManager::update();
 
-    // if (Input::justPressed("ESC")) {
-    //     if (MenuManager::isAllMenusClosed()) {
-    //         rootMenu->getSubMenu("Pause")->open();
-    //     } else {
-    //         MenuManager::goBackOneMenu();
-    //     }
-    // }
+    if (Input::justPressed("ESC")) {
+        if (MenuManager::isAllMenusClosed()) {
+            rootMenu->getSubMenu("Pause")->open();
+        } else {
+            MenuManager::goBackOneMenu();
+        }
+    }
 }
 
 void UI::draw() {
@@ -75,7 +77,7 @@ void UI::draw() {
                     texture_crosshair, true);
     }
 
-    // MenuManager::draw();
+    MenuManager::draw();
 }
 
 void UI::drawRectPos(float x1, float y1, float x2, float y2, Color color) {
@@ -158,39 +160,39 @@ void UI::drawTexture(bool isTextTexture, float x, float y, float w, float h,
     mesh_rect.draw();
 }
 
-// Vec2 UI::getTextBoxSize(const std::string &text) {
-//     Vec2 result;
+Vec2 UI::getTextBoxSize(const std::string &text) {
+    Vec2 result;
 
-//     for (std::size_t i = 0; i < text.size(); i++)
-//     {
-//         result.x += Text::getCharacter(text[i]).advance;
-//     }
-//     result.y = FONT_HEIGHT;
+    for (std::size_t i = 0; i < text.size(); i++)
+    {
+        result.x += Text::getCharacter(text[i]).advance;
+    }
+    result.y = FONT_HEIGHT;
 
-//     return result;
-// }
+    return result;
+}
 
-// void UI::drawTextBox(float x, float y, const std::string &text, Color color) {
-//     int cursorX = x;
-//     int cursorY = y;
-//     for (std::size_t i = 0; i < text.size(); i++)
-//     {
-//         Text::Character drawnCharacter = drawTextChar(cursorX, cursorY, text[i], color);
-//         cursorX += drawnCharacter.advance;
-//     }
-// }
+void UI::drawTextBox(float x, float y, const std::string &text, Color color) {
+    int cursorX = x;
+    int cursorY = y;
+    for (std::size_t i = 0; i < text.size(); i++)
+    {
+        TextCharacter drawnCharacter = drawTextChar(cursorX, cursorY, text[i], color);
+        cursorX += drawnCharacter.advance;
+    }
+}
 
-// void UI::drawTextBox(float x, float y, const char *text, Color color) {
-//     std::string string(text);
-//     drawTextBox(x, y, string, color);
-// }
+void UI::drawTextBox(float x, float y, const char *text, Color color) {
+    std::string string(text);
+    drawTextBox(x, y, string, color);
+}
 
-// Text::Character UI::drawTextChar(float x, float y, char characterCode, Color color) {
-//     Text::Character character = Text::getCharacter(characterCode);
-//     if (characterCode != 32) {
-//         drawTexture(true, x + character.bearingX, y + FONT_HEIGHT - character.bearingY, character.w, character.h, 
-//         character.textureId, character.w, character.h, color, false);
-//     }
+TextCharacter UI::drawTextChar(float x, float y, char characterCode, Color color) {
+    TextCharacter character = Text::getCharacter(characterCode);
+    if (characterCode != 32) {
+        drawTexture(true, x + character.bearingX, y + FONT_HEIGHT - character.bearingY, character.w, character.h, 
+        character.textureId, character.w, character.h, color, false);
+    }
 
-//     return character;
-// }
+    return character;
+}

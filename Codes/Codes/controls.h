@@ -13,9 +13,6 @@ private:
 
     static float cameraRotationX;
     static float cameraRotationY;
-
-    static void lockMouse();
-    static void unlockMouse();
 };
 
 #endif

@@ -5,14 +5,11 @@
 #include <Codes/input.h>
 #include <Codes/Time/time.h>
 #include <Codes/Types/vec2.h>
-#include <GLFW/glfw3.h>
 
 #include <Codes/Debug/print.h>
 
-extern bool mouseLocked;
-extern GLFWwindow *glfwWindow;
-extern int currentWindowWidth;
-extern int currentWindowHeight;
+void lockMouse();
+void unlockMouse();
 
 float Controls::cameraRotationX = 0;
 float Controls::cameraRotationY = 0;
@@ -96,23 +93,4 @@ void Controls::updateMovements() {
 
 void Controls::placeBreakBlock() {
 
-}
-
-void Controls::lockMouse() {
-    if (mouseLocked) {
-        return;
-    }
-
-    glfwSetInputMode(glfwWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    mouseLocked = true;
-}
-
-void Controls::unlockMouse() {
-    if (!mouseLocked) {
-        return;
-    }
-
-    glfwSetInputMode(glfwWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-    glfwSetCursorPos(glfwWindow, (double)currentWindowWidth/2, (double)currentWindowHeight/2);
-    mouseLocked = false;
 }

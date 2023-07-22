@@ -5,6 +5,7 @@
 #include <Codes/input.h>
 #include <Codes/Time/time.h>
 #include <Codes/UI/ui.h>
+#include <Codes/Graphics/text.h>
 #include <Codes/View/view.h>
 #include <Codes/controls.h>
 #include <Codes/Chunks/chunkLoader.h>
@@ -84,6 +85,7 @@ int main() {
     Input::init();
     GlobalGraphics::init();
     UI::init();
+    Text::init();
     View::init();
 
     ChunkLoader::init();
