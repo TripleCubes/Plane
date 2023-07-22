@@ -7,14 +7,14 @@ MIT License
 
 Copyright (c) 2020 Jordan Peck
 
-The license file is located at [_Libs/FastNoise2/LICENSE](_Libs/FastNoise2/LICENSE)
+The license file is located at [_Libs/FastNoise2-master-787b8c8/LICENSE](_Libs/FastNoise2-master-787b8c8/LICENSE)
 
 ## FreeType
 The FreeType Project LICENSE
 
 Copyright © 2023 The FreeType Project (www.freetype.org).  All rights reserved.
 
-The license file is located at [_Libs/FreeType/docs/FTL.TXT](_Libs/FreeType/docs/FTL.TXT)
+The license file is located at [_Libs/freetype-2.13.0/docs/FTL.TXT](_Libs/freetype-2.13.0/docs/FTL.TXT)
 
 ## GLAD
 BSD 3-Clause License
@@ -22,7 +22,7 @@ BSD 3-Clause License
 Copyright (c) 2018, Salesforce
 All rights reserved.
 
-The license file is located at [_Libs/GLAD/LICENSE.txt](_Libs/GLAD/LICENSE.txt)
+The license file is located at [_Libs/glad/LICENSE](_Libs/glad/LICENSE)
 
 ## GLFW
 the [zlib/libpng license](https://www.glfw.org/license.html)
@@ -30,14 +30,14 @@ the [zlib/libpng license](https://www.glfw.org/license.html)
 Copyright (c) 2002-2006 Marcus Geelnard
 Copyright (c) 2006-2019 Camilla Löwy
 
-The license file is located at [_Libs/GLFW/LICENSE.md](_Libs/GLFW/LICENSE.md)
+The license file is located at [_Libs/glfw-3.3.8/LICENSE.md](_Libs/glfw-3.3.8/LICENSE.md)
 
 ## GLM
 The Happy Bunny License (Modified MIT License)
 
 Copyright (c) 2005 - G-Truc Creation
 
-The license file is located at [_Libs/GLM/copying.txt](_Libs/GLM/copying.txt)
+The license file is located at [_Libs/GLM-0.9.9.8/g-truc-glm-bf71a83/copying.txt](_Libs/GLM-0.9.9.8/g-truc-glm-bf71a83/copying.txt)
 
 ## Stb_image
 Public Domain [www.unlicense.org](www.unlicense.org)
@@ -49,4 +49,4 @@ SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
 
 Copyright 2017 The Barlow Project Authors (https://github.com/jpt/barlow)
 
-The license file is located at [Fonts\Barlow_Semi_Condensed\OFL.txt](Fonts\Barlow_Semi_Condensed\OFL.txt)
+The license file is located at [Fonts/Barlow_Semi_Condensed/OFL.txt](Fonts/Barlow_Semi_Condensed/OFL.txt)
