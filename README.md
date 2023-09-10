@@ -1,5 +1,5 @@
 # LICENSE
-Farther than where is under the MIT license. Check [LICENSE](LICENSE) for full information.
+Plane is under the MIT license. Check [LICENSE](LICENSE) for full information.
 
 # THIRD PARTY LICENSES
 ## FastNoise2
