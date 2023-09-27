@@ -15,19 +15,19 @@ std::size_t IntPosHash::operator () (const IntPos &pos) const {
 }
 
 void ChunkLoader::init() {
-    auto loadPlatform = [](IntPos pos) -> void {
+    auto loadPlatform = [](IntPos pos, BlockType blockType) -> void {
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
                 IntPos blockPos = pos*CHUNK_WIDTH + IntPos(x, 15, z);
-                setBlock(blockPos, BlockType::WHITE);
+                setBlock(blockPos, blockType);
             }
         }
         chunks.at(pos)->requestMeshUpdate();
     };
 
-    loadPlatform(IntPos(0, 0, 0));
-    loadPlatform(IntPos(0, 0, 1));
-    loadPlatform(IntPos(0, 0, 2));
+    loadPlatform(IntPos(0, 0, 0), BlockType::WHITE);
+    loadPlatform(IntPos(0, 0, 1), BlockType::BLUE);
+    loadPlatform(IntPos(0, 0, 2), BlockType::RED);
 }
 
 void ChunkLoader::update() {

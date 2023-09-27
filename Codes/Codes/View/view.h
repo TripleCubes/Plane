@@ -4,6 +4,7 @@
 #include <Codes/GraphicTypes/framebuffer.h>
 #include <Codes/GraphicTypes/shader.h>
 #include <Codes/GraphicTypes/mesh.h>
+#include <Codes/GraphicTypes/texture.h>
 #include <glm/glm.hpp>
 
 class View {
@@ -23,6 +24,8 @@ private:
     static Framebuffer framebuffer_view_multisampled;
     static Framebuffer framebuffer_view;
     static Shader shader_view;
+
+    static Texture texture_colorPallete;
 
     static Shader shader_boxFrame;
     static Mesh mesh_boxFrame;

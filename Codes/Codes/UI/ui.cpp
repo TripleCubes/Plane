@@ -177,7 +177,7 @@ void UI::drawTexture(bool isTextTexture, float x, float y, float w, float h,
     if (isTextTexture) {
         shader_rect.setUniform("drawColor", textColor);
     }
-    shader_rect.setTextureUniform("rectTexture", textureId, 0);
+    shader_rect.setTextureUniform("rectTexture", textureId, 0, false);
 
     mesh_rect.draw();
 }

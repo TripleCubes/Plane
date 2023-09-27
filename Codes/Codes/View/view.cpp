@@ -34,6 +34,8 @@ Framebuffer View::framebuffer_view_multisampled;
 Framebuffer View::framebuffer_view;
 Shader View::shader_view;
 
+Texture View::texture_colorPallete;
+
 Shader View::shader_boxFrame;
 Mesh View::mesh_boxFrame;
 
@@ -41,6 +43,8 @@ void View::init() {
     framebuffer_view_multisampled.init(0, 0, 1, true);
     framebuffer_view.init(0, 0, 1, false);
     shader_view.init("Shaders/View/view");
+
+    texture_colorPallete.init("Textures/colorPallete.png");
 
     shader_boxFrame.init("Shaders/View/boxFrame");
     mesh_boxFrame.init();
@@ -108,6 +112,9 @@ void View::draw() {
     shader_view.useProgram();
     shader_view.setUniform("projectionMat", projectionMat);
     shader_view.setUniform("viewMat", viewMat);
+    shader_view.setTextureUniform("colorPalleteTexture", texture_colorPallete, 0, false);
+    shader_view.setUniform("colorPalleteTextureWH", Vec2((float)texture_colorPallete.getTextureWidth(), 
+                                                            (float)texture_colorPallete.getTextureHeight()));
 
     shader_boxFrame.useProgram();
     shader_boxFrame.setUniform("projectionMat", projectionMat);
@@ -132,7 +139,7 @@ void View::draw() {
     glClear(GL_COLOR_BUFFER_BIT);
     glDisable(GL_DEPTH_TEST);
     GlobalGraphics::shader_windowRect.useProgram();
-    GlobalGraphics::shader_windowRect.setTextureUniform("windowRectTexture", framebuffer_view.getTextureId(GBUFFER_POS), 0);
+    GlobalGraphics::shader_windowRect.setTextureUniform("windowRectTexture", framebuffer_view.getTextureId(GBUFFER_POS), 0, false);
     GlobalGraphics::mesh_windowRect.draw();
 }
 
