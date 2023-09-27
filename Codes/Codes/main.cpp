@@ -60,6 +60,7 @@ void initOpenGl() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_SAMPLES, 4);
 
     glfwWindow = glfwCreateWindow(1000, 600, "Plane", NULL, NULL);
     if (glfwWindow == NULL) {
@@ -83,9 +84,13 @@ void initOpenGl() {
 
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
+
     glfwSetInputMode(glfwWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED); 
+
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    glEnable(GL_MULTISAMPLE);
 }
 
 int main() {

@@ -20,9 +20,7 @@ private:
     static glm::mat4 projectionMat;
     static glm::mat4 viewMat;
 
-    static Framebuffer framebuffer_gBuffer;
-    static Shader shader_gBuffer_colorPallete;
-
+    static Framebuffer framebuffer_view_multisampled;
     static Framebuffer framebuffer_view;
     static Shader shader_view;
 

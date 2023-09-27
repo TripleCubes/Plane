@@ -7,9 +7,9 @@
 
 Framebuffer::Framebuffer() {}
 
-void Framebuffer::init(int width, int height, int numberOfTextures) {
+void Framebuffer::init(int width, int height, int numberOfTextures, bool multisample) {
     dataPtr = std::make_shared<GraphicTypeData_Framebuffer>();
-    dataPtr->init(width, height, numberOfTextures);
+    dataPtr->init(width, height, numberOfTextures, multisample);
     GraphicTypesManager::addGraphicTypeData(dataPtr);
 }
 
@@ -35,7 +35,7 @@ unsigned int Framebuffer::getTextureId(int index) const {
 extern int currentWindowWidth;
 extern int currentWindowHeight;
 
-void GraphicTypeData_Framebuffer::init(int width, int height, int numberOfTextures) {
+void GraphicTypeData_Framebuffer::init(int width, int height, int numberOfTextures, bool multisample) {
     if (initialized) {
         LINEINFORMATION();
         PRINTLN("Framebuffer already initialized");
@@ -67,24 +67,45 @@ void GraphicTypeData_Framebuffer::init(int width, int height, int numberOfTextur
     for (int i = 0; i < numberOfTextures; i++) {
         glGenTextures(1, &textureIdList[i]);
         
-        glBindTexture(GL_TEXTURE_2D, textureIdList[i]);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, framebufferWidth, framebufferHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        if (!multisample) {
+            glBindTexture(GL_TEXTURE_2D, textureIdList[i]);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, framebufferWidth, framebufferHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, textureIdList[i], 0); 
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D, textureIdList[i], 0); 
+        } else {
+            glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, textureIdList[i]);
+            glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, GL_RGBA16F, framebufferWidth, framebufferHeight, GL_TRUE);
+            glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+            glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + i, GL_TEXTURE_2D_MULTISAMPLE, textureIdList[i], 0); 
+        }
+
         attachments[i] = GL_COLOR_ATTACHMENT0 + i; 
     }
-    glBindTexture(GL_TEXTURE_2D, 0);
+    if (!multisample) {
+        glBindTexture(GL_TEXTURE_2D, 0);
+    } else {
+        glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0);
+    }
     glDrawBuffers(numberOfTextures, attachments);
 
 
 
     glGenRenderbuffers(1, &RBO);
     glBindRenderbuffer(GL_RENDERBUFFER, RBO); 
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, framebufferWidth, framebufferHeight); 
+
+    if (!multisample) {
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, framebufferWidth, framebufferHeight); 
+    } else {
+        glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH24_STENCIL8, framebufferWidth, framebufferHeight);
+    }
 
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
 

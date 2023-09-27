@@ -30,9 +30,7 @@ const int View::GBUFFER_COLOR = 2;
 glm::mat4 View::projectionMat(1.0f);
 glm::mat4 View::viewMat(1.0f);
 
-Framebuffer View::framebuffer_gBuffer;
-Shader View::shader_gBuffer_colorPallete;
-
+Framebuffer View::framebuffer_view_multisampled;
 Framebuffer View::framebuffer_view;
 Shader View::shader_view;
 
@@ -40,10 +38,8 @@ Shader View::shader_boxFrame;
 Mesh View::mesh_boxFrame;
 
 void View::init() {
-    framebuffer_gBuffer.init(0, 0, 3);
-    shader_gBuffer_colorPallete.init("Shaders/View/gBuffer_colorPallete");
-
-    framebuffer_view.init(0, 0, 1);
+    framebuffer_view_multisampled.init(0, 0, 1, true);
+    framebuffer_view.init(0, 0, 1, false);
     shader_view.init("Shaders/View/view");
 
     shader_boxFrame.init("Shaders/View/boxFrame");
@@ -109,40 +105,27 @@ void View::update() {
 }
 
 void View::draw() {
-    shader_gBuffer_colorPallete.useProgram();
-    shader_gBuffer_colorPallete.setUniform("projectionMat", projectionMat);
-    shader_gBuffer_colorPallete.setUniform("viewMat", viewMat);
+    shader_view.useProgram();
+    shader_view.setUniform("projectionMat", projectionMat);
+    shader_view.setUniform("viewMat", viewMat);
 
     shader_boxFrame.useProgram();
     shader_boxFrame.setUniform("projectionMat", projectionMat);
     shader_boxFrame.setUniform("viewMat", viewMat);
 
-    framebuffer_gBuffer.bind();
+    framebuffer_view_multisampled.bind();
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
     
     drawChunks();
+    drawBlockSelection();
 
-    framebuffer_view.bind();
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glDisable(GL_DEPTH_TEST);
-    shader_view.useProgram();
-    shader_view.setTextureUniform("gBuffer_pos", framebuffer_gBuffer.getTextureId(GBUFFER_POS), 0);
-    shader_view.setTextureUniform("gBuffer_normal", framebuffer_gBuffer.getTextureId(GBUFFER_NORMAL), 1);
-    shader_view.setTextureUniform("gBuffer_color", framebuffer_gBuffer.getTextureId(GBUFFER_COLOR), 2);
-    GlobalGraphics::mesh_windowRect.draw();
-
-    glBindFramebuffer(GL_READ_FRAMEBUFFER, framebuffer_gBuffer.getFBO());
+    glBindFramebuffer(GL_READ_FRAMEBUFFER, framebuffer_view_multisampled.getFBO());
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer_view.getFBO());
     glBlitFramebuffer(0, 0, currentWindowWidth, currentWindowHeight, 
                         0, 0, currentWindowWidth, currentWindowHeight,
-                        GL_DEPTH_BUFFER_BIT, GL_NEAREST);
-
-    framebuffer_view.bind();
-    glEnable(GL_DEPTH_TEST);
-    drawBlockSelection();
+                        GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -159,13 +142,13 @@ void View::drawChunks() {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
 
-    shader_gBuffer_colorPallete.useProgram();
+    shader_view.useProgram();
     
     for (const auto &i: ChunkLoader::getChunkList()) {
         Vec3 pos = Vec3(i.first) * CHUNK_WIDTH;
         glm::mat4 modelMat = glm::mat4(1.0f);
         modelMat = glm::translate(modelMat, pos.toGlmVec3());
-        shader_gBuffer_colorPallete.setUniform("modelMat", modelMat);
+        shader_view.setUniform("modelMat", modelMat);
         i.second->draw();
     }
 

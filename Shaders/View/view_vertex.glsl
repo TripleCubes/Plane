@@ -1,10 +1,19 @@
 #version 330 core
 
-layout (location = 0) in vec2 vertex_pos;
+layout (location = 0) in vec3 vertex_pos;
+layout (location = 1) in vec3 vertex_normal;
+layout (location = 2) in float vertex_colorIndex;
+out vec3 fragment_pos;
+out vec3 fragment_normal;
+out float fragment_colorIndex;
 
-out vec2 fragment_uv;
+uniform mat4 modelMat;
+uniform mat4 viewMat;
+uniform mat4 projectionMat;
 
 void main() {
-    gl_Position = vec4(vertex_pos, 0, 1);
-    fragment_uv = (vertex_pos + 1) / 2;
+    gl_Position = projectionMat * viewMat * modelMat * vec4(vertex_pos, 1.0);
+    fragment_pos = (modelMat * vec4(vertex_pos, 1.0)).xyz;
+    fragment_normal = vertex_normal;
+    fragment_colorIndex = vertex_colorIndex;
 }

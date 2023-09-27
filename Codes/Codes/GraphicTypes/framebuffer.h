@@ -13,7 +13,7 @@ public:
     Framebuffer &operator = (const Framebuffer&) = delete;
 
     Framebuffer();
-    void init(int width, int height, int numberOfTextures);
+    void init(int width, int height, int numberOfTextures, bool multisample);
     ~Framebuffer();
 
     void bind() const;
@@ -26,7 +26,7 @@ private:
 
 class GraphicTypeData_Framebuffer: public GraphicTypeData {
 public:
-    void init(int width, int height, int numberOfTextures);
+    void init(int width, int height, int numberOfTextures, bool multisample);
     void release() override;
 
     void bind() const;

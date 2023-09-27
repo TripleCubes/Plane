@@ -1,21 +1,17 @@
 #version 330 core
 
-in vec2 fragment_uv;
+in vec3 fragment_pos;
+in vec3 fragment_normal;
+in float fragment_colorIndex;
 out vec4 out_color;
-
-uniform sampler2D gBuffer_pos;
-uniform sampler2D gBuffer_normal;
-uniform sampler2D gBuffer_color;
 
 vec3 lightDir = vec3(0.4, 1, 0.4);
 
-void main() {
-    // vec3 pos = texture(gBuffer_pos, fragment_uv).xyz;
-    vec3 normal = texture(gBuffer_normal, fragment_uv).xyz;
-    vec3 color = texture(gBuffer_color, fragment_uv).xyz;
+uniform sampler2D colorPalleteTexture;
 
-    float light = max(0.2, dot(lightDir, normal));
-    vec3 result = light * color;
+void main() {
+    float light = max(0.2, dot(lightDir, fragment_normal));
+    vec3 result = light * vec3(1, 1, 1);
 
     out_color = vec4(result, 1);
 }
