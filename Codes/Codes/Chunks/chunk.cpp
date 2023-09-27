@@ -26,18 +26,12 @@ Chunk::Chunk() {
     mesh.init();
 }
 
-void Chunk::setBlock_noMeshUpdate(int index, BlockType blockType) {
+void Chunk::setBlock(int index, BlockType blockType) {
     blocks[index] = blockType;
 }
 
-void Chunk::placeBlock(IntPos pos, BlockType blockType) {
+void Chunk::setBlock(IntPos pos, BlockType blockType) {
     blocks[posToIndex(pos)] = blockType;
-    meshUpdateRequested = true;
-}
-
-void Chunk::breakBlock(IntPos pos) {
-    blocks[posToIndex(pos)] = BlockType::EMPTY;
-    meshUpdateRequested = true;
 }
 
 BlockType Chunk::getBlock(IntPos pos) const {

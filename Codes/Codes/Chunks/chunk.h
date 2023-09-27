@@ -23,10 +23,8 @@ public:
 
     Chunk();
 
-    void setBlock_noMeshUpdate(int index, BlockType blockType);
-
-    void placeBlock(IntPos pos, BlockType blockType);
-    void breakBlock(IntPos pos);
+    void setBlock(int index, BlockType blockType);
+    void setBlock(IntPos pos, BlockType blockType);
     BlockType getBlock(IntPos pos) const;
     bool isSolidBlock(IntPos pos) const;
 

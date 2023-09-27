@@ -19,8 +19,6 @@ public:
     
     static const std::unordered_map<IntPos, std::unique_ptr<Chunk>, IntPosHash> &getChunkList();
 
-    static void placeBlock(IntPos blockPos, BlockType blockType);
-    static void breakBlock(IntPos blockPos);
     static BlockType getBlock(IntPos blockPos);
     static bool isSolidBlock(IntPos blockPos);
 
@@ -29,6 +27,8 @@ private:
     
     static void loadChunk(IntPos chunkPos);
     static bool chunkLoaded(IntPos chunkPos);
+    static void setBlock(IntPos blockPos, BlockType blockType);
+    static void checkLoadSideChunks(IntPos chunkPos);
     static void requestUpdateSideChunkMeshes(IntPos chunkPos);
     static void updateChunkMesh(IntPos chunkPos, std::unique_ptr<Chunk> &chunkPtr);
 };

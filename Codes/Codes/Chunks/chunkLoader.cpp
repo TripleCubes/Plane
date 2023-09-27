@@ -3,6 +3,8 @@
 #include <Codes/Chunks/chunk.h>
 #include <Codes/Types/intPos.h>
 
+#include <Codes/Debug/print.h>
+
 std::unordered_map<IntPos, std::unique_ptr<Chunk>, IntPosHash> ChunkLoader::chunks;
 
 std::size_t IntPosHash::operator () (const IntPos &pos) const {
@@ -13,13 +15,19 @@ std::size_t IntPosHash::operator () (const IntPos &pos) const {
 }
 
 void ChunkLoader::init() {
-    for (int x = -3; x < 3; x++) {
-        for (int z = -3; z < 3; z++) {
-            for (int y = -3; y < 3; y++) {
-                loadChunk(IntPos(x, y, z));
+    auto loadPlatform = [](IntPos pos) -> void {
+        for (int x = 0; x < 16; x++) {
+            for (int z = 0; z < 16; z++) {
+                IntPos blockPos = pos*CHUNK_WIDTH + IntPos(x, 15, z);
+                setBlock(blockPos, BlockType::WHITE);
             }
         }
-    }
+        chunks.at(pos)->requestMeshUpdate();
+    };
+
+    loadPlatform(IntPos(0, 0, 0));
+    loadPlatform(IntPos(0, 0, 1));
+    loadPlatform(IntPos(0, 0, 2));
 }
 
 void ChunkLoader::update() {
@@ -36,26 +44,14 @@ const std::unordered_map<IntPos, std::unique_ptr<Chunk>, IntPosHash> &ChunkLoade
     return chunks;
 }
 
-void ChunkLoader::placeBlock(IntPos blockPos, BlockType blockType) {
+void ChunkLoader::setBlock(IntPos blockPos, BlockType blockType) {
     IntPos chunkPos = blockPos.getChunkPos();
     if (!chunkLoaded(chunkPos)) {
-        return;
+        loadChunk(chunkPos);
     }
 
-    chunks.at(chunkPos)->placeBlock(blockPos.getBlockPosInChunk(), blockType);
-
-    requestUpdateSideChunkMeshes(chunkPos);
-}
-
-void ChunkLoader::breakBlock(IntPos blockPos) {
-    IntPos chunkPos = blockPos.getChunkPos();
-    if (!chunkLoaded(chunkPos)) {
-        return;
-    }
-
-    chunks.at(chunkPos)->breakBlock(blockPos.getBlockPosInChunk());
-
-    requestUpdateSideChunkMeshes(chunkPos);
+    checkLoadSideChunks(chunkPos);
+    chunks.at(chunkPos)->setBlock(blockPos.getBlockPosInChunk(), blockType);
 }
 
 BlockType ChunkLoader::getBlock(IntPos blockPos) {
@@ -72,22 +68,28 @@ bool ChunkLoader::isSolidBlock(IntPos blockPos) {
 
 void ChunkLoader::loadChunk(IntPos chunkPos) {
     std::unique_ptr<Chunk> chunkPtr = std::make_unique<Chunk>();
-
-    for (int i = 0; i < CHUNK_VOLUME; i++) {
-        IntPos blockPosInChunk = Chunk::indexToPos(i);
-        IntPos blockPos = chunkPos*CHUNK_WIDTH + blockPosInChunk;
-
-        if (blockPos.y < -10) {
-            chunkPtr->setBlock_noMeshUpdate(i, BlockType::WHITE);
-        }
-    }
-
-    updateChunkMesh(chunkPos, chunkPtr);
     chunks.insert(std::make_pair(chunkPos, std::move(chunkPtr)));
 }
 
 bool ChunkLoader::chunkLoaded(IntPos chunkPos) {
     return chunks.find(chunkPos) != chunks.end();
+}
+
+void ChunkLoader::checkLoadSideChunks(IntPos chunkPos) {
+    std::array<IntPos, 6> dirs = {
+        IntPos( 0,  1,  0), // TOP
+        IntPos( 0, -1,  0), // BOTTOM
+        IntPos(-1,  0,  0), // LEFT
+        IntPos( 1,  0,  0), // RIGHT
+        IntPos( 0,  0,  1), // FORWARD
+        IntPos( 0,  0, -1), // BACKWARD
+    };
+    for (IntPos dir: dirs) {
+        IntPos sideChunkPos = chunkPos + dir;
+        if (!chunkLoaded(sideChunkPos)) {
+            loadChunk(sideChunkPos);
+        }
+    }
 }
 
 void ChunkLoader::requestUpdateSideChunkMeshes(IntPos chunkPos) {
