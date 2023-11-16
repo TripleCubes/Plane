@@ -10,7 +10,7 @@
 #include <Codes/Controls/controls.h>
 #include <Codes/Chunks/chunkLoader.h>
 
-#include <Codes/Game/Selection/selection.h>
+#include <Codes/Game/GameSelection/gameSelection.h>
 
 #include <Codes/Debug/print.h>
 

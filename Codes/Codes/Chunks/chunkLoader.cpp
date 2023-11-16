@@ -20,6 +20,7 @@ void ChunkLoader::init() {
 
     loadPlatform(IntPos(0, 0, 0), BlockType::WHITE);
     loadPlatform(IntPos(0, 0, 1), BlockType::BLUE);
+    loadPlatform(IntPos(0, 1, 1), BlockType::BLUE);
     loadPlatform(IntPos(0, 0, 2), BlockType::RED);
 }
 

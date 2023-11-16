@@ -1,10 +1,12 @@
-#include <Codes/Game/Selection/selection.h>
+#include <Codes/Game/GameSelection/gameSelection.h>
 
 #include <Codes/Chunks/chunkLoader.h>
 #include <Codes/Chunks/chunk.h>
 #include <Codes/Types/vec3.h>
 #include <Codes/Globals/globalConsts.h>
 #include <algorithm>
+
+#include <Codes/Debug/print.h>
 
 bool GameSelection::selecting = false;
 IntPos GameSelection::selectionStart;
@@ -37,10 +39,11 @@ void GameSelection::endSelection(IntPos pos) {
 
 void GameSelection::updateMesh() {
     std::unordered_map<IntPos, bool, IntPosHash> faceCheckedList;
-    createFaceCheckedList(faceCheckedList);
+    std::vector<IntPos> faceCheckedListOrder;
+    createFaceCheckedList(faceCheckedList, faceCheckedListOrder);
 
     std::vector<Surface> surfaceList;
-    createSurfaceList(surfaceList, faceCheckedList);
+    createSurfaceList(surfaceList, faceCheckedList, faceCheckedListOrder);
 
     if (surfaceList.size() == 0) {
         meshSetted = false;
@@ -63,7 +66,8 @@ void GameSelection::draw() {
     mesh.draw();
 }
 
-void GameSelection::createFaceCheckedList(std::unordered_map<IntPos, bool, IntPosHash> &faceCheckedList) {
+void GameSelection::createFaceCheckedList(std::unordered_map<IntPos, bool, IntPosHash> &faceCheckedList,
+                                            std::vector<IntPos> &faceCheckedListOrder) {
     int minX = std::min(selectionStart.x, selectionEnd.x);
     int minY = std::min(selectionStart.y, selectionEnd.y);
     int minZ = std::min(selectionStart.z, selectionEnd.z);
@@ -109,6 +113,7 @@ void GameSelection::createFaceCheckedList(std::unordered_map<IntPos, bool, IntPo
             }
 
             faceCheckedList.insert(std::make_pair(blockPos, false));
+            faceCheckedListOrder.push_back(blockPos);
         }
     }
     }
@@ -116,17 +121,18 @@ void GameSelection::createFaceCheckedList(std::unordered_map<IntPos, bool, IntPo
 }
 
 void GameSelection::createSurfaceList(std::vector<Surface> &surfaceList, 
-                                        std::unordered_map<IntPos, bool, IntPosHash> &faceCheckedList) {
-    for (auto &face: faceCheckedList) {
-        if (face.second) {
+                                        std::unordered_map<IntPos, bool, IntPosHash> &faceCheckedList,
+                                        std::vector<IntPos> &faceCheckedListOrder) {
+    for (auto facePos: faceCheckedListOrder) {
+        if (faceCheckedList.at(facePos)) {
             continue;
         }
 
-        IntPos blockPos = face.first;
+        IntPos blockPos = facePos;
         int surfaceW = 1;
         int surfaceH = 1;
 
-        face.second = true;
+        faceCheckedList.at(facePos) = true;
         IntPos checkingPos = blockPos + IntPos(1, 0, 0);
         while (faceCheckedList.find(checkingPos) != faceCheckedList.end()
                 && !faceCheckedList.at(checkingPos)) {

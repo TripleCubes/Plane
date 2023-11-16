@@ -5,7 +5,7 @@
 #include <Codes/Chunks/chunkLoader.h>
 #include <Codes/Chunks/chunk.h>
 #include <Codes/RayCast/blockRayCast.h>
-#include <Codes/Game/Selection/selection.h>
+#include <Codes/Game/GameSelection/gameSelection.h>
 
 #include <Codes/Types/color.h>
 #include <Codes/Types/vec2.h>

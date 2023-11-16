@@ -2,7 +2,7 @@
 
 #include <Codes/Settings/settings.h>
 #include <Codes/View/camera.h>
-#include <Codes/Game/Selection/selection.h>
+#include <Codes/Game/GameSelection/gameSelection.h>
 #include <Codes/RayCast/blockRayCast.h>
 
 #include <Codes/Input/input.h>

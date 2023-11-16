@@ -33,9 +33,11 @@ private:
         IntPos blockPos;
     };
 
-    static void createFaceCheckedList(std::unordered_map<IntPos, bool, IntPosHash> &faceCheckedList);
+    static void createFaceCheckedList(std::unordered_map<IntPos, bool, IntPosHash> &faceCheckedList,
+                                        std::vector<IntPos> &faceCheckedListOrder);
     static void createSurfaceList(std::vector<Surface> &surfaceList, 
-                                    std::unordered_map<IntPos, bool, IntPosHash> &faceCheckedList);
+                                    std::unordered_map<IntPos, bool, IntPosHash> &faceCheckedList,
+                                    std::vector<IntPos> &faceCheckedListOrder);
     static void createVerticies(std::vector<float> &verticies, std::vector<Surface> &surfaceList);
 };
 
