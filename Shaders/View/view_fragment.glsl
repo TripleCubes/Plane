@@ -14,6 +14,8 @@ void main() {
     vec2 colorSamplePos = vec2(fragment_colorIndex / colorPalleteTextureWH.x + 0.01, 0.01);
     vec4 color = texture(colorPalleteTexture, colorSamplePos);
     float light = max(0.2, dot(lightDir, fragment_normal));
+    vec4 result = light * color;
+    result.a = 1;
 
-    out_color = light * color;
+    out_color = result;
 }

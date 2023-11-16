@@ -1,4 +1,4 @@
-#include <Codes/input.h>
+#include <Codes/Input/input.h>
 
 #include <GLFW/glfw3.h>
 #include <Codes/Types/vec2.h>
@@ -10,8 +10,10 @@ extern GLFWwindow *glfwWindow;
 std::unordered_map<std::string, Input::Key> Input::keys;
 bool Input::leftPressed = false;
 bool Input::leftJustPressed = false;
+bool Input::leftJustReleased = false;
 bool Input::rightPressed = false;
 bool Input::rightJustPressed = false;
+bool Input::rightJustReleased = false;
 float Input::mouseMoveOffsetX = 0;
 float Input::mouseMoveOffsetY = 0;
 bool Input::resetMouseMoveOffset = false;
@@ -75,7 +77,13 @@ void Input::update() {
             leftJustPressed = false;
         }
         leftPressed = true;
+        leftJustReleased = false;
     } else {
+        if (!leftPressed) {
+            leftJustReleased = false;
+        } else {
+            leftJustReleased = true;
+        }
         leftPressed = false;
         leftJustPressed = false;
     }
@@ -87,7 +95,13 @@ void Input::update() {
             rightJustPressed = false;
         }
         rightPressed = true;
+        rightJustReleased = false;
     } else {
+        if (!rightPressed) {
+            rightJustReleased = false;
+        } else {
+            rightJustReleased = true;
+        }
         rightPressed = false;
         rightJustPressed = false;
     }
@@ -158,4 +172,11 @@ bool Input::justPressed(MouseButton mouseButton) {
         return leftJustPressed;
     }
     return rightJustPressed;
+}
+
+bool Input::justReleased(MouseButton mouseButton) {
+    if (mouseButton == MouseButton::LEFT) {
+        return leftJustReleased;
+    }
+    return rightJustReleased;
 }

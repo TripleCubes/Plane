@@ -7,13 +7,6 @@
 
 std::unordered_map<IntPos, std::unique_ptr<Chunk>, IntPosHash> ChunkLoader::chunks;
 
-std::size_t IntPosHash::operator () (const IntPos &pos) const {
-    std::size_t hash1 = std::hash<int>{}(pos.x);
-    std::size_t hash2 = std::hash<int>{}(pos.y);
-    std::size_t hash3 = std::hash<int>{}(pos.z);
-    return (hash1 ^ (hash2 << 1)) ^ (hash3 << 1);
-}
-
 void ChunkLoader::init() {
     auto loadPlatform = [](IntPos pos, BlockType blockType) -> void {
         for (int x = 0; x < 16; x++) {

@@ -27,6 +27,7 @@ public:
     static Vec2 getMouseScrollOffset();
     static bool pressed(MouseButton mouseButton);
     static bool justPressed(MouseButton mouseButton);
+    static bool justReleased(MouseButton mouseButton);
 
 private:
     struct Key 
@@ -39,8 +40,10 @@ private:
     static std::unordered_map<std::string, Key> keys;
     static bool leftPressed;
     static bool leftJustPressed;
+    static bool leftJustReleased;
     static bool rightPressed;
     static bool rightJustPressed;
+    static bool rightJustReleased;
 
     static void addKey(const std::string &key, int glfwKey);
 

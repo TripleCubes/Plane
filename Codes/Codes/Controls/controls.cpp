@@ -1,12 +1,17 @@
-#include <Codes/controls.h>
+#include <Codes/Controls/controls.h>
 
 #include <Codes/Settings/settings.h>
 #include <Codes/View/camera.h>
-#include <Codes/input.h>
+#include <Codes/Game/Selection/selection.h>
+#include <Codes/RayCast/blockRayCast.h>
+
+#include <Codes/Input/input.h>
 #include <Codes/Time/time.h>
 #include <Codes/Types/vec2.h>
 
 #include <Codes/Debug/print.h>
+
+extern BlockRayCastResult savedBlockRayCastResult;
 
 void lockMouse();
 void unlockMouse();
@@ -20,9 +25,9 @@ void Controls::update() {
     if (Settings::isFreeCam()) {
         updateCameraDir();
         updateMovements();
+    } else {
+        updateGameSelection();
     }
-
-    // placeBreakBlock();
 }
 
 void Controls::updateSettings() {
@@ -91,6 +96,26 @@ void Controls::updateMovements() {
     }
 }
 
-void Controls::placeBreakBlock() {
+void Controls::updateGameSelection() {
+    if (!savedBlockRayCastResult.found) {
+        return;
+    }
 
+    if (Input::justPressed(MouseButton::LEFT)) {
+        IntPos startPos = savedBlockRayCastResult.selectedPos;
+        startPos.y = -100;
+        GameSelection::startSelection(startPos);
+    }
+
+    if (Input::pressed(MouseButton::LEFT)) {
+        IntPos endPos = savedBlockRayCastResult.selectedPos;
+        endPos.y = 100;
+        GameSelection::setSelectionEndPos(endPos);
+    }
+
+    if (Input::justReleased(MouseButton::LEFT)) {
+        IntPos endPos = savedBlockRayCastResult.selectedPos;
+        endPos.y = 100;
+        GameSelection::endSelection(endPos);
+    }
 }

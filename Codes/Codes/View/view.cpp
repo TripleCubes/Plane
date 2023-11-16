@@ -5,9 +5,12 @@
 #include <Codes/Chunks/chunkLoader.h>
 #include <Codes/Chunks/chunk.h>
 #include <Codes/RayCast/blockRayCast.h>
+#include <Codes/Game/Selection/selection.h>
+
 #include <Codes/Types/color.h>
 #include <Codes/Types/vec2.h>
-#include <Codes/input.h>
+#include <Codes/Types/vec3.h>
+#include <Codes/Input/input.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glad/glad.h>
 #include <vector>
@@ -88,6 +91,7 @@ void View::update() {
                                         (Camera::getPos() + Camera::getDir()).toGlmVec3(),
                                         glm::vec3(0.0f, 1.0f, 0.0f));
 
+    // TO DO: Move to another file
     if (Settings::isFreeCam()) {
         savedBlockRayCastResult = BlockRayCast::cast(Camera::getPos(), Camera::getDir(), 30);
 
@@ -127,6 +131,7 @@ void View::draw() {
     
     drawChunks();
     drawBlockSelection();
+    drawGameSelection();
 
     glBindFramebuffer(GL_READ_FRAMEBUFFER, framebuffer_view_multisampled.getFBO());
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer_view.getFBO());
@@ -180,4 +185,14 @@ void View::drawBlockSelection() {
     }
 
     mesh_boxFrame.draw();
+}
+
+void View::drawGameSelection() {
+    shader_view.useProgram();
+
+    glm::mat4 modelMat = glm::mat4(1.0f);
+    modelMat = glm::translate(modelMat, Vec3(0, 0.001, 0).toGlmVec3());
+    shader_view.setUniform("modelMat", modelMat);
+
+    GameSelection::draw();
 }

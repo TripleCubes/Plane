@@ -9,7 +9,7 @@ private:
     static void updateSettings();
     static void updateCameraDir();
     static void updateMovements();
-    static void placeBreakBlock();
+    static void updateGameSelection();
 
     static float cameraRotationX;
     static float cameraRotationY;

@@ -19,6 +19,18 @@ IntPos Chunk::indexToPos(int index) {
     return pos;
 }
 
+int Chunk::addYToIndex(int y, int index) {
+    return index + y * CHUNK_WIDTH*CHUNK_WIDTH;
+}
+
+int Chunk::addxToIndex(int x, int index) {
+    return index + x * CHUNK_WIDTH;
+}
+
+int Chunk::addzToIndex(int z, int index) {
+    return index + z;
+}
+
 
 
 Chunk::Chunk() {
@@ -40,6 +52,10 @@ BlockType Chunk::getBlock(IntPos pos) const {
 
 bool Chunk::isSolidBlock(IntPos pos) const {
     return blocks[posToIndex(pos)] != BlockType::EMPTY;
+}
+
+bool Chunk::isSolidBlock(int index) const {
+    return blocks[index] != BlockType::EMPTY;
 }
 
 void Chunk::updateMesh(const std::array<Chunk*, 6> &sideChunks) {

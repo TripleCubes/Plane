@@ -6,11 +6,8 @@
 
 class Chunk;
 class IntPos;
+struct IntPosHash;
 enum class BlockType;
-
-struct IntPosHash {
-    std::size_t operator () (const IntPos &pos) const;
-};
 
 class ChunkLoader {
 public:
@@ -21,12 +18,12 @@ public:
 
     static BlockType getBlock(IntPos blockPos);
     static bool isSolidBlock(IntPos blockPos);
+    static bool chunkLoaded(IntPos chunkPos);
 
 private:
     static std::unordered_map<IntPos, std::unique_ptr<Chunk>, IntPosHash> chunks;
     
     static void loadChunk(IntPos chunkPos);
-    static bool chunkLoaded(IntPos chunkPos);
     static void setBlock(IntPos blockPos, BlockType blockType);
     static void checkLoadSideChunks(IntPos chunkPos);
     static void requestUpdateSideChunkMeshes(IntPos chunkPos);

@@ -2,7 +2,7 @@
 
 #include <Codes/UI/ui.h>
 #include <Codes/Types/vec2.h>
-#include <Codes/input.h>
+#include <Codes/Input/input.h>
 
 #include <Codes/Debug/print.h>
 

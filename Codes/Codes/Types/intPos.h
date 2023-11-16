@@ -1,6 +1,8 @@
 #ifndef INTPOS_H
 #define INTPOS_H
 
+#include <cstddef>
+
 class Vec3;
 
 struct IntPos {
@@ -13,6 +15,7 @@ struct IntPos {
     IntPos();
 
     bool operator == (IntPos pos) const;
+    bool operator != (IntPos pos) const;
     IntPos operator + (IntPos pos) const;
     IntPos operator - (IntPos pos) const;
     IntPos operator * (int num) const;
@@ -21,6 +24,12 @@ struct IntPos {
 
     IntPos getChunkPos() const;
     IntPos getBlockPosInChunk() const;
+
+    static int getChunkPos(int num);
+};
+
+struct IntPosHash {
+    std::size_t operator () (const IntPos &pos) const;
 };
 
 #endif

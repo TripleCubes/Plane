@@ -20,6 +20,9 @@ class Chunk {
 public:
     static int posToIndex(IntPos pos);
     static IntPos indexToPos(int index);
+    static int addYToIndex(int y, int index);
+    static int addxToIndex(int x, int index);
+    static int addzToIndex(int z, int index);
 
     Chunk();
 
@@ -27,6 +30,7 @@ public:
     void setBlock(IntPos pos, BlockType blockType);
     BlockType getBlock(IntPos pos) const;
     bool isSolidBlock(IntPos pos) const;
+    bool isSolidBlock(int index) const;
 
     void updateMesh(const std::array<Chunk*, 6> &sideChunks);
     void requestMeshUpdate();

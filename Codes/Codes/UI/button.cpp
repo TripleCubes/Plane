@@ -1,7 +1,7 @@
 #include <Codes/UI/button.h>
 
 #include <Codes/UI/ui.h>
-#include <Codes/input.h>
+#include <Codes/Input/input.h>
 #include <Codes/Types/vec2.h>
 
 #include <Codes/Debug/print.h>

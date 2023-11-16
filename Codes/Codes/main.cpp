@@ -2,13 +2,15 @@
 #include <GLFW/glfw3.h>
 
 #include <Codes/GraphicTypes/graphicTypesManager.h>
-#include <Codes/input.h>
+#include <Codes/Input/input.h>
 #include <Codes/Time/time.h>
 #include <Codes/UI/ui.h>
 #include <Codes/Graphics/text.h>
 #include <Codes/View/view.h>
-#include <Codes/controls.h>
+#include <Codes/Controls/controls.h>
 #include <Codes/Chunks/chunkLoader.h>
+
+#include <Codes/Game/Selection/selection.h>
 
 #include <Codes/Debug/print.h>
 
@@ -103,6 +105,8 @@ int main() {
     View::init();
 
     ChunkLoader::init();
+
+    GameSelection::init();
 
     while (!glfwWindowShouldClose(glfwWindow)) {
         Time::setFrameStartTime();

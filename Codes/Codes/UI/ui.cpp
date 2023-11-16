@@ -8,7 +8,7 @@
 #include <Codes/Settings/settings.h>
 #include <Codes/UI/Menu/menu.h>
 #include <Codes/UI/Menu/menuManager.h>
-#include <Codes/input.h>
+#include <Codes/Input/input.h>
 #include <Codes/Graphics/text.h>
 
 #include <Codes/Debug/print.h>
