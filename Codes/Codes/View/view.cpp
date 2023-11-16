@@ -188,6 +188,11 @@ void View::drawBlockSelection() {
 }
 
 void View::drawGameSelection() {
+    if (Settings::isWireframeMode())
+    {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    }
+
     shader_view.useProgram();
 
     glm::mat4 modelMat = glm::mat4(1.0f);
@@ -195,4 +200,6 @@ void View::drawGameSelection() {
     shader_view.setUniform("modelMat", modelMat);
 
     GameSelection::draw();
+
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 }
