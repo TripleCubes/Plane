@@ -71,9 +71,9 @@ void Chunk::updateMesh(const std::array<Chunk*, 6> &sideChunks) {
         
         mesh.set(MeshType::MESH3D_COLOR_PALLETE, verticies);
 
-        emptyChunkMesh = false;
+        chunkMeshSetted = true;
     } else {
-        emptyChunkMesh = true;
+        chunkMeshSetted = false;
     }
 
     chunkReady = true;
@@ -493,7 +493,7 @@ bool Chunk::isMeshUpdateRequested() const {
 }
 
 void Chunk::draw() const {
-    if (!chunkReady || emptyChunkMesh) {
+    if (!chunkReady || !chunkMeshSetted) {
         return;
     }
 

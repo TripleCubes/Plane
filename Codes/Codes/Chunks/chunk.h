@@ -43,7 +43,7 @@ private:
     Mesh mesh;
 
     bool chunkReady = false;
-    bool emptyChunkMesh = false;
+    bool chunkMeshSetted = false;
     bool meshUpdateRequested = true;
 
     void createFaceList(std::array<bool, CHUNK_VOLUME*6> &faceList, 
