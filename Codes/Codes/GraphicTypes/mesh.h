@@ -9,6 +9,7 @@ class GraphicTypeData_Mesh;
 
 enum class MeshType {
     MESH2D, 
+    MESH3D,
     MESH3D_COLOR_PALLETE, 
     MESH3D_FRAME, 
     MESH3D_TEXTURE,

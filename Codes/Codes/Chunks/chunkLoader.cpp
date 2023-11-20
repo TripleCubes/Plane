@@ -19,7 +19,8 @@ void ChunkLoader::init() {
     };
 
     loadPlatform(IntPos(0, 0, 0), IntPos(16, 1, 16*5), BlockType::YELLOW);
-    loadPlatform(IntPos(-16*3, 0, 16), IntPos(16* 3, 1, 16), BlockType::BLUE);
+    loadPlatform(IntPos(-16*3, 0, 16), IntPos(16* 5, 2, 16), BlockType::BLUE);
+    loadPlatform(IntPos(4, 2, 20), IntPos(10, 1, 10), BlockType::RED);
     requestUpdateAllChunkMeshes();
 }
 

@@ -42,6 +42,8 @@ Texture View::texture_colorPallete;
 Shader View::shader_boxFrame;
 Mesh View::mesh_boxFrame;
 
+Shader View::shader_gameSelection;
+
 void View::init() {
     framebuffer_view_multisampled.init(0, 0, 1, true);
     framebuffer_view.init(0, 0, 1, false);
@@ -76,6 +78,8 @@ void View::init() {
         7, 4
     };
     mesh_boxFrame.set(MeshType::MESH3D_FRAME, verticies_boxFrame, indicies_boxFrame);
+
+    shader_gameSelection.init("Shaders/View/gameSelection");
 }
 
 void View::update() {
@@ -123,6 +127,10 @@ void View::draw() {
     shader_boxFrame.useProgram();
     shader_boxFrame.setUniform("projectionMat", projectionMat);
     shader_boxFrame.setUniform("viewMat", viewMat);
+
+    shader_gameSelection.useProgram();
+    shader_gameSelection.setUniform("projectionMat", projectionMat);
+    shader_gameSelection.setUniform("viewMat", viewMat);
 
     framebuffer_view_multisampled.bind();
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -193,7 +201,7 @@ void View::drawGameSelection() {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
 
-    shader_view.useProgram();
+    shader_gameSelection.useProgram();
 
     glm::mat4 modelMat = glm::mat4(1.0f);
     modelMat = glm::translate(modelMat, Vec3(0, 0.01, 0).toGlmVec3());

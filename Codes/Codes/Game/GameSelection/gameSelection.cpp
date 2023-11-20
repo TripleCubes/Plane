@@ -53,7 +53,7 @@ void GameSelection::updateMesh() {
     std::vector<float> verticies;
     createVerticies(verticies, surfaceList);
 
-    mesh.set(MeshType::MESH3D_COLOR_PALLETE, verticies);
+    mesh.set(MeshType::MESH3D, verticies);
 
     meshSetted = true;
 }
@@ -177,17 +177,16 @@ void GameSelection::createVerticies(std::vector<float> &verticies, std::vector<S
         Vec3 pos(surface.blockPos);
         float w = surface.w;
         float h = surface.h;
-        float index = 4;
 
         surfaceVerticies = {
-//          Pos                         Normal      ColorIndex
-            pos.x  , pos.y+1, pos.z  ,  0,  1,  0,  index,  // A TOP
-            pos.x+w, pos.y+1, pos.z+h,  0,  1,  0,  index,  // C
-            pos.x  , pos.y+1, pos.z+h,  0,  1,  0,  index,  // D
+//          Pos                         Normal
+            pos.x  , pos.y+1, pos.z  ,  0,  1,  0,  // A TOP
+            pos.x+w, pos.y+1, pos.z+h,  0,  1,  0,  // C
+            pos.x  , pos.y+1, pos.z+h,  0,  1,  0,  // D
 
-            pos.x  , pos.y+1, pos.z  ,  0,  1,  0,  index,  // A
-            pos.x+w, pos.y+1, pos.z  ,  0,  1,  0,  index,  // B
-            pos.x+w, pos.y+1, pos.z+h,  0,  1,  0,  index,  // C
+            pos.x  , pos.y+1, pos.z  ,  0,  1,  0,  // A
+            pos.x+w, pos.y+1, pos.z  ,  0,  1,  0,  // B
+            pos.x+w, pos.y+1, pos.z+h,  0,  1,  0,  // C
         };
 
         verticies.insert(verticies.end(), surfaceVerticies.begin(), surfaceVerticies.end());
