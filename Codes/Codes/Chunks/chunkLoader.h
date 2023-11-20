@@ -16,16 +16,17 @@ public:
     
     static const std::unordered_map<IntPos, std::unique_ptr<Chunk>, IntPosHash> &getChunkList();
 
-    static BlockType getBlock(IntPos blockPos);
-    static bool isSolidBlock(IntPos blockPos);
+    static BlockType chunkLoadCheck_getBlock(IntPos blockPos);
+    static bool chunkLoadCheck_isSolidBlock(IntPos blockPos);
     static bool chunkLoaded(IntPos chunkPos);
 
 private:
     static std::unordered_map<IntPos, std::unique_ptr<Chunk>, IntPosHash> chunks;
     
     static void loadChunk(IntPos chunkPos);
-    static void setBlock(IntPos blockPos, BlockType blockType);
+    static void chunkLoadCheck_setBlock(IntPos blockPos, BlockType blockType);
     static void checkLoadSideChunks(IntPos chunkPos);
+    static void requestUpdateAllChunkMeshes();
     static void requestUpdateSideChunkMeshes(IntPos chunkPos);
     static void updateChunkMesh(IntPos chunkPos, std::unique_ptr<Chunk> &chunkPtr);
 };

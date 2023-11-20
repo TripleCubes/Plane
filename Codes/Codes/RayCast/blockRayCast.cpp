@@ -112,7 +112,7 @@ BlockRayCastResult BlockRayCast::cast(Vec3 from, Vec3 dir, float range) {
     bool hasPlacingPos = false;
     while (from.distance(checkingPos) < range) {
         IntPos checkingIntPos(checkingPos);
-        BlockType blockType = ChunkLoader::getBlock(checkingIntPos);
+        BlockType blockType = ChunkLoader::chunkLoadCheck_getBlock(checkingIntPos);
         if (blockType != BlockType::EMPTY) {
             BlockRayCastResult result;
             result.found = true;

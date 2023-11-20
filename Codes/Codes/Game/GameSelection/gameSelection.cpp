@@ -108,7 +108,7 @@ void GameSelection::createFaceCheckedList(std::unordered_map<IntPos, bool, IntPo
             }
 
             // TO DO: Handle above chunk
-            if (blockPos.y < CHUNK_VOLUME - 1 && chunk->isSolidBlock(Chunk::addYToIndex(-1, i))) {
+            if (blockPos.y < CHUNK_VOLUME - 1 && chunk->isSolidBlock(Chunk::addYToIndex(1, i))) {
                 continue;
             }
 

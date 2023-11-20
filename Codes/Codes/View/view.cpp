@@ -196,7 +196,7 @@ void View::drawGameSelection() {
     shader_view.useProgram();
 
     glm::mat4 modelMat = glm::mat4(1.0f);
-    modelMat = glm::translate(modelMat, Vec3(0, 0.001, 0).toGlmVec3());
+    modelMat = glm::translate(modelMat, Vec3(0, 0.01, 0).toGlmVec3());
     shader_view.setUniform("modelMat", modelMat);
 
     GameSelection::draw();
