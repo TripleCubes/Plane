@@ -13,7 +13,7 @@ uniform vec3 scale;
 uniform vec3 offset;
 
 void main() {
-    vec3 final_pos = vec3(vertex_pos.x * scale.x, vertex_pos.y * scale.y, vertex_pos.z * scale.z);
+    vec3 final_pos = vec3(vertex_pos.x * scale.x / 2, vertex_pos.y * scale.y / 2, vertex_pos.z * scale.z / 2);
     final_pos += offset;
     gl_Position = projectionMat * viewMat * modelMat * vec4(final_pos, 1.0);
     fragment_pos = (modelMat * vec4(final_pos, 1.0)).xyz;

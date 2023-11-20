@@ -6,6 +6,8 @@
 #include <Codes/Chunks/chunk.h>
 #include <Codes/RayCast/blockRayCast.h>
 #include <Codes/Game/GameSelection/gameSelection.h>
+#include <Codes/Entities/entityList.h>
+#include <Codes/Entities/entity.h>
 
 #include <Codes/Types/color.h>
 #include <Codes/Types/vec2.h>
@@ -23,6 +25,8 @@ extern const int CHUNK_WIDTH;
 namespace GlobalGraphics {
     extern Mesh mesh_windowRect;
     extern Shader shader_windowRect;
+    extern Mesh mesh_3dBox;
+    extern Shader shader_3dBox;
 }
 extern BlockRayCastResult savedBlockRayCastResult;
 
@@ -132,6 +136,10 @@ void View::draw() {
     shader_gameSelection.setUniform("projectionMat", projectionMat);
     shader_gameSelection.setUniform("viewMat", viewMat);
 
+    GlobalGraphics::shader_3dBox.useProgram();
+    GlobalGraphics::shader_3dBox.setUniform("projectionMat", projectionMat);
+    GlobalGraphics::shader_3dBox.setUniform("viewMat", viewMat);
+
     framebuffer_view_multisampled.bind();
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -140,6 +148,7 @@ void View::draw() {
     drawChunks();
     drawBlockSelection();
     drawGameSelection();
+    drawEntities();
 
     glBindFramebuffer(GL_READ_FRAMEBUFFER, framebuffer_view_multisampled.getFBO());
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer_view.getFBO());
@@ -210,4 +219,20 @@ void View::drawGameSelection() {
     GameSelection::draw();
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+}
+
+void View::drawEntities() {
+    GlobalGraphics::shader_3dBox.useProgram();
+
+    for (const auto &entity: EntityList::getList()) {
+        GlobalGraphics::shader_3dBox.setUniform("scale", entity.getSize());
+        GlobalGraphics::shader_3dBox.setUniform("offset", entity.getOffset());
+        GlobalGraphics::shader_3dBox.setUniform("color", Color(1, 1, 1, 1));
+
+        glm::mat4 modelMat = glm::mat4(1.0f);
+        modelMat = glm::translate(modelMat, entity.getPos().toGlmVec3());
+        GlobalGraphics::shader_3dBox.setUniform("modelMat", modelMat);
+
+        GlobalGraphics::mesh_3dBox.draw();
+    }
 }

@@ -79,8 +79,8 @@ void init() {
         -1, -1, -1,   0,  0, -1,  // E
          1, -1, -1,   0,  0, -1,  // F
     };
-    mesh_windowRect.init();
-    mesh_windowRect.set(MeshType::MESH3D, verticies_3dBox);
+    mesh_3dBox.init();
+    mesh_3dBox.set(MeshType::MESH3D, verticies_3dBox);
     shader_3dBox.init("Shaders/_3dBox");
 }
 }

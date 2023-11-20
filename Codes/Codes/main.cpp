@@ -8,9 +8,10 @@
 #include <Codes/Graphics/text.h>
 #include <Codes/View/view.h>
 #include <Codes/Controls/controls.h>
-#include <Codes/Chunks/chunkLoader.h>
 
+#include <Codes/Chunks/chunkLoader.h>
 #include <Codes/Game/GameSelection/gameSelection.h>
+#include <Codes/Entities/entityList.h>
 
 #include <Codes/Debug/print.h>
 
@@ -105,8 +106,8 @@ int main() {
     View::init();
 
     ChunkLoader::init();
-
     GameSelection::init();
+    EntityList::init();
 
     while (!glfwWindowShouldClose(glfwWindow)) {
         Time::setFrameStartTime();

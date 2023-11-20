@@ -35,6 +35,7 @@ private:
     static void drawChunks();
     static void drawBlockSelection();
     static void drawGameSelection();
+    static void drawEntities();
 };
 
 #endif
