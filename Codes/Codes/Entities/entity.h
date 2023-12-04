@@ -7,6 +7,8 @@
 
 class Entity {
 public:
+    void update();
+    
     Vec3 getPos() const { return pos; };
     Vec3 getLookDir() const { return lookDir; };
 

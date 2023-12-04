@@ -36,6 +36,10 @@ private:
     static void drawBlockSelection();
     static void drawGameSelection();
     static void drawEntities();
+
+    #ifdef DEBUG
+    static void drawDebug3D();
+    #endif
 };
 
 #endif

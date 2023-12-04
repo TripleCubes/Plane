@@ -17,6 +17,8 @@
 #include <glad/glad.h>
 #include <vector>
 
+#include <Codes/Debug/debug3d.h>
+
 #include <Codes/Debug/print.h>
 
 extern int currentWindowWidth;
@@ -25,8 +27,12 @@ extern const int CHUNK_WIDTH;
 namespace GlobalGraphics {
     extern Mesh mesh_windowRect;
     extern Shader shader_windowRect;
+
     extern Mesh mesh_3dBox;
     extern Shader shader_3dBox;
+
+    extern Mesh mesh_point;
+    extern Shader shader_point;
 }
 extern BlockRayCastResult savedBlockRayCastResult;
 
@@ -140,6 +146,10 @@ void View::draw() {
     GlobalGraphics::shader_3dBox.setUniform("projectionMat", projectionMat);
     GlobalGraphics::shader_3dBox.setUniform("viewMat", viewMat);
 
+    GlobalGraphics::shader_point.useProgram();
+    GlobalGraphics::shader_point.setUniform("projectionMat", projectionMat);
+    GlobalGraphics::shader_point.setUniform("viewMat", viewMat);
+
     framebuffer_view_multisampled.bind();
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -149,6 +159,9 @@ void View::draw() {
     drawBlockSelection();
     drawGameSelection();
     drawEntities();
+    #ifdef DEBUG
+    drawDebug3D();
+    #endif
 
     glBindFramebuffer(GL_READ_FRAMEBUFFER, framebuffer_view_multisampled.getFBO());
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, framebuffer_view.getFBO());
@@ -236,3 +249,20 @@ void View::drawEntities() {
         GlobalGraphics::mesh_3dBox.draw();
     }
 }
+
+#ifdef DEBUG
+void View::drawDebug3D() {
+    GlobalGraphics::shader_point.useProgram();
+
+    for (const Debug3D::Point &point: Debug3D::getPointList()) {
+        glPointSize(point.size);
+        glm::mat4 modelMat = glm::mat4(1.0f);
+        modelMat = glm::translate(modelMat, point.pos.toGlmVec3());
+        GlobalGraphics::shader_point.setUniform("modelMat", modelMat);
+        GlobalGraphics::shader_point.setUniform("pointColor", point.color);
+        GlobalGraphics::mesh_point.draw();
+    }
+
+    glPointSize(1);
+}
+#endif

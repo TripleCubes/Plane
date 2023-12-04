@@ -14,6 +14,7 @@
 #include <Codes/Entities/entityList.h>
 
 #include <Codes/Debug/print.h>
+#include <Codes/Debug/debug3d.h>
 
 extern GLFWwindow *glfwWindow;
 extern int currentWindowWidth;
@@ -113,11 +114,15 @@ int main() {
         Time::setFrameStartTime();
 
         glfwPollEvents();
+        #ifdef DEBUG
+        Debug3D::update();
+        #endif
         Input::update();
         Controls::update();
 
         UI::update();
         ChunkLoader::update();
+        EntityList::update();
         View::update();
 
         View::draw();

@@ -12,6 +12,9 @@ Shader shader_windowRect;
 Mesh mesh_3dBox;
 Shader shader_3dBox;
 
+Mesh mesh_point;
+Shader shader_point;
+
 void init() {
     std::vector<float> verticies_windowRect = {
         -1,  1,
@@ -30,7 +33,7 @@ void init() {
 
 
     std::vector<float> verticies_3dBox = {
-//      Pos          Normal
+//      Pos           Normal
         -1,  1, -1,   0,  1,  0,  // A TOP
          1,  1,  1,   0,  1,  0,  // C
         -1,  1,  1,   0,  1,  0,  // D
@@ -82,5 +85,15 @@ void init() {
     mesh_3dBox.init();
     mesh_3dBox.set(MeshType::MESH3D, verticies_3dBox);
     shader_3dBox.init("Shaders/_3dBox");
+
+
+
+    mesh_point.init();
+    std::vector<float> verticies_point = {
+        0, 0, 0,
+    };
+    mesh_point.set(MeshType::MESH3D_POINTS, verticies_point);
+
+    shader_point.init("Shaders/Debug/point");
 }
 }

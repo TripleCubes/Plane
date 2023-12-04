@@ -10,6 +10,7 @@ class Entity;
 class EntityList {
 public:
     static void init();
+    static void update();
     static const std::vector<std::shared_ptr<Entity>> &getList(); 
 
     static void moveEntity0(Vec3 moveVec); // TEST

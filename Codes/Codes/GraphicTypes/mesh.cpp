@@ -107,10 +107,12 @@ void GraphicTypeData_Mesh::set(MeshType meshType, const std::vector<float> &vert
         numberOfVerticies = verticies.size() / 2;
     } else if (meshType == MeshType::MESH3D) {
         numberOfVerticies = verticies.size() / 6;
-    } else if (meshType == MeshType::MESH3D_COLOR_PALLETE) {
-        numberOfVerticies = verticies.size() / 7;
+    } else if (meshType == MeshType::MESH3D_POINTS) {
+        numberOfVerticies = verticies.size() / 3;
     } else if (meshType == MeshType::MESH3D_FRAME) {
         numberOfVerticies = verticies.size() / 3;
+    } else if (meshType == MeshType::MESH3D_COLOR_PALLETE) {
+        numberOfVerticies = verticies.size() / 7;
     } else if (meshType == MeshType::MESH3D_TEXTURE) {
         numberOfVerticies = verticies.size() / 8;
     } else if (meshType == MeshType::MESH3D_ARRAY_TEXTURE) {
@@ -129,12 +131,20 @@ void GraphicTypeData_Mesh::set(MeshType meshType, const std::vector<float> &vert
         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void *)0);
         glEnableVertexAttribArray(0);
     } else if (meshType == MeshType::MESH3D) {
-       // Pos
+        // Pos
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)0);
         glEnableVertexAttribArray(0);
         // Normal
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)(3 * sizeof(float)));
         glEnableVertexAttribArray(1);
+    } else if (meshType == MeshType::MESH3D_POINTS) {
+        // Pos
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
+        glEnableVertexAttribArray(0);
+    } else if (meshType == MeshType::MESH3D_FRAME) {
+        // Pos
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
+        glEnableVertexAttribArray(0);
     } else if (meshType == MeshType::MESH3D_COLOR_PALLETE) {
         // Pos
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void *)0);
@@ -145,10 +155,6 @@ void GraphicTypeData_Mesh::set(MeshType meshType, const std::vector<float> &vert
         // Color index
         glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void *)(6 * sizeof(float)));
         glEnableVertexAttribArray(2);
-    } else if (meshType == MeshType::MESH3D_FRAME) {
-        // Pos
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
-        glEnableVertexAttribArray(0);
     } else if (meshType == MeshType::MESH3D_TEXTURE) {
         // Pos
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)0);
@@ -205,6 +211,16 @@ void GraphicTypeData_Mesh::draw() const {
     }
 
     glBindVertexArray(VAO);
+
+    if (meshType == MeshType::MESH3D_POINTS) {
+        if (hasIndicies) {
+            glDrawElements(GL_POINTS, numberOfIndicies, GL_UNSIGNED_INT, 0);
+        } else {
+            glDrawArrays(GL_POINTS, 0, numberOfVerticies);
+        }
+
+        return;
+    }
 
     if (meshType == MeshType::MESH3D_FRAME) {
         if (hasIndicies) {

@@ -5,6 +5,7 @@
 #include <cmath>
 
 #include <Codes/Debug/print.h>
+#include <Codes/Debug/debug3d.h>
 
 const int TOP = 0;
 const int BOTTOM = 1;
@@ -12,6 +13,14 @@ const int LEFT = 2;
 const int RIGHT = 3;
 const int FORWARD = 4;
 const int BACKWARD = 5;
+
+void Entity::update() {
+    for (int i = 0; i < 6; i++) {
+        for (Vec3 point: physicPointList[i]) {
+            DRAWPOINT(point + pos, Color(1, 0, 0, 1), 3);
+        }
+    }
+}
 
 void Entity::move(Vec3 moveVec) {
     move(moveVec.y, MoveAxis::Y);
@@ -124,22 +133,19 @@ void Entity::createPhysicPoints(int dir) {
     }
 
     // CAN BE OPTIMIZED ?
-    float x = startX;
-    float y = startY;
-    float z = startZ;
-    do {
-        do {
-            do {
+    for (float x = startX; x <= endX;) {
+        for (float y = startY; y <= endY;) {
+            for (float z = startZ; z <= endZ;) {
                 physicPointList[dir].push_back(Vec3(x, y, z));
                 if (z < endZ && z + 1 > endZ) { z = endZ; }
                 else { z += 1; }
-            } while (z <= endZ);
+            }
             if (y < endY && y + 1 > endY) { y = endY; }
             else { y += 1; }
-        } while (y <= endY);
+        }
         if (x < endX && x + 1 > endX) { x = endX; }
         else { x += 1; }
-    } while (x <= endX);
+    }
 }
 
 void Entity::snapToGrid(int dir) {
