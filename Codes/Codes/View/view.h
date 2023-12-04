@@ -27,9 +27,6 @@ private:
 
     static Texture texture_colorPallete;
 
-    static Shader shader_boxFrame;
-    static Mesh mesh_boxFrame;
-
     static Shader shader_gameSelection;
 
     static void drawChunks();

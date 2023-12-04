@@ -15,6 +15,9 @@ Shader shader_3dBox;
 Mesh mesh_point;
 Shader shader_point;
 
+Mesh mesh_boxFrame;
+Shader shader_boxFrame;
+
 void init() {
     std::vector<float> verticies_windowRect = {
         -1,  1,
@@ -95,5 +98,35 @@ void init() {
     mesh_point.set(MeshType::MESH3D_POINTS, verticies_point);
 
     shader_point.init("Shaders/Debug/point");
+
+
+
+    mesh_boxFrame.init();
+    std::vector<float> verticies_boxFrame = {
+        0, 1, 0, // A 0
+        1, 1, 0, // B 1
+        1, 1, 1, // C 2
+        0, 1, 1, // D 3
+        0, 0, 0, // E 4
+        1, 0, 0, // F 5
+        1, 0, 1, // G 6
+        0, 0, 1, // H 7
+    };
+    std::vector<unsigned int> indicies_boxFrame = {
+        0, 1,
+        1, 2,
+        2, 3,
+        3, 0,
+        0, 4,
+        1, 5,
+        2, 6,
+        3, 7,
+        4, 5,
+        5, 6,
+        6, 7,
+        7, 4
+    };
+    mesh_boxFrame.set(MeshType::MESH3D_FRAME, verticies_boxFrame, indicies_boxFrame);
+    shader_boxFrame.init("Shaders/View/boxFrame");
 }
 }

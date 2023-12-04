@@ -33,6 +33,9 @@ namespace GlobalGraphics {
 
     extern Mesh mesh_point;
     extern Shader shader_point;
+
+    extern Mesh mesh_boxFrame;
+    extern Shader shader_boxFrame;
 }
 extern BlockRayCastResult savedBlockRayCastResult;
 
@@ -49,9 +52,6 @@ Shader View::shader_view;
 
 Texture View::texture_colorPallete;
 
-Shader View::shader_boxFrame;
-Mesh View::mesh_boxFrame;
-
 Shader View::shader_gameSelection;
 
 void View::init() {
@@ -60,34 +60,6 @@ void View::init() {
     shader_view.init("Shaders/View/view");
 
     texture_colorPallete.init("Textures/colorPallete.png");
-
-    shader_boxFrame.init("Shaders/View/boxFrame");
-    mesh_boxFrame.init();
-    std::vector<float> verticies_boxFrame = {
-        0, 1, 0, // A 0
-        1, 1, 0, // B 1
-        1, 1, 1, // C 2
-        0, 1, 1, // D 3
-        0, 0, 0, // E 4
-        1, 0, 0, // F 5
-        1, 0, 1, // G 6
-        0, 0, 1, // H 7
-    };
-    std::vector<unsigned int> indicies_boxFrame = {
-        0, 1,
-        1, 2,
-        2, 3,
-        3, 0,
-        0, 4,
-        1, 5,
-        2, 6,
-        3, 7,
-        4, 5,
-        5, 6,
-        6, 7,
-        7, 4
-    };
-    mesh_boxFrame.set(MeshType::MESH3D_FRAME, verticies_boxFrame, indicies_boxFrame);
 
     shader_gameSelection.init("Shaders/View/gameSelection");
 }
@@ -134,9 +106,9 @@ void View::draw() {
     shader_view.setUniform("colorPalleteTextureWH", Vec2((float)texture_colorPallete.getTextureWidth(), 
                                                             (float)texture_colorPallete.getTextureHeight()));
 
-    shader_boxFrame.useProgram();
-    shader_boxFrame.setUniform("projectionMat", projectionMat);
-    shader_boxFrame.setUniform("viewMat", viewMat);
+    GlobalGraphics::shader_boxFrame.useProgram();
+    GlobalGraphics::shader_boxFrame.setUniform("projectionMat", projectionMat);
+    GlobalGraphics::shader_boxFrame.setUniform("viewMat", viewMat);
 
     shader_gameSelection.useProgram();
     shader_gameSelection.setUniform("projectionMat", projectionMat);
@@ -204,17 +176,17 @@ void View::drawBlockSelection() {
     
     glm::mat4 modelMat = glm::mat4(1.0f);
     modelMat = glm::translate(modelMat, Vec3(savedBlockRayCastResult.selectedPos).toGlmVec3());
-    shader_boxFrame.useProgram();
-    shader_boxFrame.setUniform("modelMat", modelMat);
-    shader_boxFrame.setUniform("boxSize", Vec3(1, 1, 1));
-    shader_boxFrame.setUniform("boxMargin", Vec3(0, 0, 0));
+    GlobalGraphics::shader_boxFrame.useProgram();
+    GlobalGraphics::shader_boxFrame.setUniform("modelMat", modelMat);
+    GlobalGraphics::shader_boxFrame.setUniform("boxSize", Vec3(1, 1, 1));
+    GlobalGraphics::shader_boxFrame.setUniform("boxMargin", Vec3(0, 0, 0));
     if (Settings::isWireframeMode()) {
-        shader_boxFrame.setUniform("frameColor", Color(1, 1, 1, 1));
+        GlobalGraphics::shader_boxFrame.setUniform("frameColor", Color(1, 1, 1, 1));
     } else {
-        shader_boxFrame.setUniform("frameColor", Color(0, 0, 0, 1));
+        GlobalGraphics::shader_boxFrame.setUniform("frameColor", Color(0, 0, 0, 1));
     }
 
-    mesh_boxFrame.draw();
+    GlobalGraphics::mesh_boxFrame.draw();
 }
 
 void View::drawGameSelection() {
