@@ -4,6 +4,8 @@
 #include <Codes/Types/intPos.h>
 #include <cmath>
 
+#include <Codes/Debug/print.h>
+
 const int TOP = 0;
 const int BOTTOM = 1;
 const int LEFT = 2;
@@ -18,6 +20,10 @@ void Entity::move(Vec3 moveVec) {
 }
 
 void Entity::move(float moveAmount, MoveAxis moveAxis) {
+    if (moveAmount == 0) {
+        return;
+    }
+
     int dir = 0;
     switch (moveAxis) {
     case MoveAxis::X:
@@ -46,11 +52,11 @@ void Entity::move(float moveAmount, MoveAxis moveAxis) {
         break;
 
     case BOTTOM:
-        moveVec.y = -moveAmount;
+        moveVec.y = moveAmount;
         break;
 
     case LEFT:
-        moveVec.x = -moveAmount;
+        moveVec.x = moveAmount;
         break;
 
     case RIGHT:
@@ -62,7 +68,7 @@ void Entity::move(float moveAmount, MoveAxis moveAxis) {
         break;
 
     case BACKWARD:
-        moveVec.z = -moveAmount;
+        moveVec.z = moveAmount;
         break;
     
     default:
@@ -73,8 +79,11 @@ void Entity::move(float moveAmount, MoveAxis moveAxis) {
         Vec3 nextPhysicPoint = physicPoint + pos + moveVec;
         if (ChunkLoader::chunkLoadCheck_isSolidBlock(IntPos(nextPhysicPoint))) {
             snapToGrid(dir);
+            return;
         }
     }
+
+    pos += moveVec;
 }
 
 void Entity::createPhysicPoints(int dir) {
@@ -136,59 +145,71 @@ void Entity::createPhysicPoints(int dir) {
 void Entity::snapToGrid(int dir) {
     switch (dir)
     {
-    case TOP:
+    case TOP: {
         Vec3 diff;
         diff.y = size.y / 2 + offset.y;
 
         Vec3 snapPoint = pos + diff;
         snapPoint.y = ceil(snapPoint.y);
         pos = snapPoint - diff;
+        pos.y -= 0.001;
         break;
+    }
     
-    case BOTTOM:
+    case BOTTOM: {
         Vec3 diff;
         diff.y = - size.y / 2 + offset.y;
 
         Vec3 snapPoint = pos + diff;
         snapPoint.y = floor(snapPoint.y);
         pos = snapPoint - diff;
+        pos.y += 0.001;
         break;
+    }
 
-    case LEFT:
+    case LEFT: {
         Vec3 diff;
         diff.x = - size.x / 2 + offset.x;
 
         Vec3 snapPoint = pos + diff;
         snapPoint.x = floor(snapPoint.x);
         pos = snapPoint - diff;
+        pos.x += 0.001;
         break;
+    }
 
-    case RIGHT:
+    case RIGHT: {
         Vec3 diff;
         diff.x = size.x / 2 + offset.x;
 
         Vec3 snapPoint = pos + diff;
         snapPoint.x = ceil(snapPoint.x);
         pos = snapPoint - diff;
+        pos.x -= 0.001;
         break;
+    }
 
-    case FORWARD:
+    case FORWARD: {
         Vec3 diff;
         diff.z = size.z / 2 + offset.z;
 
         Vec3 snapPoint = pos + diff;
         snapPoint.z = ceil(snapPoint.z);
         pos = snapPoint - diff;
+        pos.z -= 0.001;
         break;
+    }
     
-    case BACKWARD:
+    case BACKWARD: {
         Vec3 diff;
         diff.z = - size.z / 2 + offset.z;
 
         Vec3 snapPoint = pos + diff;
         snapPoint.z = floor(snapPoint.z);
         pos = snapPoint - diff;
+        pos.z += 0.001;
         break;
+    }
     
     default:
         break;

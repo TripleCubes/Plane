@@ -10,6 +10,7 @@ private:
     static void updateCameraDir();
     static void updateMovements();
     static void updateGameSelection();
+    static void updateTestEntityPos(); // TEST
 
     static float cameraRotationX;
     static float cameraRotationY;

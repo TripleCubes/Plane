@@ -13,6 +13,11 @@ public:
     Vec3 getSize() const { return size; };
     Vec3 getOffset() const { return offset; };
 
+    void move(Vec3 moveVec); // TEST: This function should be private
+
+protected:
+    void createPhysicPoints(int dir);
+
 private:
     Vec3 pos = Vec3(0, 20, 0);
     Vec3 lookDir = Vec3(0, 0, 1);
@@ -26,10 +31,8 @@ private:
         X, Y, Z,
     };
 
-    void move(Vec3 moveVec);
     void move(float moveAmount, MoveAxis moveAxis);
 
-    void createPhysicPoints(int dir);
     void snapToGrid(int dir);
 };
 

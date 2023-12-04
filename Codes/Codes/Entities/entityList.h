@@ -1,16 +1,21 @@
 #ifndef ENTITYLIST_H
 #define ENTITYLIST_H
 
-class Entity;
 #include <vector>
+#include <memory>
+class Entity;
+
+#include <Codes/Types/vec3.h> // TEST
 
 class EntityList {
 public:
     static void init();
-    static const std::vector<Entity> &getList(); 
+    static const std::vector<std::shared_ptr<Entity>> &getList(); 
+
+    static void moveEntity0(Vec3 moveVec); // TEST
 
 private:
-    static std::vector<Entity> list;
+    static std::vector<std::shared_ptr<Entity>> list;
 };
 
 #endif

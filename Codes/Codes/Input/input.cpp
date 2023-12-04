@@ -47,12 +47,18 @@ void Input::init() {
     addKey("ESC", GLFW_KEY_ESCAPE);
     addKey("SPACE", GLFW_KEY_SPACE);
     addKey("LEFT_SHIFT", GLFW_KEY_LEFT_SHIFT);
+    addKey("LEFT_CTRL", GLFW_KEY_LEFT_CONTROL);
 
     int currentKey = GLFW_KEY_A;
     for (char c = 65; c <= 90; c++) {
         addKey(std::string(1, c), currentKey);
         currentKey++;
     }
+
+    addKey("UP_ARROW", GLFW_KEY_UP);
+    addKey("DOWN_ARROW", GLFW_KEY_DOWN);
+    addKey("LEFT_ARROW", GLFW_KEY_LEFT);
+    addKey("RIGHT_ARROW", GLFW_KEY_RIGHT);
 }
 
 void Input::update() {

@@ -11,6 +11,8 @@
 
 #include <Codes/Debug/print.h>
 
+#include <Codes/Entities/entityList.h> // TEST
+
 extern BlockRayCastResult savedBlockRayCastResult;
 
 void lockMouse();
@@ -28,6 +30,8 @@ void Controls::update() {
     } else {
         updateGameSelection();
     }
+
+    updateTestEntityPos();
 }
 
 void Controls::updateSettings() {
@@ -117,5 +121,31 @@ void Controls::updateGameSelection() {
         IntPos endPos = savedBlockRayCastResult.selectedPos;
         endPos.y = 100;
         GameSelection::endSelection(endPos);
+    }
+}
+
+void Controls::updateTestEntityPos() { // TEST
+    Vec3 moveDir;
+    if (Input::pressed("UP_ARROW")) {
+        moveDir += Vec3(0, 0, 1);
+    }
+    if (Input::pressed("DOWN_ARROW")) {
+        moveDir += Vec3(0, 0, -1);
+    }
+    if (Input::pressed("LEFT_ARROW")) {
+        moveDir -= Vec3(-1, 0, 0);
+    }
+    if (Input::pressed("RIGHT_ARROW")) {
+        moveDir -= Vec3(1, 0, 0);
+    }
+    if (Input::pressed("P")) {
+        moveDir.y += 1;
+    }
+    if (Input::pressed("L")) {
+        moveDir.y -= 1;
+    }
+    
+    if (moveDir != Vec3(0, 0, 0)) {
+        EntityList::moveEntity0(moveDir * 15 * Time::getDeltaTime());
     }
 }

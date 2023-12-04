@@ -225,12 +225,12 @@ void View::drawEntities() {
     GlobalGraphics::shader_3dBox.useProgram();
 
     for (const auto &entity: EntityList::getList()) {
-        GlobalGraphics::shader_3dBox.setUniform("scale", entity.getSize());
-        GlobalGraphics::shader_3dBox.setUniform("offset", entity.getOffset());
+        GlobalGraphics::shader_3dBox.setUniform("scale", entity->getSize());
+        GlobalGraphics::shader_3dBox.setUniform("offset", entity->getOffset());
         GlobalGraphics::shader_3dBox.setUniform("color", Color(1, 1, 1, 1));
 
         glm::mat4 modelMat = glm::mat4(1.0f);
-        modelMat = glm::translate(modelMat, entity.getPos().toGlmVec3());
+        modelMat = glm::translate(modelMat, entity->getPos().toGlmVec3());
         GlobalGraphics::shader_3dBox.setUniform("modelMat", modelMat);
 
         GlobalGraphics::mesh_3dBox.draw();
