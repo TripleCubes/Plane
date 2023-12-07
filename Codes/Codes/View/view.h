@@ -35,7 +35,8 @@ private:
     static void drawEntities();
 
     #ifdef DEBUG
-    static void drawDebug3D();
+    static void drawDebug3dPoints();
+    static void drawDebug3dSurfaces();
     #endif
 };
 

@@ -18,6 +18,7 @@ void Entity::update() {
     for (int i = 0; i < 6; i++) {
         for (Vec3 point: physicPointList[i]) {
             DRAWPOINT(point + pos, Color(1, 0, 0, 1), 3);
+            DRAWSURFACE(point + pos, Color(1, 0, 0, 1), Vec2(0.5, 0.5));
         }
     }
 }

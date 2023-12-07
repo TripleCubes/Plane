@@ -115,7 +115,7 @@ int main() {
 
         glfwPollEvents();
         #ifdef DEBUG
-        Debug3D::update();
+        Debug3d::update();
         #endif
         Input::update();
         Controls::update();

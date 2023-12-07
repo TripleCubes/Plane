@@ -107,6 +107,8 @@ void GraphicTypeData_Mesh::set(MeshType meshType, const std::vector<float> &vert
         numberOfVerticies = verticies.size() / 2;
     } else if (meshType == MeshType::MESH3D) {
         numberOfVerticies = verticies.size() / 6;
+    } else if (meshType == MeshType::MESH3D_NO_NORMALS) {
+        numberOfVerticies = verticies.size() / 3;
     } else if (meshType == MeshType::MESH3D_POINTS) {
         numberOfVerticies = verticies.size() / 3;
     } else if (meshType == MeshType::MESH3D_FRAME) {
@@ -137,6 +139,10 @@ void GraphicTypeData_Mesh::set(MeshType meshType, const std::vector<float> &vert
         // Normal
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)(3 * sizeof(float)));
         glEnableVertexAttribArray(1);
+    } else if (meshType == MeshType::MESH3D_NO_NORMALS) {
+        // Pos
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
+        glEnableVertexAttribArray(0);
     } else if (meshType == MeshType::MESH3D_POINTS) {
         // Pos
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);

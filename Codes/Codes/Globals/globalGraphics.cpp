@@ -15,10 +15,13 @@ Shader shader_3dBox;
 Mesh mesh_point;
 Shader shader_point;
 
+Mesh mesh_surface;
+Shader shader_surface;
+
 Mesh mesh_boxFrame;
 Shader shader_boxFrame;
 
-void init() {
+void init_windowRect() {
     std::vector<float> verticies_windowRect = {
         -1,  1,
          1,  1,
@@ -32,10 +35,10 @@ void init() {
     mesh_windowRect.set(MeshType::MESH2D, verticies_windowRect);
 
     shader_windowRect.init("Shaders/windowRect");
+}
 
-
-
-    std::vector<float> verticies_3dBox = {
+void init_3dBox() {
+        std::vector<float> verticies_3dBox = {
 //      Pos           Normal
         -1,  1, -1,   0,  1,  0,  // A TOP
          1,  1,  1,   0,  1,  0,  // C
@@ -88,9 +91,9 @@ void init() {
     mesh_3dBox.init();
     mesh_3dBox.set(MeshType::MESH3D, verticies_3dBox);
     shader_3dBox.init("Shaders/_3dBox");
+}
 
-
-
+void init_point() {
     mesh_point.init();
     std::vector<float> verticies_point = {
         0, 0, 0,
@@ -98,9 +101,25 @@ void init() {
     mesh_point.set(MeshType::MESH3D_POINTS, verticies_point);
 
     shader_point.init("Shaders/Debug/point");
+}
 
+void init_surface() {
+    mesh_surface.init();
+    std::vector<float> verticies_surface = {
+        0, 0, 0,
+        1, 0, 0,
+        0, 0, 1,
+        1, 0, 1,
+    };
+    std::vector<unsigned int> indicies_surface = {
+        0, 1, 2,
+        1, 3, 2,
+    };
+    mesh_surface.set(MeshType::MESH3D_NO_NORMALS, verticies_surface, indicies_surface);
+    shader_surface.init("Shaders/Debug/surface");
+}
 
-
+void init_boxFrame() {
     mesh_boxFrame.init();
     std::vector<float> verticies_boxFrame = {
         0, 1, 0, // A 0
@@ -128,5 +147,13 @@ void init() {
     };
     mesh_boxFrame.set(MeshType::MESH3D_FRAME, verticies_boxFrame, indicies_boxFrame);
     shader_boxFrame.init("Shaders/View/boxFrame");
+}
+
+void init() {
+    init_windowRect();
+    init_3dBox();
+    init_point();
+    init_surface();
+    init_boxFrame();
 }
 }

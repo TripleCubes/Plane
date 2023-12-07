@@ -34,6 +34,9 @@ namespace GlobalGraphics {
     extern Mesh mesh_point;
     extern Shader shader_point;
 
+    extern Mesh mesh_surface;
+    extern Shader shader_surface;
+
     extern Mesh mesh_boxFrame;
     extern Shader shader_boxFrame;
 }
@@ -122,6 +125,10 @@ void View::draw() {
     GlobalGraphics::shader_point.setUniform("projectionMat", projectionMat);
     GlobalGraphics::shader_point.setUniform("viewMat", viewMat);
 
+    GlobalGraphics::shader_surface.useProgram();
+    GlobalGraphics::shader_surface.setUniform("projectionMat", projectionMat);
+    GlobalGraphics::shader_surface.setUniform("viewMat", viewMat);
+
     framebuffer_view_multisampled.bind();
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -132,7 +139,8 @@ void View::draw() {
     drawGameSelection();
     drawEntities();
     #ifdef DEBUG
-    drawDebug3D();
+    drawDebug3dPoints();
+    drawDebug3dSurfaces();
     #endif
 
     glBindFramebuffer(GL_READ_FRAMEBUFFER, framebuffer_view_multisampled.getFBO());
@@ -223,10 +231,10 @@ void View::drawEntities() {
 }
 
 #ifdef DEBUG
-void View::drawDebug3D() {
+void View::drawDebug3dPoints() {
     GlobalGraphics::shader_point.useProgram();
 
-    for (const Debug3D::Point &point: Debug3D::getPointList()) {
+    for (const Debug3d::Point &point: Debug3d::getPointList()) {
         glPointSize(point.size);
         glm::mat4 modelMat = glm::mat4(1.0f);
         modelMat = glm::translate(modelMat, point.pos.toGlmVec3());
@@ -236,5 +244,18 @@ void View::drawDebug3D() {
     }
 
     glPointSize(1);
+}
+
+void View::drawDebug3dSurfaces() {
+    GlobalGraphics::shader_surface.useProgram();
+
+    for (const Debug3d::Surface &surface: Debug3d::getSurfaceList()) {
+        glm::mat4 modelMat = glm::mat4(1.0f);
+        modelMat = glm::translate(modelMat, surface.pos.toGlmVec3());
+        GlobalGraphics::shader_surface.setUniform("modelMat", modelMat);
+        GlobalGraphics::shader_surface.setUniform("surfaceColor", surface.color);
+        GlobalGraphics::shader_surface.setUniform("surfaceSize", surface.size);
+        GlobalGraphics::mesh_surface.draw();
+    }
 }
 #endif
