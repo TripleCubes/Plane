@@ -6,9 +6,11 @@
 
 namespace GlobalGraphics {
 
+// Draw a full screen rect with texture
 Mesh mesh_windowRect;
 Shader shader_windowRect;
 
+// Draw a 3d box with all sides filled
 Mesh mesh_3dBox;
 Shader shader_3dBox;
 
@@ -18,6 +20,7 @@ Shader shader_point;
 Mesh mesh_surface;
 Shader shader_surface;
 
+// Draw a 3d box with all sides unfilled
 Mesh mesh_boxFrame;
 Shader shader_boxFrame;
 
