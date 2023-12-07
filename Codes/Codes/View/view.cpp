@@ -141,6 +141,7 @@ void View::draw() {
     #ifdef DEBUG
     drawDebug3dPoints();
     drawDebug3dSurfaces();
+    drawDebug3dBoxFrames();
     #endif
 
     glBindFramebuffer(GL_READ_FRAMEBUFFER, framebuffer_view_multisampled.getFBO());
@@ -186,12 +187,12 @@ void View::drawBlockSelection() {
     modelMat = glm::translate(modelMat, Vec3(savedBlockRayCastResult.selectedPos).toGlmVec3());
     GlobalGraphics::shader_boxFrame.useProgram();
     GlobalGraphics::shader_boxFrame.setUniform("modelMat", modelMat);
-    GlobalGraphics::shader_boxFrame.setUniform("boxSize", Vec3(1, 1, 1));
-    GlobalGraphics::shader_boxFrame.setUniform("boxMargin", Vec3(0, 0, 0));
+    GlobalGraphics::shader_boxFrame.setUniform("size", Vec3(1, 1, 1));
+    GlobalGraphics::shader_boxFrame.setUniform("margin", Vec3(0, 0, 0));
     if (Settings::isWireframeMode()) {
-        GlobalGraphics::shader_boxFrame.setUniform("frameColor", Color(1, 1, 1, 1));
+        GlobalGraphics::shader_boxFrame.setUniform("color", Color(1, 1, 1, 1));
     } else {
-        GlobalGraphics::shader_boxFrame.setUniform("frameColor", Color(0, 0, 0, 1));
+        GlobalGraphics::shader_boxFrame.setUniform("color", Color(0, 0, 0, 1));
     }
 
     GlobalGraphics::mesh_boxFrame.draw();
@@ -239,7 +240,7 @@ void View::drawDebug3dPoints() {
         glm::mat4 modelMat = glm::mat4(1.0f);
         modelMat = glm::translate(modelMat, point.pos.toGlmVec3());
         GlobalGraphics::shader_point.setUniform("modelMat", modelMat);
-        GlobalGraphics::shader_point.setUniform("pointColor", point.color);
+        GlobalGraphics::shader_point.setUniform("color", point.color);
         GlobalGraphics::mesh_point.draw();
     }
 
@@ -253,9 +254,23 @@ void View::drawDebug3dSurfaces() {
         glm::mat4 modelMat = glm::mat4(1.0f);
         modelMat = glm::translate(modelMat, surface.pos.toGlmVec3());
         GlobalGraphics::shader_surface.setUniform("modelMat", modelMat);
-        GlobalGraphics::shader_surface.setUniform("surfaceColor", surface.color);
-        GlobalGraphics::shader_surface.setUniform("surfaceSize", surface.size);
+        GlobalGraphics::shader_surface.setUniform("color", surface.color);
+        GlobalGraphics::shader_surface.setUniform("size", surface.size);
         GlobalGraphics::mesh_surface.draw();
+    }
+}
+
+void View::drawDebug3dBoxFrames() {
+    GlobalGraphics::shader_boxFrame.useProgram();
+
+    for (const Debug3d::BoxFrame &boxFrame: Debug3d::getBoxFrameList()) {
+        glm::mat4 modelMat = glm::mat4(1.0f);
+        modelMat = glm::translate(modelMat, boxFrame.pos.toGlmVec3());
+        GlobalGraphics::shader_boxFrame.setUniform("modelMat", modelMat);
+        GlobalGraphics::shader_boxFrame.setUniform("size", boxFrame.size);
+        GlobalGraphics::shader_boxFrame.setUniform("margin", boxFrame.margin);
+        GlobalGraphics::shader_boxFrame.setUniform("color", boxFrame.color);
+        GlobalGraphics::mesh_boxFrame.draw();
     }
 }
 #endif

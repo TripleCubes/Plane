@@ -34,7 +34,7 @@ void init_windowRect() {
     mesh_windowRect.init();
     mesh_windowRect.set(MeshType::MESH2D, verticies_windowRect);
 
-    shader_windowRect.init("Shaders/windowRect");
+    shader_windowRect.init("Shaders/Global/windowRect");
 }
 
 void init_3dBox() {
@@ -90,7 +90,7 @@ void init_3dBox() {
     };
     mesh_3dBox.init();
     mesh_3dBox.set(MeshType::MESH3D, verticies_3dBox);
-    shader_3dBox.init("Shaders/_3dBox");
+    shader_3dBox.init("Shaders/Global/_3dBox");
 }
 
 void init_point() {
@@ -100,7 +100,7 @@ void init_point() {
     };
     mesh_point.set(MeshType::MESH3D_POINTS, verticies_point);
 
-    shader_point.init("Shaders/Debug/point");
+    shader_point.init("Shaders/Global/point");
 }
 
 void init_surface() {
@@ -116,7 +116,7 @@ void init_surface() {
         1, 3, 2,
     };
     mesh_surface.set(MeshType::MESH3D_NO_NORMALS, verticies_surface, indicies_surface);
-    shader_surface.init("Shaders/Debug/surface");
+    shader_surface.init("Shaders/Global/surface");
 }
 
 void init_boxFrame() {
@@ -146,7 +146,7 @@ void init_boxFrame() {
         7, 4
     };
     mesh_boxFrame.set(MeshType::MESH3D_FRAME, verticies_boxFrame, indicies_boxFrame);
-    shader_boxFrame.init("Shaders/View/boxFrame");
+    shader_boxFrame.init("Shaders/Global/boxFrame");
 }
 
 void init() {

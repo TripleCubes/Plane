@@ -2,8 +2,8 @@
 
 out vec4 out_color;
 
-uniform vec4 surfaceColor;
+uniform vec4 color;
 
 void main() {
-    out_color = surfaceColor;
+    out_color = color;
 }
