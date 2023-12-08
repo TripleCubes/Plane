@@ -34,6 +34,9 @@ namespace GlobalGraphics {
     extern Mesh mesh_point;
     extern Shader shader_point;
 
+    extern Mesh mesh_line;
+    extern Shader shader_line;
+
     extern Mesh mesh_surface;
     extern Shader shader_surface;
 
@@ -125,6 +128,10 @@ void View::draw() {
     GlobalGraphics::shader_point.setUniform("projectionMat", projectionMat);
     GlobalGraphics::shader_point.setUniform("viewMat", viewMat);
 
+    GlobalGraphics::shader_line.useProgram();
+    GlobalGraphics::shader_line.setUniform("projectionMat", projectionMat);
+    GlobalGraphics::shader_line.setUniform("viewMat", viewMat);
+
     GlobalGraphics::shader_surface.useProgram();
     GlobalGraphics::shader_surface.setUniform("projectionMat", projectionMat);
     GlobalGraphics::shader_surface.setUniform("viewMat", viewMat);
@@ -140,6 +147,7 @@ void View::draw() {
     drawEntities();
     #ifdef DEBUG
     drawDebug3dPoints();
+    drawDebug3dLines();
     drawDebug3dSurfaces();
     drawDebug3dBoxFrames();
     #endif
@@ -245,6 +253,23 @@ void View::drawDebug3dPoints() {
     }
 
     glPointSize(1);
+}
+
+void View::drawDebug3dLines() {
+    GlobalGraphics::shader_line.useProgram();
+
+    for (const Debug3d::Line &line: Debug3d::getLineList()) {
+        glLineWidth(line.size);
+        glm::mat4 modelMat = glm::mat4(1.0f);
+        modelMat = glm::translate(modelMat, line.pos1.toGlmVec3());
+        GlobalGraphics::shader_line.setUniform("modelMat", modelMat);
+        GlobalGraphics::shader_line.setUniform("pos1", line.pos1);
+        GlobalGraphics::shader_line.setUniform("pos2", line.pos2);
+        GlobalGraphics::shader_line.setUniform("color", line.color);
+        GlobalGraphics::mesh_line.draw();
+    }
+
+    glLineWidth(1);
 }
 
 void View::drawDebug3dSurfaces() {

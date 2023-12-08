@@ -17,6 +17,9 @@ Shader shader_3dBox;
 Mesh mesh_point;
 Shader shader_point;
 
+Mesh mesh_line;
+Shader shader_line;
+
 Mesh mesh_surface;
 Shader shader_surface;
 
@@ -106,6 +109,17 @@ void init_point() {
     shader_point.init("Shaders/Global/point");
 }
 
+void init_line() {
+    mesh_line.init();
+    std::vector<float> verticies_line = {
+        0, 0, 0,
+        1, 1, 1,
+    };
+    mesh_line.set(MeshType::MESH3D_FRAME, verticies_line);
+
+    shader_line.init("Shaders/Global/line");
+}
+
 void init_surface() {
     mesh_surface.init();
     std::vector<float> verticies_surface = {
@@ -156,6 +170,7 @@ void init() {
     init_windowRect();
     init_3dBox();
     init_point();
+    init_line();
     init_surface();
     init_boxFrame();
 }

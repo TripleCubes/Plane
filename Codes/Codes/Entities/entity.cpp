@@ -18,10 +18,10 @@ void Entity::update() {
     for (int i = 0; i < 6; i++) {
         for (Vec3 point: physicPointList[i]) {
             DRAWPOINT(point + pos, Color(1, 0, 0, 1), 3);
-            DRAWSURFACE(point + pos, Color(1, 0, 0, 1), Vec2(0.5, 0.5));
+            DRAWSURFACE(point + pos, Color(1, 0, 0, 0.5), Vec2(0.5, 0.5));
+            DRAWLINE(point + pos, point * 3 + pos, Color(0, 1, 0, 1), 2);
         }
     }
-    DRAWBOXFRAME(Vec3(0, 0, 0), Color(1, 1, 1, 1), Vec3(16, 16, 16), Vec3(1, 1, 1));
 }
 
 void Entity::move(Vec3 moveVec) {
