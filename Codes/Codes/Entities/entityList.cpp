@@ -21,3 +21,7 @@ const std::vector<std::shared_ptr<Entity>> &EntityList::getList() {
 void EntityList::moveEntity0(Vec3 moveVec) { // TEST
     list[0]->move(moveVec);
 }
+
+void EntityList::jumpEntity0() { // TEST
+    list[0]->jump();
+}

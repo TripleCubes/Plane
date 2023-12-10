@@ -2,6 +2,7 @@
 
 #include <Codes/Chunks/chunkLoader.h>
 #include <Codes/Types/intPos.h>
+#include <Codes/Time/time.h>
 #include <cmath>
 
 #include <Codes/Debug/print.h>
@@ -14,25 +15,35 @@ const int RIGHT = 3;
 const int FORWARD = 4;
 const int BACKWARD = 5;
 
+Entity::Entity() {
+    pos = Vec3(6, 20, 8);
+    lookDir = Vec3(0, 0, 1);
+}
+
 void Entity::update() {
-    for (int i = 0; i < 6; i++) {
-        for (Vec3 point: physicPointList[i]) {
-            DRAWPOINT(point + pos, Color(1, 0, 0, 1), 3);
-            DRAWSURFACE(point + pos, Color(1, 0, 0, 0.5), Vec2(0.5, 0.5));
-            DRAWLINE(point + pos, point * 3 + pos, Color(0, 1, 0, 1), 2);
-        }
+    fallAndJump();
+
+    Vec3 collided;
+    collided.y = move(totalMoveVec.y, MoveAxis::Y);
+    collided.x = move(totalMoveVec.x, MoveAxis::X);
+    collided.z = move(totalMoveVec.z, MoveAxis::Z);
+
+    if (collided.y < 0) {
+        status_isOnGround = true;
+    } else {
+        status_isOnGround = false;
     }
+
+    totalMoveVec = Vec3(0, 0, 0);
 }
 
 void Entity::move(Vec3 moveVec) {
-    move(moveVec.y, MoveAxis::Y);
-    move(moveVec.x, MoveAxis::X);
-    move(moveVec.z, MoveAxis::Z);
+    totalMoveVec += moveVec;
 }
 
-void Entity::move(float moveAmount, MoveAxis moveAxis) {
+float Entity::move(float moveAmount, MoveAxis moveAxis) {
     if (moveAmount == 0) {
-        return;
+        return 0;
     }
 
     int dir = 0;
@@ -90,11 +101,13 @@ void Entity::move(float moveAmount, MoveAxis moveAxis) {
         Vec3 nextPhysicPoint = physicPoint + pos + moveVec;
         if (ChunkLoader::chunkLoadCheck_isSolidBlock(IntPos(nextPhysicPoint))) {
             snapToGrid(dir);
-            return;
+            if (dir == TOP || dir == RIGHT || dir == FORWARD) { return 1; }
+            return -1;
         }
     }
 
     pos += moveVec;
+    return 0;
 }
 
 void Entity::createPhysicPoints(int dir) {
@@ -222,4 +235,32 @@ void Entity::snapToGrid(int dir) {
     default:
         break;
     }
+}
+
+void Entity::jump() {
+    jumpRequested = true;
+}
+
+bool Entity::isOnGround() {
+    return status_isOnGround;
+}
+
+void Entity::fallAndJump() {
+    const float JUMP_GRAVITY = 10;
+    const float FALL_ADD_GRAVITY = -30;
+
+    if (jumpRequested && status_isOnGround) {
+        gravity = JUMP_GRAVITY;
+        return;
+    }
+
+    totalMoveVec.y += Time::getDeltaTime() * gravity;
+
+    if (status_isOnGround) {
+        gravity = 0;
+    }
+
+    gravity += Time::getDeltaTime() * FALL_ADD_GRAVITY;
+
+    jumpRequested = false;
 }

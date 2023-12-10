@@ -49,10 +49,16 @@ void Input::init() {
     addKey("LEFT_SHIFT", GLFW_KEY_LEFT_SHIFT);
     addKey("LEFT_CTRL", GLFW_KEY_LEFT_CONTROL);
 
-    int currentKey = GLFW_KEY_A;
+    int currentTextCharKey = GLFW_KEY_A;
     for (char c = 65; c <= 90; c++) {
-        addKey(std::string(1, c), currentKey);
-        currentKey++;
+        addKey(std::string(1, c), currentTextCharKey);
+        currentTextCharKey++;
+    }
+
+    int currentNumKey = GLFW_KEY_0;
+    for (char c = '0'; c <= '9'; c++) {
+        addKey(std::string(1, c), currentNumKey);
+        currentNumKey++;
     }
 
     addKey("UP_ARROW", GLFW_KEY_UP);

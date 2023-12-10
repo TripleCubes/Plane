@@ -14,6 +14,7 @@ public:
     static const std::vector<std::shared_ptr<Entity>> &getList(); 
 
     static void moveEntity0(Vec3 moveVec); // TEST
+    static void jumpEntity0(); // TEST
 
 private:
     static std::vector<std::shared_ptr<Entity>> list;

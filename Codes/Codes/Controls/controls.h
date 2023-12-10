@@ -12,6 +12,8 @@ private:
     static void updateGameSelection();
     static void updateTestEntityPos(); // TEST
 
+    static void updateDebugLogKeys();
+
     static float cameraRotationX;
     static float cameraRotationY;
 };

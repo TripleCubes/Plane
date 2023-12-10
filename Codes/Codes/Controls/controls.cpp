@@ -32,6 +32,8 @@ void Controls::update() {
     }
 
     updateTestEntityPos();
+
+    updateDebugLogKeys();
 }
 
 void Controls::updateSettings() {
@@ -138,14 +140,25 @@ void Controls::updateTestEntityPos() { // TEST
     if (Input::pressed("RIGHT_ARROW")) {
         moveDir -= Vec3(1, 0, 0);
     }
-    if (Input::pressed("P")) {
-        moveDir.y += 1;
-    }
-    if (Input::pressed("L")) {
-        moveDir.y -= 1;
+    // if (Input::pressed("P")) {
+    //     moveDir.y += 1;
+    // }
+    // if (Input::pressed("L")) {
+    //     moveDir.y -= 1;
+    // }
+    if (Input::justPressed("P")) {
+        EntityList::jumpEntity0();
     }
     
     if (moveDir != Vec3(0, 0, 0)) {
-        EntityList::moveEntity0(moveDir * 15 * Time::getDeltaTime());
+        EntityList::moveEntity0(moveDir * 7 * Time::getDeltaTime());
+    }
+}
+
+void Controls::updateDebugLogKeys() {
+    if (Input::justPressed("1")) {
+        if (savedBlockRayCastResult.found) {
+            PRINTLN(savedBlockRayCastResult.selectedPos);
+        }
     }
 }
