@@ -105,6 +105,8 @@ void GraphicTypeData_Mesh::set(MeshType meshType, const std::vector<float> &vert
 
     if (meshType == MeshType::MESH2D) {
         numberOfVerticies = verticies.size() / 2;
+    } else if (meshType == MeshType::MESH2D_LINE) {
+        numberOfVerticies = verticies.size() / 2;
     } else if (meshType == MeshType::MESH3D) {
         numberOfVerticies = verticies.size() / 6;
     } else if (meshType == MeshType::MESH3D_NO_NORMALS) {
@@ -129,6 +131,10 @@ void GraphicTypeData_Mesh::set(MeshType meshType, const std::vector<float> &vert
     glBufferData(GL_ARRAY_BUFFER, verticies.size() * sizeof(float), &verticies[0], GL_STATIC_DRAW);
 
     if (meshType == MeshType::MESH2D) {
+        // Pos
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void *)0);
+        glEnableVertexAttribArray(0);
+    } else if (meshType == MeshType::MESH2D_LINE) {
         // Pos
         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void *)0);
         glEnableVertexAttribArray(0);
@@ -228,7 +234,7 @@ void GraphicTypeData_Mesh::draw() const {
         return;
     }
 
-    if (meshType == MeshType::MESH3D_FRAME) {
+    if (meshType == MeshType::MESH3D_FRAME || meshType == MeshType::MESH2D_LINE) {
         if (hasIndicies) {
             glDrawElements(GL_LINES, numberOfIndicies, GL_UNSIGNED_INT, 0);
         } else {

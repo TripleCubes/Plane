@@ -3,9 +3,11 @@
 #include <Codes/Debug/debugUI.h>
 
 std::vector<DebugUI::DebugStr> DebugUI::debugStrList;
+std::vector<DebugUI::Line> DebugUI::lineList;
 
 void DebugUI::update() {
     debugStrList.clear();
+    lineList.clear();
 }
 
 void DebugUI::addDebugStr(const std::string &str, Vec2 pos, Color color) {
@@ -48,6 +50,15 @@ void DebugUI::addDebugStr(IntPos intPos, Vec2 pos, Color color) {
 
 void DebugUI::addDebugStr(bool b, Vec2 pos, Color color) {
     addDebugStr(b? "true" : "false", pos, color);
+}
+
+void DebugUI::addLine(Vec2 pos1, Vec2 pos2, Color color, float size) {
+    Line line;
+    line.pos1 = pos1;
+    line.pos2 = pos2;
+    line.color = color;
+    line.size = size;
+    lineList.push_back(line);
 }
 
 #endif

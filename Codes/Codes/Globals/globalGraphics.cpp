@@ -23,6 +23,9 @@ Shader shader_line;
 Mesh mesh_surface;
 Shader shader_surface;
 
+Mesh mesh_UILine;
+Shader shader_UILine;
+
 // Draw a 3d box with all sides unfilled
 Mesh mesh_boxFrame;
 Shader shader_boxFrame;
@@ -166,6 +169,16 @@ void init_boxFrame() {
     shader_boxFrame.init("Shaders/Global/boxFrame");
 }
 
+void init_UILine() {
+    mesh_UILine.init();
+    std::vector<float> verticies = {
+        0, 0,
+        1, 1,
+    };
+    mesh_UILine.set(MeshType::MESH2D_LINE, verticies);
+    shader_UILine.init("Shaders/Global/_UILine");
+}
+
 void init() {
     init_windowRect();
     init_3dBox();
@@ -173,5 +186,6 @@ void init() {
     init_line();
     init_surface();
     init_boxFrame();
+    init_UILine();
 }
 }

@@ -10,6 +10,7 @@
 #include <Codes/UI/Menu/menuManager.h>
 #include <Codes/Input/input.h>
 #include <Codes/Graphics/text.h>
+#include <glad/glad.h>
 
 #include <Codes/UI/debugUI.h>
 
@@ -19,6 +20,11 @@
 
 extern int currentWindowWidth;
 extern int currentWindowHeight;
+
+namespace GlobalGraphics {
+    extern Mesh mesh_UILine;
+    extern Shader shader_UILine;
+}
 
 Mesh UI::mesh_rect;
 Shader UI::shader_rect;
@@ -45,6 +51,9 @@ void UI::init() {
     shader_rect.setUniform("windowSize", Vec2((float)currentWindowWidth, (float)currentWindowHeight));
 
     texture_crosshair.init("Textures/UI/crosshair.png");
+
+    GlobalGraphics::shader_UILine.useProgram();
+    GlobalGraphics::shader_UILine.setUniform("windowSize", Vec2((float)currentWindowWidth, (float)currentWindowHeight));
 
     initMenus();
 }
@@ -107,6 +116,7 @@ void UI::draw() {
 
     #ifdef DEBUG
     drawDebugUIStrs();
+    drawDebugUILines();
     #endif
 }
 
@@ -235,5 +245,21 @@ void UI::drawDebugUIStrs() {
     for (const auto &debugStr: DebugUI::getDebugStrList()) {
         drawTextBox(debugStr.pos.x, debugStr.pos.y, debugStr.str, debugStr.color);
     }
+}
+
+void UI::drawDebugUILines() {
+    GlobalGraphics::shader_UILine.useProgram();
+
+    for (const auto &line: DebugUI::getLineList()) {
+        glLineWidth(line.size);
+        float y1 = currentWindowHeight - line.pos1.y;
+        float y2 = currentWindowHeight - line.pos2.y;
+        GlobalGraphics::shader_UILine.setUniform("pos1", Vec2(line.pos1.x, y1));
+        GlobalGraphics::shader_UILine.setUniform("pos2", Vec2(line.pos2.x, y2));
+        GlobalGraphics::shader_UILine.setUniform("color", line.color);
+        GlobalGraphics::mesh_UILine.draw();
+    }
+
+    glLineWidth(1);
 }
 #endif
