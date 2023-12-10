@@ -14,7 +14,7 @@ void Debug3d::update() {
     boxFrameList.clear();
 }
 
-void Debug3d::drawPoint(Vec3 pos, Color color, float size) {
+void Debug3d::addPoint(Vec3 pos, Color color, float size) {
     Point point;
     point.pos = pos;
     point.color = color;
@@ -22,7 +22,7 @@ void Debug3d::drawPoint(Vec3 pos, Color color, float size) {
     pointList.push_back(point);
 }
 
-void Debug3d::drawLine(Vec3 pos1, Vec3 pos2, Color color, float size) {
+void Debug3d::addLine(Vec3 pos1, Vec3 pos2, Color color, float size) {
     Line line;
     line.pos1 = pos1;
     line.pos2 = pos2;
@@ -31,7 +31,7 @@ void Debug3d::drawLine(Vec3 pos1, Vec3 pos2, Color color, float size) {
     lineList.push_back(line);
 }
 
-void Debug3d::drawSurface(Vec3 pos, Color color, Vec2 size) {
+void Debug3d::addSurface(Vec3 pos, Color color, Vec2 size) {
     Surface surface;
     surface.pos = pos;
     surface.color = color;
@@ -39,22 +39,22 @@ void Debug3d::drawSurface(Vec3 pos, Color color, Vec2 size) {
     surfaceList.push_back(surface);
 }
 
-void Debug3d::drawBorderedSurface(Vec3 pos, Color color, Vec2 size) {
+void Debug3d::addBorderedSurface(Vec3 pos, Color color, Vec2 size) {
     color.a = 0.5;
-    drawSurface(pos, color, size);
+    addSurface(pos, color, size);
 
     color.a = 1;
     Vec3 pos_0 = Vec3(pos.x,            pos.y, pos.z            );
     Vec3 pos_1 = Vec3(pos.x + size.x,   pos.y, pos.z            );
     Vec3 pos_2 = Vec3(pos.x,            pos.y, pos.z + size.y   );
     Vec3 pos_3 = Vec3(pos.x + size.x,   pos.y, pos.z + size.y   );
-    drawLine(pos_0, pos_1, color, 2);
-    drawLine(pos_0, pos_2, color, 2);
-    drawLine(pos_3, pos_1, color, 2);
-    drawLine(pos_3, pos_2, color, 2);
+    addLine(pos_0, pos_1, color, 2);
+    addLine(pos_0, pos_2, color, 2);
+    addLine(pos_3, pos_1, color, 2);
+    addLine(pos_3, pos_2, color, 2);
 }
 
-void Debug3d::drawBoxFrame(Vec3 pos, Color color, Vec3 size, Vec3 margin) {
+void Debug3d::addBoxFrame(Vec3 pos, Color color, Vec3 size, Vec3 margin) {
     BoxFrame boxFrame;
     boxFrame.pos = pos;
     boxFrame.color = color;

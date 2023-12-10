@@ -47,6 +47,10 @@ private:
 
     static std::shared_ptr<Menu> rootMenu;
     static void initMenus();
+
+    #ifdef DEBUG
+    static void drawDebugUIStrs();
+    #endif
 };
 
 #endif

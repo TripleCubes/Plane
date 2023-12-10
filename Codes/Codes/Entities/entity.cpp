@@ -7,6 +7,7 @@
 
 #include <Codes/Debug/print.h>
 #include <Codes/Debug/debug3d.h>
+#include <Codes/Debug/debugUI.h>
 
 const int TOP = 0;
 const int BOTTOM = 1;

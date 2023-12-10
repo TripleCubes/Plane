@@ -11,6 +11,10 @@
 #include <Codes/Input/input.h>
 #include <Codes/Graphics/text.h>
 
+#include <Codes/UI/debugUI.h>
+
+#include <Codes/Debug/debugUI.h>
+
 #include <Codes/Debug/print.h>
 
 extern int currentWindowWidth;
@@ -97,6 +101,13 @@ void UI::draw() {
     }
 
     MenuManager::draw();
+
+    // TO DO: Replace with actual optimized debug ui code
+    drawDebugUI();
+
+    #ifdef DEBUG
+    drawDebugUIStrs();
+    #endif
 }
 
 void UI::drawRectPos(float x1, float y1, float x2, float y2, Color color) {
@@ -218,3 +229,11 @@ TextCharacter UI::drawTextChar(float x, float y, char characterCode, Color color
 
     return character;
 }
+
+#ifdef DEBUG
+void UI::drawDebugUIStrs() {
+    for (const auto &debugStr: DebugUI::getDebugStrList()) {
+        drawTextBox(debugStr.pos.x, debugStr.pos.y, debugStr.str, debugStr.color);
+    }
+}
+#endif

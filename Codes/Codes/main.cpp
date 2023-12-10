@@ -15,6 +15,7 @@
 
 #include <Codes/Debug/print.h>
 #include <Codes/Debug/debug3d.h>
+#include <Codes/Debug/debugUI.h>
 
 extern GLFWwindow *glfwWindow;
 extern int currentWindowWidth;
@@ -116,6 +117,7 @@ int main() {
         glfwPollEvents();
         #ifdef DEBUG
         Debug3d::update();
+        DebugUI::update();
         #endif
         Input::update();
         Controls::update();
