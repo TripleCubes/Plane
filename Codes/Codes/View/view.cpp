@@ -85,7 +85,7 @@ void View::update() {
 
     // TO DO: Move to another file
     if (Settings::isFreeCam()) {
-        savedBlockRayCastResult = BlockRayCast::cast(Camera::getPos(), Camera::getDir(), 30);
+        savedBlockRayCastResult = BlockRayCast::cast(Camera::getPos(), Camera::getDir(), 100);
 
         return;
     }
@@ -98,9 +98,9 @@ void View::update() {
     v4 = glm::inverse(viewMat) * v4;
 
     if (Settings::isPerspectiveProjection()) {
-        savedBlockRayCastResult = BlockRayCast::cast(Camera::getPos(), Vec3(v4.x, v4.y, v4.z), 30);
+        savedBlockRayCastResult = BlockRayCast::cast(Camera::getPos(), Vec3(v4.x, v4.y, v4.z), 100);
     } else {
-        savedBlockRayCastResult = BlockRayCast::cast(Camera::getPos() + Vec3(v4.x, v4.y, v4.z), Camera::getDir(), 30);
+        savedBlockRayCastResult = BlockRayCast::cast(Camera::getPos() + Vec3(v4.x, v4.y, v4.z), Camera::getDir(), 100);
     }
 }
 

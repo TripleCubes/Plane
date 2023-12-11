@@ -106,6 +106,7 @@ Vec3 nextCheckingPos(Vec3 checkingPos, Vec3 dir) {
     return nextPos;
 }
 
+// CAN BE OPTIMIZED: Skip chunk checking if chunk is unloaded
 BlockRayCastResult BlockRayCast::cast(Vec3 from, Vec3 dir, float range) {
     Vec3 checkingPos = from;
     Vec3 previousCheckingPos;
