@@ -9,12 +9,14 @@ public:
 
     static float getDeltaTime();
     static float getCurrentTime();
+    static float getFrameTime();
 
 private:
     static float fpsCap;
     static float frameStartTime;
     static float deltaTime;
     static float previousTime;
+    static float frameTime;
 };
 
 #endif

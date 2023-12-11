@@ -9,6 +9,7 @@ float Time::fpsCap = 60;
 float Time::frameStartTime = 0;
 float Time::deltaTime = 0;
 float Time::previousTime = 0;
+float Time::frameTime = 0;
 
 void Time::setFrameStartTime() {
     frameStartTime = glfwGetTime();
@@ -18,7 +19,7 @@ void Time::syncFrame() {
     using namespace std::chrono;
     using namespace std::this_thread;
 
-    float frameTime = glfwGetTime() - frameStartTime;
+    frameTime = glfwGetTime() - frameStartTime;
     sleep_for(milliseconds((int)round((1/fpsCap - frameTime)* 1000)));
 }
 
@@ -33,4 +34,8 @@ float Time::getDeltaTime() {
 
 float Time::getCurrentTime() {
     return glfwGetTime();
+}
+
+float Time::getFrameTime() {
+    return frameTime;
 }
