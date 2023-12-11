@@ -31,9 +31,9 @@ struct Vec3 {
     float distance(Vec3 vec) const;
     float distanceSqr(Vec3 vec) const;
     Vec3 normalize() const;
-    Vec3 rotateX(float deg) const;
-    Vec3 rotateY(float deg) const;
-    Vec3 rotateXY(float degX, float degY) const;
+    Vec3 rotateXDeg(float deg) const;
+    Vec3 rotateYDeg(float deg) const;
+    Vec3 rotateXYDeg(float degX, float degY) const;
     Vec3 rotateXRad(float rad) const;
     Vec3 rotateYRad(float rad) const;
     Vec3 rotateXYRad(float radX, float radY) const;

@@ -99,15 +99,15 @@ Vec3 Vec3::normalize() const {
     return *this / this->length();
 }
 
-Vec3 Vec3::rotateX(float deg) const {
+Vec3 Vec3::rotateXDeg(float deg) const {
     return rotateXRad(glm::radians(deg));
 }
 
-Vec3 Vec3::rotateY(float deg) const {
+Vec3 Vec3::rotateYDeg(float deg) const {
     return rotateYRad(glm::radians(deg));
 }
 
-Vec3 Vec3::rotateXY(float degX, float degY) const {
+Vec3 Vec3::rotateXYDeg(float degX, float degY) const {
     return rotateXYRad(glm::radians(degX), glm::radians(degY));
 }
 

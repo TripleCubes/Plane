@@ -69,7 +69,7 @@ void Controls::updateCameraDir() {
     }
     cameraRotationY -= mouseMoveOffset.x * 0.17;
 
-    Camera::dir = Vec3(0, 0, -1).rotateXY(cameraRotationX, cameraRotationY);
+    Camera::dir = Vec3(0, 0, -1).rotateXYDeg(cameraRotationX, cameraRotationY);
 }
 
 void Controls::updateMovements() {
@@ -77,7 +77,7 @@ void Controls::updateMovements() {
     Vec3 cameraDir = Camera::getDir();
     cameraDir.y = 0;
     cameraDir = cameraDir.normalize();
-    Vec3 cameraDirRotated90 = cameraDir.rotateY(90);
+    Vec3 cameraDirRotated90 = cameraDir.rotateYDeg(90);
     if (Input::pressed("W")) {
         moveDir += cameraDir;
     }
@@ -135,10 +135,10 @@ void Controls::updateTestEntityPos() { // TEST
         moveDir += Vec3(0, 0, -1);
     }
     if (Input::pressed("LEFT_ARROW")) {
-        moveDir -= Vec3(-1, 0, 0);
+        moveDir += Vec3(-1, 0, 0);
     }
     if (Input::pressed("RIGHT_ARROW")) {
-        moveDir -= Vec3(1, 0, 0);
+        moveDir += Vec3(1, 0, 0);
     }
     // if (Input::pressed("P")) {
     //     moveDir.y += 1;
