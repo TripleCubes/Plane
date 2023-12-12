@@ -12,6 +12,7 @@
 #include <Codes/Debug/print.h>
 
 #include <Codes/Entities/entityList.h> // TEST
+#include <Codes/Debug/debug3d.h> // TEST
 
 extern BlockRayCastResult savedBlockRayCastResult;
 
@@ -20,6 +21,8 @@ void unlockMouse();
 
 float Controls::cameraRotationX = 0;
 float Controls::cameraRotationY = 0;
+IntPos Controls::startPathFindPos; // TEST
+AStarResult Controls::savedAStarResult; // TEST
 
 void Controls::update() {
     updateSettings();
@@ -161,4 +164,31 @@ void Controls::updateDebugLogKeys() {
             PRINTLN(savedBlockRayCastResult.selectedPos);
         }
     }
+
+    // TEST
+    if (Input::justPressed("2")) {
+        if (savedBlockRayCastResult.hasPlacingPos) {
+            startPathFindPos = savedBlockRayCastResult.placingPos;
+            PRINT("START");
+            PRINTLN(startPathFindPos);
+        }
+    }
+
+    if (Input::justPressed("3")) {
+        if (savedBlockRayCastResult.hasPlacingPos) {
+            IntPos endPathFindPos = savedBlockRayCastResult.placingPos;
+            savedAStarResult = AStar::getPathBlock(startPathFindPos, endPathFindPos);
+            PRINT("END");
+            PRINTLN(endPathFindPos);
+            PRINTLN("-------------------");
+            for (IntPos pos: savedAStarResult.pathReversed) {
+                PRINTLN(pos);
+            }
+            PRINTLN("-------------------");
+        }
+    }
+
+    for (IntPos pos: savedAStarResult.pathReversed) {
+        DRAWSURFACE(pos + Vec3(0, -1, 0), Color(1, 1, 1, 1), Vec2(1, 1));
+    } 
 }

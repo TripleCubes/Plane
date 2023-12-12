@@ -40,6 +40,8 @@ void Debug3d::addSurface(Vec3 pos, Color color, Vec2 size) {
 }
 
 void Debug3d::addBorderedSurface(Vec3 pos, Color color, Vec2 size) {
+    pos.y += 1.001;
+    
     color.a = 0.5;
     addSurface(pos, color, size);
 
