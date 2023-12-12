@@ -13,6 +13,7 @@
 
 #include <Codes/Entities/entityList.h> // TEST
 #include <Codes/Debug/debug3d.h> // TEST
+#include <Codes/Chunks/chunkLoader.h> // TEST
 
 extern BlockRayCastResult savedBlockRayCastResult;
 
@@ -162,6 +163,12 @@ void Controls::updateDebugLogKeys() {
     if (Input::justPressed("1")) {
         if (savedBlockRayCastResult.found) {
             PRINTLN(savedBlockRayCastResult.selectedPos);
+        }
+    }
+
+    if (Input::justPressed("4")) {
+        if (savedBlockRayCastResult.found) {
+            PRINTLN(ChunkLoader::chunkLoadCheck_isSolidBlock(savedBlockRayCastResult.selectedPos));
         }
     }
 

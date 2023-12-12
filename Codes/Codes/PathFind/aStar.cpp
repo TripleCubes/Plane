@@ -11,34 +11,33 @@ std::array<AStar::TileInformation, CHECK_ARRAY_SIZE> AStar::tileInformationList;
 std::array<unsigned char, CHECK_ARRAY_SIZE> AStar::tileMarkingList = {};
 std::array<unsigned char, 2> AStar::checkingMarkList = {1, 2};
 std::array<unsigned char, 2> AStar::checkedMarkList = {3, 4};
-std::array<IntPos, 26> AStar::dirList = {
+std::array<IntPos, 24> AStar::dirList = {
     IntPos(-1,  0, -1), IntPos(-1,  0,  0), IntPos(-1,  0,  1),
     IntPos( 0,  0, -1),                     IntPos( 0,  0,  1),
     IntPos( 1,  0, -1), IntPos( 1,  0,  0), IntPos( 1,  0,  1),
 
     IntPos(-1, -1, -1), IntPos(-1, -1,  0), IntPos(-1, -1,  1),
-    IntPos( 0, -1, -1), IntPos( 0, -1,  0), IntPos( 0, -1,  1),
+    IntPos( 0, -1, -1),                     IntPos( 0, -1,  1),
     IntPos( 1, -1, -1), IntPos( 1, -1,  0), IntPos( 1, -1,  1),
 
     IntPos(-1,  1, -1), IntPos(-1,  1,  0), IntPos(-1,  1,  1),
-    IntPos( 0,  1, -1), IntPos( 0,  1,  0), IntPos( 0,  1,  1),
+    IntPos( 0,  1, -1),                     IntPos( 0,  1,  1),
     IntPos( 1,  1, -1), IntPos( 1,  1,  0), IntPos( 1,  1,  1),
 };
-std::array<int, 26> AStar::dirDistanceList = {
+std::array<int, 24> AStar::dirDistanceList = {
     141, 100, 141,
     100,      100,
     141, 100, 141,
 
     173, 141, 173,
-    141, 100, 141,
+    141,      141,
     173, 141, 173,
 
     173, 141, 173,
-    141, 100, 141,
+    141,      141,
     173, 141, 173,
 };
 int AStar::markIndex = 0;
-std::vector<IntPos> AStar::addedWorldPosList;
 
 AStarResult AStar::getPathBlock(IntPos startPos, IntPos endPos) {
     auto canMoveToBlock = [](IntPos world_from, IntPos world_to) -> bool {
@@ -69,6 +68,8 @@ AStarResult AStar::getPath(IntPos world_startPos, IntPos world_endPos,
     } else {
         markIndex = 0;
     }
+
+    std::vector<IntPos> addedWorldPosList;
 
     if (std::abs(world_endPos.x - world_startPos.x) > CHECK_ARRAY_SIZE_X/2 
     || std::abs(world_endPos.y - world_startPos.y) > CHECK_ARRAY_SIZE_Y/2
@@ -105,17 +106,24 @@ AStarResult AStar::getPath(IntPos world_startPos, IntPos world_endPos,
         }
 
         TileInformation &comp_tileInformation = getTileInformationRef(comp_index);
-        unsigned char distanceFromStart = dirDistanceList[i] + at_tileInformation.distanceFromStart;
-        if (!checking(comp_index) && !(distanceFromStart < comp_tileInformation.distanceFromStart)) {
+        int distanceFromStart = dirDistanceList[i] + at_tileInformation.distanceFromStart;
+        if (checking(comp_index)) {
+            if (distanceFromStart < comp_tileInformation.distanceFromStart) {
+                comp_tileInformation.beforeTileIndex = at_index;
+                comp_tileInformation.distanceFromStart = distanceFromStart;
+                comp_tileInformation.distanceFromEnd = std::abs(comp_world.x - world_endPos.x) 
+                                                        + std::abs(comp_world.y - world_endPos.y)
+                                                        + std::abs(comp_world.z - world_endPos.z);
+            }
+        } else {
             comp_tileInformation.beforeTileIndex = at_index;
             comp_tileInformation.distanceFromStart = distanceFromStart;
             comp_tileInformation.distanceFromEnd = std::abs(comp_world.x - world_endPos.x) 
                                                     + std::abs(comp_world.y - world_endPos.y)
                                                     + std::abs(comp_world.z - world_endPos.z);
             markPosAsChecking(comp_index);
+            addedWorldPosList.push_back(comp_world);
         }
-
-        addedWorldPosList.push_back(comp_world);
     }
     num_checked++;
     if (num_checked >= TILE_CHECKED_CAP) {
@@ -139,7 +147,7 @@ AStarResult AStar::getPath(IntPos world_startPos, IntPos world_endPos,
         return result;
     }
 
-    at_world = getSmallestDistanceFromStartWorldPos(world_startPos);
+    at_world = getSmallestTotalNumWorldPos(addedWorldPosList, world_startPos);
     at_checkArr = worldPosTocheckArrayPos(world_startPos, at_world);
     at_index = posToIndex(at_checkArr);
     markPosAsChecked(at_index);
@@ -196,8 +204,8 @@ AStar::TileInformation &AStar::getTileInformationRef(int index) {
     return tileInformationList[index];
 }
 
-IntPos AStar::getSmallestDistanceFromStartWorldPos(IntPos world_startPos) {
-    int smallestDFS = 9999999;
+IntPos AStar::getSmallestTotalNumWorldPos(const std::vector<IntPos> &addedWorldPosList, IntPos world_startPos) {
+    int smallestTotalNum = 9999999;
     IntPos choosenPos;
 
     for (IntPos pos_world: addedWorldPosList) {
@@ -208,8 +216,9 @@ IntPos AStar::getSmallestDistanceFromStartWorldPos(IntPos world_startPos) {
         }
 
         TileInformation tileInfotmation = getTileInformationRef(index);
-        if (tileInfotmation.distanceFromStart < smallestDFS) {
-            smallestDFS = tileInfotmation.distanceFromStart;
+        int totalNum = tileInfotmation.distanceFromStart + tileInfotmation.distanceFromEnd;
+        if (totalNum < smallestTotalNum) {
+            smallestTotalNum = totalNum;
             choosenPos = pos_world;
         } 
     }

@@ -39,9 +39,8 @@ private:
     static std::array<unsigned char, CHECK_ARRAY_SIZE> tileMarkingList;
     static std::array<unsigned char, 2> checkingMarkList;
     static std::array<unsigned char, 2> checkedMarkList;
-    static std::array<IntPos, 26> dirList;
-    static std::array<int, 26> dirDistanceList;
-    static std::vector<IntPos> addedWorldPosList;
+    static std::array<IntPos, 24> dirList;
+    static std::array<int, 24> dirDistanceList;
     static int markIndex;
 
     static AStarResult getPath(IntPos world_startPos, IntPos world_endPos, 
@@ -56,7 +55,7 @@ private:
     static bool checking(int index);
     static bool checked(int index);
     static TileInformation &getTileInformationRef(int index);
-    static IntPos getSmallestDistanceFromStartWorldPos(IntPos world_startPos);
+    static IntPos getSmallestTotalNumWorldPos(const std::vector<IntPos> &addedWorldPosList, IntPos world_startPos);
 };
 
 #endif
