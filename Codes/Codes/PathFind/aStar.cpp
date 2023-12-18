@@ -42,11 +42,15 @@ int AStar::markIndex = 0;
 
 AStarResult AStar::getPathBlock(IntPos startPos, IntPos endPos) {
     auto canMoveToBlock = [](IntPos world_from, IntPos world_to) -> bool {
-        if (world_to.y != world_from.y) {
+        if (ChunkLoader::chunkLoadCheck_isSolidBlock(world_to)) {
             return false;
         }
 
-        if (ChunkLoader::chunkLoadCheck_isSolidBlock(world_to)) {
+        if (!ChunkLoader::chunkLoadCheck_isSolidBlock(world_to + IntPos(0, -1, 0))) {
+            return false;
+        }
+
+        if (ChunkLoader::chunkLoadCheck_isSolidBlock(world_to + IntPos(0, 1, 0))) {
             return false;
         }
 
@@ -120,6 +124,7 @@ AStarResult AStar::getPath(IntPos world_startPos, IntPos world_endPos,
                                                     + std::abs(comp_world.y - world_endPos.y)
                                                     + std::abs(comp_world.z - world_endPos.z)) * 100;
             markPosAsChecking(comp_index);
+            DRAWFADESURFACE(comp_world, Color(0, 1, 0, 1), Vec2(1, 1), 1);
             addedWorldPosList.push_back(comp_world);
         }
     }
