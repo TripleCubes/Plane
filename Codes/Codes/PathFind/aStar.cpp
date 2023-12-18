@@ -6,6 +6,7 @@
 #include <cmath>
 
 #include <Codes/Debug/print.h>
+#include <Codes/Debug/debug3d.h>
 
 std::array<AStar::TileInformation, CHECK_ARRAY_SIZE> AStar::tileInformationList;
 std::array<unsigned char, CHECK_ARRAY_SIZE> AStar::tileMarkingList = {};
@@ -148,6 +149,7 @@ AStarResult AStar::getPath(IntPos world_startPos, IntPos world_endPos,
     }
 
     at_world = getSmallestTotalNumWorldPos(addedWorldPosList, world_startPos);
+    DRAWFADESURFACE(at_world, Color(1, 0, 0, 1), Vec2(1, 1), 2);
     at_checkArr = worldPosTocheckArrayPos(world_startPos, at_world);
     at_index = posToIndex(at_checkArr);
     markPosAsChecked(at_index);
@@ -208,7 +210,9 @@ IntPos AStar::getSmallestTotalNumWorldPos(const std::vector<IntPos> &addedWorldP
     int smallestTotalNum = 9999999;
     IntPos choosenPos;
 
+    int i = 0;
     for (IntPos pos_world: addedWorldPosList) {
+        i++;
         IntPos pos_checkArr = worldPosTocheckArrayPos(world_startPos, pos_world);
         int index = posToIndex(pos_checkArr);
         if (checked(index)) {
@@ -222,6 +226,10 @@ IntPos AStar::getSmallestTotalNumWorldPos(const std::vector<IntPos> &addedWorldP
             choosenPos = pos_world;
         } 
     }
+
+    PRINTLN(i);
+    PRINTLN(addedWorldPosList.size());
+    PRINTLN("--------------");
 
     return choosenPos;
 }

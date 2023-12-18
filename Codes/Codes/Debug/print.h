@@ -3,6 +3,7 @@
     #define PRINT_H
 
     #include <string>
+    #include <cstddef>
     class Vec2;
     class Vec3;
     class IntPos;
@@ -24,6 +25,9 @@
 
         static void print(int num);
         static void println(int num);
+
+        static void print(std::size_t num)   { print((int)num); };
+        static void println(std::size_t num) { println((int)num); };
 
         static void print(float num);
         static void println(float num);
