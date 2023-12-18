@@ -36,17 +36,15 @@ private:
         int beforeTileIndex = 0;
     };
     static std::array<TileInformation, CHECK_ARRAY_SIZE> tileInformationList;
-    static std::array<unsigned char, CHECK_ARRAY_SIZE> tileMarkingList;
-    static std::array<unsigned char, 2> checkingMarkList;
-    static std::array<unsigned char, 2> checkedMarkList;
+    static std::array<int, CHECK_ARRAY_SIZE> tileMarkingList;
+    static int checkingMark;
+    static int checkedMark;
     static std::array<IntPos, 24> dirList;
     static std::array<int, 24> dirDistanceList;
     static int markIndex;
 
     static AStarResult getPath(IntPos world_startPos, IntPos world_endPos, 
                                 bool (*canMoveTo)(IntPos world_from, IntPos world_to));
-    static int getCheckingMark();
-    static int getCheckedMark();
     static IntPos worldPosTocheckArrayPos(IntPos world_startPos, IntPos world_pos);
     static int posToIndex(IntPos pos);
     static IntPos indexToWorldPos(IntPos world_startPos, int index);

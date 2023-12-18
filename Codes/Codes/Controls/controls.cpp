@@ -176,8 +176,6 @@ void Controls::updateDebugLogKeys() {
     if (Input::justPressed("2")) {
         if (savedBlockRayCastResult.hasPlacingPos) {
             startPathFindPos = savedBlockRayCastResult.placingPos;
-            PRINT("START");
-            PRINTLN(startPathFindPos);
         }
     }
 
@@ -185,13 +183,6 @@ void Controls::updateDebugLogKeys() {
         if (savedBlockRayCastResult.hasPlacingPos) {
             IntPos endPathFindPos = savedBlockRayCastResult.placingPos;
             savedAStarResult = AStar::getPathBlock(startPathFindPos, endPathFindPos);
-            PRINT("END");
-            PRINTLN(endPathFindPos);
-            PRINTLN("-------------------");
-            for (IntPos pos: savedAStarResult.pathReversed) {
-                PRINTLN(pos);
-            }
-            PRINTLN("-------------------");
         }
     }
 

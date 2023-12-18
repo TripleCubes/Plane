@@ -9,9 +9,9 @@
 #include <Codes/Debug/debug3d.h>
 
 std::array<AStar::TileInformation, CHECK_ARRAY_SIZE> AStar::tileInformationList;
-std::array<unsigned char, CHECK_ARRAY_SIZE> AStar::tileMarkingList = {};
-std::array<unsigned char, 2> AStar::checkingMarkList = {1, 2};
-std::array<unsigned char, 2> AStar::checkedMarkList = {3, 4};
+std::array<int, CHECK_ARRAY_SIZE> AStar::tileMarkingList = {};
+int AStar::checkingMark = 1;
+int AStar::checkedMark = 2;
 std::array<IntPos, 24> AStar::dirList = {
     IntPos(-1,  0, -1), IntPos(-1,  0,  0), IntPos(-1,  0,  1),
     IntPos( 0,  0, -1),                     IntPos( 0,  0,  1),
@@ -64,11 +64,9 @@ AStarResult AStar::getPathChunk(IntPos startPos, IntPos endPos) {
 
 AStarResult AStar::getPath(IntPos world_startPos, IntPos world_endPos, 
                             bool (*canMoveTo)(IntPos world_from, IntPos world_to)) {
-    if (markIndex == 0) {
-        markIndex = 1;
-    } else {
-        markIndex = 0;
-    }
+    // TO DO: Reset the tileMarkingList
+    checkingMark += 2;
+    checkedMark += 2;
 
     std::vector<IntPos> addedWorldPosList;
 
@@ -93,7 +91,6 @@ AStarResult AStar::getPath(IntPos world_startPos, IntPos world_endPos,
     int start_index = at_index;
 
     while (true) {
-    
     for (std::size_t i = 0; i < dirList.size(); i++) {
         IntPos dir = dirList[i];
         IntPos comp_world = at_world + dir;
@@ -112,29 +109,27 @@ AStarResult AStar::getPath(IntPos world_startPos, IntPos world_endPos,
             if (distanceFromStart < comp_tileInformation.distanceFromStart) {
                 comp_tileInformation.beforeTileIndex = at_index;
                 comp_tileInformation.distanceFromStart = distanceFromStart;
-                comp_tileInformation.distanceFromEnd = std::abs(comp_world.x - world_endPos.x) 
+                comp_tileInformation.distanceFromEnd = (std::abs(comp_world.x - world_endPos.x) 
                                                         + std::abs(comp_world.y - world_endPos.y)
-                                                        + std::abs(comp_world.z - world_endPos.z);
+                                                        + std::abs(comp_world.z - world_endPos.z)) * 100;
             }
         } else {
             comp_tileInformation.beforeTileIndex = at_index;
             comp_tileInformation.distanceFromStart = distanceFromStart;
-            comp_tileInformation.distanceFromEnd = std::abs(comp_world.x - world_endPos.x) 
+            comp_tileInformation.distanceFromEnd = (std::abs(comp_world.x - world_endPos.x) 
                                                     + std::abs(comp_world.y - world_endPos.y)
-                                                    + std::abs(comp_world.z - world_endPos.z);
+                                                    + std::abs(comp_world.z - world_endPos.z)) * 100;
             markPosAsChecking(comp_index);
             addedWorldPosList.push_back(comp_world);
         }
     }
     num_checked++;
     if (num_checked >= TILE_CHECKED_CAP) {
-        PRINTLN("CAP");
         AStarResult result;
         result.foundResult = AStarFoundResult::OUT_OF_TILE_CHECKED_CAP;
         return result;
     }
     if (checked(end_index)) {
-        PRINTLN("FOUND");
         AStarResult result;
         result.foundResult = AStarFoundResult::FOUND;
         // CAN BE OPTIMIZED: Put the path or the AStarResult in a pointer
@@ -149,7 +144,6 @@ AStarResult AStar::getPath(IntPos world_startPos, IntPos world_endPos,
     }
 
     at_world = getSmallestTotalNumWorldPos(addedWorldPosList, world_startPos);
-    DRAWFADESURFACE(at_world, Color(1, 0, 0, 1), Vec2(1, 1), 2);
     at_checkArr = worldPosTocheckArrayPos(world_startPos, at_world);
     at_index = posToIndex(at_checkArr);
     markPosAsChecked(at_index);
@@ -157,14 +151,6 @@ AStarResult AStar::getPath(IntPos world_startPos, IntPos world_endPos,
     }
 
     return AStarResult();
-}
-
-int AStar::getCheckingMark() {
-    return checkingMarkList[markIndex];
-}
-
-int AStar::getCheckedMark() {
-    return checkedMarkList[markIndex];
 }
 
 IntPos AStar::worldPosTocheckArrayPos(IntPos world_startPos, IntPos world_pos) {
@@ -187,19 +173,19 @@ IntPos AStar::indexToWorldPos(IntPos world_startPos, int index) {
 }
 
 void AStar::markPosAsChecking(int index) {
-    tileMarkingList[index] = getCheckingMark();
+    tileMarkingList[index] = checkingMark;
 }
 
 void AStar::markPosAsChecked(int index) {
-    tileMarkingList[index] = getCheckedMark();
+    tileMarkingList[index] = checkedMark;
 }
 
 bool AStar::checking(int index) {
-    return tileMarkingList[index] == getCheckingMark();
+    return tileMarkingList[index] == checkingMark;
 }
 
 bool AStar::checked(int index) {
-    return tileMarkingList[index] == getCheckedMark();
+    return tileMarkingList[index] == checkedMark;
 }
 
 AStar::TileInformation &AStar::getTileInformationRef(int index) {
@@ -210,26 +196,20 @@ IntPos AStar::getSmallestTotalNumWorldPos(const std::vector<IntPos> &addedWorldP
     int smallestTotalNum = 9999999;
     IntPos choosenPos;
 
-    int i = 0;
     for (IntPos pos_world: addedWorldPosList) {
-        i++;
         IntPos pos_checkArr = worldPosTocheckArrayPos(world_startPos, pos_world);
         int index = posToIndex(pos_checkArr);
         if (checked(index)) {
             continue;
         }
 
-        TileInformation tileInfotmation = getTileInformationRef(index);
-        int totalNum = tileInfotmation.distanceFromStart + tileInfotmation.distanceFromEnd;
+        TileInformation tileInfortmation = getTileInformationRef(index);
+        int totalNum = tileInfortmation.distanceFromStart + tileInfortmation.distanceFromEnd;
         if (totalNum < smallestTotalNum) {
             smallestTotalNum = totalNum;
             choosenPos = pos_world;
         } 
     }
-
-    PRINTLN(i);
-    PRINTLN(addedWorldPosList.size());
-    PRINTLN("--------------");
 
     return choosenPos;
 }
