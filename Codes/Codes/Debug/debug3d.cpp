@@ -11,12 +11,14 @@ std::vector<Debug3d::Line> Debug3d::lineList;
 std::vector<Debug3d::Surface> Debug3d::surfaceList; 
 std::vector<Debug3d::BoxFrame> Debug3d::boxFrameList; 
 std::vector<Debug3d::FadeBorderedSurface> Debug3d::fadeBorderedSurfaceList;
+std::vector<Debug3d::Text> Debug3d::textList;
 
 void Debug3d::update() {
     pointList.clear();
     lineList.clear();
     surfaceList.clear();
     boxFrameList.clear();
+    textList.clear();
     
     for (FadeBorderedSurface &surface: fadeBorderedSurfaceList) {
         surface.time -= Time::getDeltaTime();
@@ -96,6 +98,14 @@ void Debug3d::addBoxFrame(Vec3 pos, Color color, Vec3 size, Vec3 margin) {
     boxFrame.size = size;
     boxFrame.margin = margin;
     boxFrameList.push_back(boxFrame);
+}
+
+void Debug3d::addText(Vec3 pos, const std::string &text, Color color) {
+    Text _text;
+    _text.pos = pos;
+    _text.text = text;
+    _text.color = color;
+    textList.push_back(_text);
 }
 
 #endif

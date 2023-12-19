@@ -39,6 +39,7 @@ private:
     static void drawDebug3dLines();
     static void drawDebug3dSurfaces();
     static void drawDebug3dBoxFrames();
+    static void drawDebug3dText();
     #endif
 };
 

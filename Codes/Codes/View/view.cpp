@@ -17,6 +17,10 @@
 #include <glad/glad.h>
 #include <vector>
 
+#ifdef DEBUG
+#include <Codes/Graphics/text.h>
+#endif
+
 #include <Codes/Debug/debug3d.h>
 
 #include <Codes/Debug/print.h>
@@ -42,6 +46,10 @@ namespace GlobalGraphics {
 
     extern Mesh mesh_boxFrame;
     extern Shader shader_boxFrame;
+
+    extern Mesh mesh_3dText;
+    extern Mesh mesh_3dTextFlipped;
+    extern Shader shader_3dText;
 }
 extern BlockRayCastResult savedBlockRayCastResult;
 
@@ -136,6 +144,10 @@ void View::draw() {
     GlobalGraphics::shader_surface.setUniform("projectionMat", projectionMat);
     GlobalGraphics::shader_surface.setUniform("viewMat", viewMat);
 
+    GlobalGraphics::shader_3dText.useProgram();
+    GlobalGraphics::shader_3dText.setUniform("projectionMat", projectionMat);
+    GlobalGraphics::shader_3dText.setUniform("viewMat", viewMat);
+
     framebuffer_view_multisampled.bind();
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -150,6 +162,7 @@ void View::draw() {
     drawDebug3dLines();
     drawDebug3dSurfaces();
     drawDebug3dBoxFrames();
+    drawDebug3dText();
     #endif
 
     glBindFramebuffer(GL_READ_FRAMEBUFFER, framebuffer_view_multisampled.getFBO());
@@ -296,6 +309,50 @@ void View::drawDebug3dBoxFrames() {
         GlobalGraphics::shader_boxFrame.setUniform("margin", boxFrame.margin);
         GlobalGraphics::shader_boxFrame.setUniform("color", boxFrame.color);
         GlobalGraphics::mesh_boxFrame.draw();
+    }
+}
+
+void View::drawDebug3dText() {
+    GlobalGraphics::shader_3dText.useProgram();
+
+    auto drawCharacter = [](float x, float y, float z, char characterCode, Color textColor, bool flipped) -> TextCharacter {
+        TextCharacter character = Text::getCharacter(characterCode);
+        if (characterCode != 32) {
+            GlobalGraphics::shader_3dText.setUniform("textureSize", Vec2(character.w, character.h));
+            GlobalGraphics::shader_3dText.setUniform("color", textColor);
+            GlobalGraphics::shader_3dText.setTextureUniform("textTexture", character.textureId, 0, false);
+
+            if (!flipped) {
+                glm::mat4 modelMat = glm::mat4(1.0f);
+                modelMat = glm::translate(modelMat, Vec3(x, y, z).toGlmVec3());
+                GlobalGraphics::shader_3dText.setUniform("modelMat", modelMat);
+                GlobalGraphics::shader_3dText.setUniform("flipped", false);
+                GlobalGraphics::mesh_3dText.draw();
+            } else {
+                glm::mat4 modelMat = glm::mat4(1.0f);
+                modelMat = glm::translate(modelMat, Vec3(x - character.advance / 24, y, z).toGlmVec3());
+                GlobalGraphics::shader_3dText.setUniform("modelMat", modelMat);
+                GlobalGraphics::shader_3dText.setUniform("flipped", true);
+                GlobalGraphics::mesh_3dTextFlipped.draw();
+            }
+        }
+        return character;
+    };
+
+    for (const Debug3d::Text &text: Debug3d::getTextList()) {
+        float cursorX = text.pos.x;
+        float cursorY = text.pos.y;
+        float cursorZ = text.pos.z;
+        for (std::size_t i = 0; i < text.text.size(); i++) {
+            TextCharacter drawnCharacter = drawCharacter(cursorX, cursorY, cursorZ, text.text[i], text.color, false);
+            cursorX += drawnCharacter.advance / 24;
+        }
+
+        cursorX = text.pos.x;
+        for (std::size_t i = 0; i < text.text.size(); i++) {
+            TextCharacter drawnCharacter = drawCharacter(cursorX, cursorY, cursorZ, text.text[i], text.color, true);
+            cursorX -= drawnCharacter.advance / 24;
+        }
     }
 }
 #endif

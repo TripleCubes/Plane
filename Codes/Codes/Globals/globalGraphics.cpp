@@ -30,6 +30,10 @@ Shader shader_UILine;
 Mesh mesh_boxFrame;
 Shader shader_boxFrame;
 
+Mesh mesh_3dText;
+Mesh mesh_3dTextFlipped;
+Shader shader_3dText;
+
 void init_windowRect() {
     std::vector<float> verticies_windowRect = {
         -1,  1,
@@ -179,6 +183,30 @@ void init_UILine() {
     shader_UILine.init("Shaders/Global/_UILine");
 }
 
+void init_3dtext() {
+    mesh_3dText.init();
+    std::vector<float> verticies = {
+        0, 0, 0,
+        1, 0, 0,
+        1, 1, 0,
+        0, 1, 0,
+    };
+    std::vector<unsigned int> indicies {
+        0, 3, 1,
+        1, 3, 2,
+    };
+    mesh_3dText.set(MeshType::MESH3D_NO_NORMALS, verticies, indicies);
+
+    mesh_3dTextFlipped.init();
+    std::vector<unsigned int> indiciesFlipped {
+        0, 1, 3,
+        1, 2, 3,
+    };
+    mesh_3dTextFlipped.set(MeshType::MESH3D_NO_NORMALS, verticies, indiciesFlipped);
+
+    shader_3dText.init("Shaders/Global/_3dText");
+}
+
 void init() {
     init_windowRect();
     init_3dBox();
@@ -187,5 +215,6 @@ void init() {
     init_surface();
     init_boxFrame();
     init_UILine();
+    init_3dtext();
 }
 }

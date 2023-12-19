@@ -36,6 +36,9 @@ void Entity::update() {
     }
 
     totalMoveVec = Vec3(0, 0, 0);
+
+    DRAWTEXT(pos + Vec3(0, 3, 0), "This is a test", Color(1, 1, 1, 1));
+    DRAWSURFACE(pos + Vec3(0, 3, 0), Color(1, 0, 0, 1), Vec2(1, 1));
 }
 
 void Entity::move(Vec3 moveVec) {
