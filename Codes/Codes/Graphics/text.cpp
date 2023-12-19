@@ -1,6 +1,7 @@
 #include <Codes/Graphics/text.h>
 
 #include <glad/glad.h>
+#include <Codes/Types/vec2.h>
 
 #include <Codes/Debug/print.h>
 
@@ -62,4 +63,16 @@ TextCharacter Text::getCharacter(char characterCode) {
     }
 
     return characters[index];
+}
+
+Vec2 Text::getTextBoxSize(const std::string &text) {
+    Vec2 result;
+
+    for (std::size_t i = 0; i < text.size(); i++)
+    {
+        result.x += Text::getCharacter(text[i]).advance;
+    }
+    result.y = FONT_HEIGHT;
+
+    return result;
 }

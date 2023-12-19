@@ -4,7 +4,6 @@
 #include <string>
 #include <memory>
 
-class Vec2;
 class Color;
 class Texture;
 class Mesh;
@@ -26,7 +25,6 @@ public:
                             unsigned int textureId, int textureWidth, int textureHeight, 
                             bool centered = false);
 
-    static Vec2 getTextBoxSize(const std::string &text);
     static void drawTextBox(float x, float y, const std::string &text, Color color);
     static void drawTextBox(float x, float y, const char *text, Color color);
 

@@ -100,11 +100,12 @@ void Debug3d::addBoxFrame(Vec3 pos, Color color, Vec3 size, Vec3 margin) {
     boxFrameList.push_back(boxFrame);
 }
 
-void Debug3d::addText(Vec3 pos, const std::string &text, Color color) {
+void Debug3d::addText(Vec3 pos, const std::string &text, Color color, bool centered) {
     Text _text;
     _text.pos = pos;
     _text.text = text;
     _text.color = color;
+    _text.centered = centered;
     textList.push_back(_text);
 }
 

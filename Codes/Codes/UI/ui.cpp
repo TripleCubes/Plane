@@ -203,18 +203,6 @@ void UI::drawTexture(bool isTextTexture, float x, float y, float w, float h,
     mesh_rect.draw();
 }
 
-Vec2 UI::getTextBoxSize(const std::string &text) {
-    Vec2 result;
-
-    for (std::size_t i = 0; i < text.size(); i++)
-    {
-        result.x += Text::getCharacter(text[i]).advance;
-    }
-    result.y = FONT_HEIGHT;
-
-    return result;
-}
-
 void UI::drawTextBox(float x, float y, const std::string &text, Color color) {
     int cursorX = x;
     int cursorY = y;

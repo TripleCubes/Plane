@@ -4,8 +4,11 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include <vector>
+#include <string>
 
 const int FONT_HEIGHT = 24;
+
+class Vec2;
 
 struct TextCharacter
 {
@@ -22,6 +25,7 @@ class Text {
 public:
     static void init();
     static TextCharacter getCharacter(char characterCode);
+    static Vec2 getTextBoxSize(const std::string &text);
 
 private:
     static FT_Library library;

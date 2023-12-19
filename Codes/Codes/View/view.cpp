@@ -343,12 +343,25 @@ void View::drawDebug3dText() {
         float cursorX = text.pos.x;
         float cursorY = text.pos.y;
         float cursorZ = text.pos.z;
+
+        Vec2 textSize; 
+        if (text.centered) {
+            textSize = Text::getTextBoxSize(text.text);
+            cursorX -= textSize.x/2/24;
+        }
+
         for (std::size_t i = 0; i < text.text.size(); i++) {
             TextCharacter drawnCharacter = drawCharacter(cursorX, cursorY, cursorZ, text.text[i], text.color, false);
             cursorX += drawnCharacter.advance / 24;
         }
 
+
+
         cursorX = text.pos.x;
+        if (text.centered) {
+            cursorX += textSize.x/2/24;
+        }
+
         for (std::size_t i = 0; i < text.text.size(); i++) {
             TextCharacter drawnCharacter = drawCharacter(cursorX, cursorY, cursorZ, text.text[i], text.color, true);
             cursorX -= drawnCharacter.advance / 24;

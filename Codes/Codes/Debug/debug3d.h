@@ -13,7 +13,7 @@
     #define DRAWSURFACE(pos, color, size) Debug3d::addBorderedSurface(pos, color, size)
     #define DRAWFADESURFACE(pos, color, size, fadeTime) Debug3d::addFadeBorderedSurface(pos, color, size, fadeTime);
     #define DRAWBOXFRAME(pos, color, size, margin) Debug3d::addBoxFrame(pos, color, size, margin)
-    #define DRAWTEXT(pos, text, color) Debug3d::addText(pos, text, color)
+    #define DRAWTEXT(pos, text, color, centered) Debug3d::addText(pos, text, color, centered)
 
     class Debug3d {
     public:
@@ -48,6 +48,7 @@
             Vec3 pos;
             std::string text;
             Color color;
+            bool centered;
         };
 
         static void update();
@@ -58,7 +59,7 @@
         static void addBorderedSurface(Vec3 pos, Color color, Vec2 size);
         static void addFadeBorderedSurface(Vec3 pos, Color color, Vec2 size, float fadeTime);
         static void addBoxFrame(Vec3 pos, Color color, Vec3 size, Vec3 margin);
-        static void addText(Vec3 pos, const std::string &text, Color color);
+        static void addText(Vec3 pos, const std::string &text, Color color, bool centered);
         static const std::vector<Point> &getPointList() { return pointList; };
         static const std::vector<Line> &getLineList() { return lineList; };
         static const std::vector<Surface> &getSurfaceList() { return surfaceList; };
@@ -84,7 +85,7 @@
     #define DRAWSURFACE(pos, color, size)
     #define DRAWFADESURFACE(pos, color, size, fadeTime)
     #define DRAWBOXFRAME(pos, color, size, margin)
-    #define DRAWTEXT(pos, text, color)
+    #define DRAWTEXT(pos, text, color, centered)
 
     #endif
 #endif
