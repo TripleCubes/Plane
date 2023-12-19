@@ -41,7 +41,9 @@ std::array<int, 24> AStar::dirDistanceList = {
 int AStar::markIndex = 0;
 
 AStarResult AStar::getPathBlock(IntPos startPos, IntPos endPos) {
-    auto canMoveToBlock = [](IntPos world_from, IntPos world_to) -> bool {
+    auto canMoveToBlock = [](IntPos world_from, IntPos dir) -> bool {
+        IntPos world_to = world_from + dir;
+
         if (ChunkLoader::chunkLoadCheck_isSolidBlock(world_to)) {
             return false;
         }
@@ -52,6 +54,32 @@ AStarResult AStar::getPathBlock(IntPos startPos, IntPos endPos) {
 
         if (ChunkLoader::chunkLoadCheck_isSolidBlock(world_to + IntPos(0, 1, 0))) {
             return false;
+        }
+
+        if (dir.x != 0 && dir.z != 0) {
+            IntPos checkDir = dir;
+            checkDir.x = 0;
+            if (ChunkLoader::chunkLoadCheck_isSolidBlock(world_from + checkDir)) {
+                return false;
+            }
+
+            checkDir = dir;
+            checkDir.z = 0;
+            if (ChunkLoader::chunkLoadCheck_isSolidBlock(world_from + checkDir)) {
+                return false;
+            }
+
+            checkDir = dir + IntPos(0, 1, 0);
+            checkDir.x = 0;
+            if (ChunkLoader::chunkLoadCheck_isSolidBlock(world_from + checkDir)) {
+                return false;
+            }
+
+            checkDir = dir + IntPos(0, 1, 0);
+            checkDir.z = 0;
+            if (ChunkLoader::chunkLoadCheck_isSolidBlock(world_from + checkDir)) {
+                return false;
+            }
         }
 
         return true;
@@ -67,7 +95,7 @@ AStarResult AStar::getPathChunk(IntPos startPos, IntPos endPos) {
 }
 
 AStarResult AStar::getPath(IntPos world_startPos, IntPos world_endPos, 
-                            bool (*canMoveTo)(IntPos world_from, IntPos world_to)) {
+                            bool (*canMoveTo)(IntPos world_from, IntPos dir)) {
     // TO DO: Reset the tileMarkingList
     checkingMark += 2;
     checkedMark += 2;
@@ -101,7 +129,7 @@ AStarResult AStar::getPath(IntPos world_startPos, IntPos world_endPos,
         IntPos comp_checkArr = worldPosTocheckArrayPos(world_startPos, comp_world);
         int    comp_index = posToIndex(comp_checkArr);
 
-        if (!(canMoveTo(at_world, comp_world) 
+        if (!(canMoveTo(at_world, dir) 
         && comp_index >= 0 && comp_index < CHECK_ARRAY_SIZE 
         && !checked(comp_index))) {
             continue;

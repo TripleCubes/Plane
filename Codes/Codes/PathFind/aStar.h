@@ -44,7 +44,7 @@ private:
     static int markIndex;
 
     static AStarResult getPath(IntPos world_startPos, IntPos world_endPos, 
-                                bool (*canMoveTo)(IntPos world_from, IntPos world_to));
+                                bool (*canMoveTo)(IntPos world_from, IntPos dir));
     static IntPos worldPosTocheckArrayPos(IntPos world_startPos, IntPos world_pos);
     static int posToIndex(IntPos pos);
     static IntPos indexToWorldPos(IntPos world_startPos, int index);
