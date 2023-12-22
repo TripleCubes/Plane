@@ -210,8 +210,13 @@ void UI::drawTexture(bool isTextTexture, float x, float y, float w, float h,
     mesh_rect.draw();
 }
 
-void UI::drawTextBox(float x, float y, const std::string &text, Color color) {
-    int cursorX = x;
+void UI::drawTextBox(float x, float y, const std::string &text, Color color, bool centered) {
+    Vec2 textBoxSize;
+    if (centered) {
+        textBoxSize = Text::getTextBoxSize(text);
+    }
+
+    int cursorX = x - textBoxSize.x / 2;
     int cursorY = y;
     for (std::size_t i = 0; i < text.size(); i++)
     {
@@ -220,9 +225,9 @@ void UI::drawTextBox(float x, float y, const std::string &text, Color color) {
     }
 }
 
-void UI::drawTextBox(float x, float y, const char *text, Color color) {
+void UI::drawTextBox(float x, float y, const char *text, Color color, bool centered) {
     std::string string(text);
-    drawTextBox(x, y, string, color);
+    drawTextBox(x, y, string, color, centered);
 }
 
 TextCharacter UI::drawTextChar(float x, float y, char characterCode, Color color) {
@@ -238,7 +243,7 @@ TextCharacter UI::drawTextChar(float x, float y, char characterCode, Color color
 #ifdef DEBUG
 void UI::drawDebugUIStrs() {
     for (const auto &debugStr: DebugUI::getDebugStrList()) {
-        drawTextBox(debugStr.pos.x, debugStr.pos.y, debugStr.str, debugStr.color);
+        drawTextBox(debugStr.pos.x, debugStr.pos.y, debugStr.str, debugStr.color, debugStr.centered);
     }
 }
 
@@ -253,7 +258,8 @@ void UI::drawDebugUI3dStrs() {
         newNewPos = newNewPos + Vec2(1, 1);
         newNewPos = newNewPos / 2;
         newNewPos.y = 1 - newNewPos.y;
-        drawTextBox(newNewPos.x * currentWindowWidth, newNewPos.y * currentWindowHeight, debugStr3d.str, debugStr3d.color);
+        drawTextBox(newNewPos.x * currentWindowWidth, newNewPos.y * currentWindowHeight, 
+                    debugStr3d.str, debugStr3d.color, debugStr3d.centered);
     }
 }
 

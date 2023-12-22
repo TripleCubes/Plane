@@ -25,8 +25,8 @@ public:
                             unsigned int textureId, int textureWidth, int textureHeight, 
                             bool centered = false);
 
-    static void drawTextBox(float x, float y, const std::string &text, Color color);
-    static void drawTextBox(float x, float y, const char *text, Color color);
+    static void drawTextBox(float x, float y, const std::string &text, Color color, bool centered);
+    static void drawTextBox(float x, float y, const char *text, Color color, bool centered);
 
 private:
     static const int DRAWMODE_RECT = 0;

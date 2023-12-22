@@ -9,8 +9,8 @@
 #include <Codes/Debug/debugUI.h>
 
 void drawDebugUI() {
-    DRAWUITEXT(int(1/Time::getDeltaTime()), Vec2(10, 10), Color(1, 1, 1, 1));
-    DRAWUITEXT(int(1/Time::getFrameTime()), Vec2(10, 40), Color(1, 1, 1, 1));
+    DRAWUITEXT(Vec2(10, 10), int(1/Time::getDeltaTime()), Color(1, 1, 1, 1), false);
+    DRAWUITEXT(Vec2(10, 40), int(1/Time::getFrameTime()), Color(1, 1, 1, 1), false);
 
     auto drawCompass = []() {
         Vec2 origin = Vec2(30, 100);

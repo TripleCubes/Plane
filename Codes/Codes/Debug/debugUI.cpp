@@ -12,54 +12,56 @@ void DebugUI::update() {
     lineList.clear();
 }
 
-void DebugUI::addDebugStr(Vec2 pos, const std::string &str, Color color) {
+void DebugUI::addDebugStr(Vec2 pos, const std::string &str, Color color, bool centered) {
     DebugStr debugStr;
     debugStr.str = str;
     debugStr.pos = pos;
     debugStr.color = color;
+    debugStr.centered = centered;
     debugStrList.push_back(debugStr);
 }
 
-void DebugUI::addDebugStr(Vec3 pos, const std::string &str, Color color) {
+void DebugUI::addDebugStr(Vec3 pos, const std::string &str, Color color, bool centered) {
     DebugStr3d debugStr3d;
     debugStr3d.str = str;
     debugStr3d.pos = pos;
     debugStr3d.color = color;
+    debugStr3d.centered = centered;
     debugStr3dList.push_back(debugStr3d);
 }
 
-void DebugUI::addDebugStr(Vec2 pos, const char *text, Color color) {
+void DebugUI::addDebugStr(Vec2 pos, const char *text, Color color, bool centered) {
     std::string str(text);
-    addDebugStr(str, pos, color);
+    addDebugStr(pos, str, color, centered);
 }
 
-void DebugUI::addDebugStr(Vec2 pos, int num, Color color) {
+void DebugUI::addDebugStr(Vec2 pos, int num, Color color, bool centered) {
     std::string str = std::to_string(num);
-    addDebugStr(str, pos, color);
+    addDebugStr(pos, str, color, centered);
 }
 
-void DebugUI::addDebugStr(Vec2 pos, float num, Color color) {
+void DebugUI::addDebugStr(Vec2 pos, float num, Color color, bool centered) {
     std::string str = std::to_string(num);
-    addDebugStr(str, pos, color);
+    addDebugStr(pos, str, color, centered);
 }
 
-void DebugUI::addDebugStr(Vec2 pos, Vec2 vec, Color color) {
+void DebugUI::addDebugStr(Vec2 pos, Vec2 vec, Color color, bool centered) {
     std::string str = std::to_string(vec.x) + " " + std::to_string(vec.y);
-    addDebugStr(str, pos, color);
+    addDebugStr(pos, str, color, centered);
 }
 
-void DebugUI::addDebugStr(Vec2 pos, Vec3 vec, Color color) {
+void DebugUI::addDebugStr(Vec2 pos, Vec3 vec, Color color, bool centered) {
     std::string str = std::to_string(vec.x) + " " + std::to_string(vec.y) + " " + std::to_string(vec.z);
-    addDebugStr(str, pos, color);
+    addDebugStr(pos, str, color, centered);
 }
 
-void DebugUI::addDebugStr(Vec2 pos, IntPos intPos, Color color) {
+void DebugUI::addDebugStr(Vec2 pos, IntPos intPos, Color color, bool centered) {
     std::string str = std::to_string(intPos.x) + " " + std::to_string(intPos.y) + " " + std::to_string(intPos.z);
-    addDebugStr(str, pos, color);
+    addDebugStr(pos, str, color, centered);
 }
 
-void DebugUI::addDebugStr(Vec2 pos, bool b, Color color) {
-    addDebugStr(b? "true" : "false", pos, color);
+void DebugUI::addDebugStr(Vec2 pos, bool b, Color color, bool centered) {
+    addDebugStr(pos, b? "true" : "false", color, centered);
 }
 
 void DebugUI::addLine(Vec2 pos1, Vec2 pos2, Color color, float size) {

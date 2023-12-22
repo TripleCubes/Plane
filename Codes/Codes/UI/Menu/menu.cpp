@@ -114,7 +114,7 @@ void Menu::updateMenu() {
 
 void Menu::drawMenu() const {
     UI::drawRectWH(0, 0, currentWindowWidth, currentWindowHeight, Color(0, 0, 0, 0.3));
-    UI::drawTextBox(PADDING_LEFT, PADDING_TOP + scrollBar.getScrollValue(), fullMenuTitle, Color(1, 1, 1, 1));
+    UI::drawTextBox(PADDING_LEFT, PADDING_TOP + scrollBar.getScrollValue(), fullMenuTitle, Color(1, 1, 1, 1), false);
 
     scrollBar.draw();
 

@@ -38,7 +38,7 @@ void Entity::update() {
     totalMoveVec = Vec3(0, 0, 0);
 
     DRAWTEXT(pos + Vec3(0, 3, 0), "This is a test", Color(1, 1, 1, 1), true);
-    DRAWUITEXT(pos + Vec3(0, 3, 0), "This is a test", Color(1, 1, 1, 1));
+    DRAWUITEXT(pos + Vec3(0, 5, 0), "This is a test", Color(1, 1, 1, 1), true);
 }
 
 void Entity::move(Vec3 moveVec) {

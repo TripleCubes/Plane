@@ -38,7 +38,7 @@ void Button::draw() const {
     } else {
         UI::drawRectWH(x, y + scrolledY, w, h, buttonColor);
     }
-    UI::drawTextBox(x + 10, y + scrolledY + 5, buttonTitle, textColor);
+    UI::drawTextBox(x + 10, y + scrolledY + 5, buttonTitle, textColor, false);
 }
 
 void Button::setScrolledY(float scrolledY) {
