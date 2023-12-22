@@ -14,6 +14,7 @@
 
 #ifdef DEBUG
 #include <Codes/View/view.h>
+#include <Codes/View/camera.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #endif
@@ -249,6 +250,11 @@ void UI::drawDebugUIStrs() {
 
 void UI::drawDebugUI3dStrs() {
     for (const auto &debugStr3d: DebugUI::getDebugStr3dList()) {
+        Vec3 dirStr = debugStr3d.pos - Camera::getPos();
+        if (dirStr.dot(Camera::getDir()) < 0) {
+            continue;
+        }
+
         glm::vec4 newPos = View::getProjectionMat() * View::getViewMat() * glm::vec4(debugStr3d.pos.x, 
                                                                                         debugStr3d.pos.y, 
                                                                                         debugStr3d.pos.z,
