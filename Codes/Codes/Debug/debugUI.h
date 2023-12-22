@@ -19,6 +19,11 @@
             Vec2 pos;
             Color color;
         };
+        struct DebugStr3d {
+            std::string str;
+            Vec3 pos;
+            Color color;
+        };
         struct Line {
             Vec2 pos1;
             Vec2 pos2;
@@ -29,6 +34,7 @@
         static void update();
 
         static void addDebugStr(const std::string &str, Vec2 pos, Color color);
+        static void addDebugStr(const std::string &str, Vec3 pos, Color color);
         static void addDebugStr(const char *text, Vec2 pos, Color color);
         static void addDebugStr(int num, Vec2 pos, Color color);
         static void addDebugStr(float num, Vec2 pos, Color color);
@@ -37,12 +43,14 @@
         static void addDebugStr(IntPos intPos, Vec2 pos, Color color);
         static void addDebugStr(bool b, Vec2 pos, Color color);
         static const std::vector<DebugStr> &getDebugStrList() { return debugStrList; };
+        static const std::vector<DebugStr3d> &getDebugStr3dList() { return debugStr3dList; };
 
         static void addLine(Vec2 pos1, Vec2 pos2, Color color, float size);
         static const std::vector<Line> &getLineList() { return lineList; };
 
     private:
         static std::vector<DebugStr> debugStrList;
+        static std::vector<DebugStr3d> debugStr3dList;
         static std::vector<Line> lineList;
     };
 

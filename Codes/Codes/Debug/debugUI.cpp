@@ -3,10 +3,12 @@
 #include <Codes/Debug/debugUI.h>
 
 std::vector<DebugUI::DebugStr> DebugUI::debugStrList;
+std::vector<DebugUI::DebugStr3d> DebugUI::debugStr3dList;
 std::vector<DebugUI::Line> DebugUI::lineList;
 
 void DebugUI::update() {
     debugStrList.clear();
+    debugStr3dList.clear();
     lineList.clear();
 }
 
@@ -16,6 +18,14 @@ void DebugUI::addDebugStr(const std::string &str, Vec2 pos, Color color) {
     debugStr.pos = pos;
     debugStr.color = color;
     debugStrList.push_back(debugStr);
+}
+
+void DebugUI::addDebugStr(const std::string &str, Vec3 pos, Color color) {
+    DebugStr3d debugStr3d;
+    debugStr3d.str = str;
+    debugStr3d.pos = pos;
+    debugStr3d.color = color;
+    debugStr3dList.push_back(debugStr3d);
 }
 
 void DebugUI::addDebugStr(const char *text, Vec2 pos, Color color) {

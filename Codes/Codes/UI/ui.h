@@ -48,6 +48,7 @@ private:
 
     #ifdef DEBUG
     static void drawDebugUIStrs();
+    static void drawDebugUI3dStrs();
     static void drawDebugUILines();
     #endif
 };

@@ -13,6 +13,9 @@ public:
     static void update();
     static void draw();
 
+    static const glm::mat4 &getViewMat() { return viewMat; };
+    static const glm::mat4 &getProjectionMat() { return projectionMat; }; 
+
 private:
     static const int GBUFFER_POS;
     static const int GBUFFER_NORMAL;

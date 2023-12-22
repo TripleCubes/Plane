@@ -12,6 +12,12 @@
 #include <Codes/Graphics/text.h>
 #include <glad/glad.h>
 
+#ifdef DEBUG
+#include <Codes/View/view.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#endif
+
 #include <Codes/UI/debugUI.h>
 
 #include <Codes/Debug/debugUI.h>
@@ -116,6 +122,7 @@ void UI::draw() {
 
     #ifdef DEBUG
     drawDebugUIStrs();
+    drawDebugUI3dStrs();
     drawDebugUILines();
     #endif
 }
@@ -232,6 +239,21 @@ TextCharacter UI::drawTextChar(float x, float y, char characterCode, Color color
 void UI::drawDebugUIStrs() {
     for (const auto &debugStr: DebugUI::getDebugStrList()) {
         drawTextBox(debugStr.pos.x, debugStr.pos.y, debugStr.str, debugStr.color);
+    }
+}
+
+void UI::drawDebugUI3dStrs() {
+    for (const auto &debugStr3d: DebugUI::getDebugStr3dList()) {
+        glm::vec4 newPos = View::getProjectionMat() * View::getViewMat() * glm::vec4(debugStr3d.pos.x, 
+                                                                                        debugStr3d.pos.y, 
+                                                                                        debugStr3d.pos.z,
+                                                                                        1.0f); 
+        Vec2 newNewPos = Vec2(newPos.x, newPos.y);
+        newNewPos = newNewPos / newPos.w;
+        newNewPos = newNewPos + Vec2(1, 1);
+        newNewPos = newNewPos / 2;
+        newNewPos.y = 1 - newNewPos.y;
+        drawTextBox(newNewPos.x * currentWindowWidth, newNewPos.y * currentWindowHeight, debugStr3d.str, debugStr3d.color);
     }
 }
 
