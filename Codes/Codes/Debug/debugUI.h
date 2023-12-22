@@ -9,7 +9,7 @@
     #include <vector>
     #include <string>
 
-    #define DRAWUITEXT(str, pos, color) DebugUI::addDebugStr(str, pos, color)
+    #define DRAWUITEXT(pos, str, color) DebugUI::addDebugStr(pos, str, color)
     #define DRAWUILINE(pos1, pos2, color, size) DebugUI::addLine(pos1, pos2, color, size)
 
     class DebugUI {
@@ -33,15 +33,15 @@
 
         static void update();
 
-        static void addDebugStr(const std::string &str, Vec2 pos, Color color);
-        static void addDebugStr(const std::string &str, Vec3 pos, Color color);
-        static void addDebugStr(const char *text, Vec2 pos, Color color);
-        static void addDebugStr(int num, Vec2 pos, Color color);
-        static void addDebugStr(float num, Vec2 pos, Color color);
-        static void addDebugStr(Vec2 vec, Vec2 pos, Color color);
-        static void addDebugStr(Vec3 vec, Vec2 pos, Color color);
-        static void addDebugStr(IntPos intPos, Vec2 pos, Color color);
-        static void addDebugStr(bool b, Vec2 pos, Color color);
+        static void addDebugStr(Vec2 pos, const std::string &str, Color color);
+        static void addDebugStr(Vec3 pos, const std::string &str, Color color);
+        static void addDebugStr(Vec2 pos, const char *text, Color color);
+        static void addDebugStr(Vec2 pos, int num, Color color);
+        static void addDebugStr(Vec2 pos, float num, Color color);
+        static void addDebugStr(Vec2 pos, Vec2 vec, Color color);
+        static void addDebugStr(Vec2 pos, Vec3 vec, Color color);
+        static void addDebugStr(Vec2 pos, IntPos intPos, Color color);
+        static void addDebugStr(Vec2 pos, bool b, Color color);
         static const std::vector<DebugStr> &getDebugStrList() { return debugStrList; };
         static const std::vector<DebugStr3d> &getDebugStr3dList() { return debugStr3dList; };
 
@@ -59,7 +59,7 @@
     #ifndef DEBUGUI_H
     #define DEBUGUI_H
 
-    #define DRAWUITEXT(str, pos, color)
+    #define DRAWUITEXT(pos, str, color)
     #define DRAWUILINE(pos1, pos2, color, size)
 
     #endif
