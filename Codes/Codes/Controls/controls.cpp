@@ -27,7 +27,7 @@ void Controls::update() {
         updateCameraDir();
         updateMovements();
     }
-    
+
     if (Settings::getMouseMode() == Settings::MouseMode::SELECT) {
         updateGameSelection();
     } else if (Settings::getMouseMode() == Settings::MouseMode::CHUNK) {
@@ -133,7 +133,8 @@ void Controls::updateChunkPlacing() {
     }
 
     if (Input::justPressed(MouseButton::LEFT)) {
-        ChunkLoader::loadChunkTerrainAndMesh(savedBlockRayCastResult.selectedPos.getChunkPos());
+        IntPos chunkPos = savedBlockRayCastResult.selectedPos.getChunkPos();
+        ChunkLoader::loadChunkTerrainAndMesh(chunkPos.x, chunkPos.z);
     }
 }
 

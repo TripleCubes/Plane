@@ -21,8 +21,8 @@ public:
     static bool chunkLoadCheck_isSolidBlock(IntPos blockPos);
     static bool chunkLoaded(IntPos chunkPos);
 
-    static void loadChunkTerrain(IntPos chunkPos);
-    static void loadChunkTerrainAndMesh(IntPos chunkPos);
+    static void loadChunkTerrain(int x, int z);
+    static void loadChunkTerrainAndMesh(int x, int z);
 
 private:
     static std::unordered_map<IntPos, std::unique_ptr<Chunk>, IntPosHash> chunks;
