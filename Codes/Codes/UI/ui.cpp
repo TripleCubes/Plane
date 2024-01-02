@@ -8,6 +8,7 @@
 #include <Codes/Settings/settings.h>
 #include <Codes/UI/Menu/menu.h>
 #include <Codes/UI/Menu/menuManager.h>
+#include <Codes/UI/uiControls.h>
 #include <Codes/Input/input.h>
 #include <Codes/Graphics/text.h>
 #include <glad/glad.h>
@@ -99,6 +100,9 @@ void UI::initMenus() {
 
 void UI::update() {
     MenuManager::update();
+    if (MenuManager::isAllMenusClosed()) {
+        UIControls::update();
+    }
 
     if (Input::justPressed("ESC")) {
         if (MenuManager::isAllMenusClosed()) {
@@ -117,6 +121,9 @@ void UI::draw() {
     }
 
     MenuManager::draw();
+    if (MenuManager::isAllMenusClosed()) {
+        UIControls::draw();
+    }
 
     #ifdef DEBUG
     // TO DO: Replace with actual optimized debug ui code

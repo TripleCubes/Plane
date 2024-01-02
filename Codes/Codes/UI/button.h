@@ -14,6 +14,8 @@ public:
     void update();
     void draw() const;
 
+    void setButtonTitle(const std::string &title) { buttonTitle = title; }
+    const std::string &getButtonTitle() { return buttonTitle; };
     void setScrolledY(float scrolledY);
     void setPos(float x, float y);
     Vec2 getPos() const;
