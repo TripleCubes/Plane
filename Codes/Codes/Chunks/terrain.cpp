@@ -21,7 +21,7 @@ void Terrain::init() {
 void Terrain::load(IntPos chunkPos, std::unique_ptr<Chunk> &chunkPtr) {
     std::vector<float> terrainHeightList(CHUNK_WIDTH * CHUNK_WIDTH);
     fnFractal->GenUniformGrid2D(terrainHeightList.data(), chunkPos.x * CHUNK_WIDTH, chunkPos.z * CHUNK_WIDTH,
-                                    CHUNK_WIDTH, CHUNK_WIDTH, 0.001f, 100);
+                                    CHUNK_WIDTH, CHUNK_WIDTH, 0.01f, 100);
 
     int i = 0;
     for (int z = 0; z < CHUNK_WIDTH; z++) {

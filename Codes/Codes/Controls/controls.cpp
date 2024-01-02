@@ -26,12 +26,12 @@ void Controls::update() {
     if (Settings::isFreeCam()) {
         updateCameraDir();
         updateMovements();
-    } else {
-        if (Settings::getMouseMode() == Settings::MouseMode::SELECT) {
-            updateGameSelection();
-        } else if (Settings::getMouseMode() == Settings::MouseMode::CHUNK) {
-            updateChunkPlacing();
-        }
+    }
+    
+    if (Settings::getMouseMode() == Settings::MouseMode::SELECT) {
+        updateGameSelection();
+    } else if (Settings::getMouseMode() == Settings::MouseMode::CHUNK) {
+        updateChunkPlacing();
     }
 
     // updatePlaceBreak();
@@ -128,7 +128,13 @@ void Controls::updatePlaceBreak() {
 }
 
 void Controls::updateChunkPlacing() {
-    
+    if (!savedBlockRayCastResult.found) {
+        return;
+    }
+
+    if (Input::justPressed(MouseButton::LEFT)) {
+        ChunkLoader::loadChunkTerrainAndMesh(savedBlockRayCastResult.selectedPos.getChunkPos());
+    }
 }
 
 void Controls::updateGameSelection() {
