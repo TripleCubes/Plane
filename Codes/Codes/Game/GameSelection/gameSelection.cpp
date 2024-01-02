@@ -90,6 +90,27 @@ void GameSelection::createFaceCheckedList(std::unordered_map<IntPos, bool, IntPo
         IntPos chunkPos = IntPos(chunkX, chunkY, chunkZ);
 
         if (!ChunkLoader::chunkLoaded(chunkPos)) {
+            if (chunkPos.y != IntPos::getChunkPos(GROUND_HEIGHT)) {
+                continue;
+            }
+
+            for (int i = 0; i < CHUNK_VOLUME; i++) {
+                IntPos blockPos = Chunk::indexToPos(i) + chunkPos * CHUNK_WIDTH;
+
+                if (blockPos.y != GROUND_HEIGHT) {
+                    continue;
+                }
+
+                if (blockPos.x < minX || blockPos.x > maxX 
+                || blockPos.y < minY || blockPos.y > maxY
+                || blockPos.z < minZ || blockPos.z > maxZ) {
+                    continue;
+                }
+
+                faceCheckedList.insert(std::make_pair(blockPos, false));
+                faceCheckedListOrder.push_back(blockPos);
+            }
+
             continue;
         }
 
