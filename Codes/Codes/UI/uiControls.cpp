@@ -1,5 +1,8 @@
 #include <Codes/UI/uiControls.h>
 
+#include <Codes/Settings/settings.h>
+#include <Codes/Game/GameSelection/gameSelection.h>
+
 const int BUTTON_WIDTH = 150;
 const int BUTTON_HEIGHT = 40;
 const Color BUTTON_COLOR = Color(1, 0.65, 0.57, 1);
@@ -15,10 +18,13 @@ void UIControls::update() {
     modeButton.update();
 
     if (modeButton.justPressed()) {
-        if (modeButton.getButtonTitle() == "Chunk") {
+        if (Settings::getMouseMode() == Settings::MouseMode::CHUNK) {
+            Settings::mouseMode = Settings::MouseMode::SELECT;
             modeButton.setButtonTitle("Select");
         } else {
+            Settings::mouseMode = Settings::MouseMode::CHUNK;
             modeButton.setButtonTitle("Chunk");
+            GameSelection::discardSelection();
         }
     }
 }

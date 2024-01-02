@@ -27,7 +27,11 @@ void Controls::update() {
         updateCameraDir();
         updateMovements();
     } else {
-        updateGameSelection();
+        if (Settings::getMouseMode() == Settings::MouseMode::SELECT) {
+            updateGameSelection();
+        } else if (Settings::getMouseMode() == Settings::MouseMode::CHUNK) {
+            updateChunkPlacing();
+        }
     }
 
     // updatePlaceBreak();
@@ -121,6 +125,10 @@ void Controls::updatePlaceBreak() {
 
         return;
     }
+}
+
+void Controls::updateChunkPlacing() {
+    
 }
 
 void Controls::updateGameSelection() {

@@ -10,6 +10,7 @@ private:
     static void updateCameraDir();
     static void updateMovements();
     static void updatePlaceBreak();
+    static void updateChunkPlacing();
     static void updateGameSelection();
 
     static void updateDebugLogKeys();

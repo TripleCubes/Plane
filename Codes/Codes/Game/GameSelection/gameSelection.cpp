@@ -37,6 +37,13 @@ void GameSelection::endSelection(IntPos pos) {
     selecting = false;
 }
 
+void GameSelection::discardSelection() {
+    selecting = false;
+    selectionStart = IntPos(0, 0, 0);
+    selectionEnd = IntPos(0, 0, 0);
+    updateMesh();
+}
+
 void GameSelection::updateMesh() {
     std::unordered_map<IntPos, bool, IntPosHash> faceCheckedList;
     std::vector<IntPos> faceCheckedListOrder;

@@ -14,6 +14,7 @@ public:
     static void startSelection(IntPos pos);
     static void setSelectionEndPos(IntPos pos);
     static void endSelection(IntPos pos);
+    static void discardSelection();
 
     static void draw();
 
