@@ -1,6 +1,7 @@
 #include <Codes/Chunks/chunkLoader.h>
 
 #include <Codes/Chunks/chunk.h>
+#include <Codes/Chunks/terrain.h>
 #include <Codes/Types/intPos.h>
 
 #include <Codes/Debug/print.h>
@@ -8,20 +9,11 @@
 std::unordered_map<IntPos, std::unique_ptr<Chunk>, IntPosHash> ChunkLoader::chunks;
 
 void ChunkLoader::init() {
-    // auto loadPlatform = [](IntPos startPos, IntPos size, BlockType blockType) -> void {
-    //     for (int x = startPos.x; x < startPos.x + size.x; x++) {
-    //     for (int y = startPos.y; y < startPos.y + size.y; y++) {
-    //     for (int z = startPos.z; z < startPos.z + size.z; z++) {
-    //         chunkLoadCheck_setBlock(IntPos(x, y, z), blockType);
-    //     }
-    //     }
-    //     }
-    // };
-
-    // loadPlatform(IntPos(0, 0, 0), IntPos(16, 1, 16*5), BlockType::YELLOW);
-    // loadPlatform(IntPos(-16*3, 0, 16), IntPos(16* 5, 2, 16), BlockType::BLUE);
-    // loadPlatform(IntPos(4, 2, 20), IntPos(10, 1, 10), BlockType::RED);
-    // requestUpdateAllChunkMeshes();
+    loadChunkTerrain(IntPos(0, 0, 0));    
+    loadChunkTerrain(IntPos(0, 0, 1));    
+    loadChunkTerrain(IntPos(1, 0, 0));    
+    loadChunkTerrain(IntPos(1, 0, 1));
+    requestUpdateAllChunkMeshes();
 }
 
 void ChunkLoader::update() {
@@ -96,6 +88,27 @@ void ChunkLoader::checkLoadSideChunks(IntPos chunkPos) {
             loadChunk(sideChunkPos);
         }
     }
+}
+
+void ChunkLoader::loadChunkTerrain(IntPos chunkPos) {
+    if (!chunkLoaded(chunkPos)) {
+        loadChunk(chunkPos);
+    }
+
+    auto &chunkPtr = chunks.at(chunkPos);
+    Terrain::load(chunkPos, chunkPtr);
+    checkLoadSideChunks(chunkPos);
+}
+
+void ChunkLoader::loadChunkTerrainAndMesh(IntPos chunkPos) {
+    if (!chunkLoaded(chunkPos)) {
+        loadChunk(chunkPos);
+    }
+
+    auto &chunkPtr = chunks.at(chunkPos);
+    Terrain::load(chunkPos, chunkPtr);
+    checkLoadSideChunks(chunkPos);
+    chunkPtr->requestMeshUpdate();
 }
 
 void ChunkLoader::requestUpdateAllChunkMeshes() {

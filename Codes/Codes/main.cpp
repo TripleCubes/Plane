@@ -10,6 +10,7 @@
 #include <Codes/Controls/controls.h>
 
 #include <Codes/Chunks/chunkLoader.h>
+#include <Codes/Chunks/terrain.h>
 #include <Codes/Game/GameSelection/gameSelection.h>
 #include <Codes/Entities/entityList.h>
 
@@ -107,6 +108,7 @@ int main() {
     Text::init();
     View::init();
 
+    Terrain::init();
     ChunkLoader::init();
     GameSelection::init();
     EntityList::init();
