@@ -17,6 +17,7 @@ public:
     static const std::unordered_map<IntPos, std::unique_ptr<Chunk>, IntPosHash> &getChunkList();
 
     static BlockType chunkLoadCheck_getBlock(IntPos blockPos);
+    static void chunkLoadCheck_setBlockAndUpdate(IntPos blockPos, BlockType blockType);
     static bool chunkLoadCheck_isSolidBlock(IntPos blockPos);
     static bool chunkLoaded(IntPos chunkPos);
 

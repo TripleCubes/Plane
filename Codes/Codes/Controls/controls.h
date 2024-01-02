@@ -12,6 +12,7 @@ private:
     static void updateSettings();
     static void updateCameraDir();
     static void updateMovements();
+    static void updatePlaceBreak();
     static void updateGameSelection();
     static void updateTestEntityPos(); // TEST
 

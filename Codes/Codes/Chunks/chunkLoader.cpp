@@ -48,6 +48,18 @@ void ChunkLoader::chunkLoadCheck_setBlock(IntPos blockPos, BlockType blockType) 
     chunks.at(chunkPos)->setBlock(blockPos.getBlockPosInChunk(), blockType);
 }
 
+void ChunkLoader::chunkLoadCheck_setBlockAndUpdate(IntPos blockPos, BlockType blockType) {
+    IntPos chunkPos = blockPos.getChunkPos();
+    if (!chunkLoaded(chunkPos)) {
+        loadChunk(chunkPos);
+    }
+
+    checkLoadSideChunks(chunkPos);
+    auto &chunkPtr = chunks.at(chunkPos);
+    chunkPtr->setBlock(blockPos.getBlockPosInChunk(), blockType);
+    chunkPtr->requestMeshUpdate();
+}
+
 BlockType ChunkLoader::chunkLoadCheck_getBlock(IntPos blockPos) {
     IntPos chunkPos = blockPos.getChunkPos();
     if (chunkLoaded(chunkPos)) {

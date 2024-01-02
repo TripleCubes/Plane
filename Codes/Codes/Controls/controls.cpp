@@ -35,6 +35,8 @@ void Controls::update() {
         updateGameSelection();
     }
 
+    updatePlaceBreak();
+
     updateTestEntityPos();
 
     updateDebugLogKeys();
@@ -103,6 +105,28 @@ void Controls::updateMovements() {
     
     if (moveDir != Vec3(0, 0, 0)) {
         Camera::pos += moveDir * 15 * Time::getDeltaTime();
+    }
+}
+
+void Controls::updatePlaceBreak() {
+    if (Input::justPressed(MouseButton::RIGHT)) {
+        if (!savedBlockRayCastResult.hasPlacingPos) {
+            return;
+        }
+
+        ChunkLoader::chunkLoadCheck_setBlockAndUpdate(savedBlockRayCastResult.placingPos, BlockType::GREEN);        
+
+        return;
+    }
+
+    if (Input::justPressed(MouseButton::LEFT)) {
+        if (!savedBlockRayCastResult.found) {
+            return;
+        }
+
+        ChunkLoader::chunkLoadCheck_setBlockAndUpdate(savedBlockRayCastResult.selectedPos, BlockType::EMPTY);        
+
+        return;
     }
 }
 
