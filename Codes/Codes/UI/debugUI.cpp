@@ -1,3 +1,5 @@
+#ifdef DEBUG
+
 #include <Codes/UI/debugUI.h>
 
 #include <Codes/Time/time.h>
@@ -24,3 +26,5 @@ void drawDebugUI() {
     };
     drawCompass();
 }
+
+#endif

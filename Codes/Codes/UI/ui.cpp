@@ -118,10 +118,10 @@ void UI::draw() {
 
     MenuManager::draw();
 
+    #ifdef DEBUG
     // TO DO: Replace with actual optimized debug ui code
     drawDebugUI();
-
-    #ifdef DEBUG
+    
     drawDebugUIStrs();
     drawDebugUI3dStrs();
     drawDebugUILines();

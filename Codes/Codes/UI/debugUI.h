@@ -1,6 +1,8 @@
-#ifndef UIDEBUGUI_H
-#define UIDEBUGUI_H
+#ifdef DEBUG
+    #ifndef UIDEBUGUI_H
+    #define UIDEBUGUI_H
 
-void drawDebugUI();
+    void drawDebugUI();
 
+    #endif
 #endif
