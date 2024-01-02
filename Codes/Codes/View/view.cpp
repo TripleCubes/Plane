@@ -74,6 +74,8 @@ void View::init() {
     texture_colorPallete.init("Textures/colorPallete.png");
 
     shader_gameSelection.init("Shaders/View/gameSelection");
+
+    framebuffer_entities_glow.init(0, 0, 1, false);
 }
 
 void View::update() {
@@ -169,16 +171,15 @@ void View::draw() {
                         0, 0, currentWindowWidth, currentWindowHeight,
                         GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
-    // TEST
-    BoxBlur boxBlur;
-    boxBlur.createBlurredTexture(framebuffer_view.getTextureId(), 2, 3);
+    drawEntitiesGlow();
+    boxBlur.createBlurredTexture(framebuffer_entities_glow.getTextureId(), 2, 3);
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glDisable(GL_DEPTH_TEST);
     GlobalGraphics::shader_windowRect.useProgram();
-    GlobalGraphics::shader_windowRect.setTextureUniform("windowRectTexture", boxBlur.getBlurredTextureId(), 0, false);
+    GlobalGraphics::shader_windowRect.setTextureUniform("windowRectTexture", framebuffer_view.getTextureId(), 0, false);
     GlobalGraphics::mesh_windowRect.draw();
 }
 
@@ -246,6 +247,31 @@ void View::drawEntities() {
     GlobalGraphics::shader_3dBox.useProgram();
 
     for (const auto &entity: EntityList::getList()) {
+        GlobalGraphics::shader_3dBox.setUniform("scale", entity->getSize());
+        GlobalGraphics::shader_3dBox.setUniform("offset", entity->getOffset());
+        GlobalGraphics::shader_3dBox.setUniform("color", Color(1, 1, 1, 1));
+
+        glm::mat4 modelMat = glm::mat4(1.0f);
+        modelMat = glm::translate(modelMat, entity->getPos().toGlmVec3());
+        GlobalGraphics::shader_3dBox.setUniform("modelMat", modelMat);
+
+        GlobalGraphics::mesh_3dBox.draw();
+    }
+}
+
+void View::drawEntitiesGlow() {
+    framebuffer_entities_glow.bind();
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);
+
+    GlobalGraphics::shader_3dBox.useProgram();
+
+    for (const auto &entity: EntityList::getList()) {
+        if (not entity->isSelected()) {
+            continue;
+        }
+
         GlobalGraphics::shader_3dBox.setUniform("scale", entity->getSize());
         GlobalGraphics::shader_3dBox.setUniform("offset", entity->getOffset());
         GlobalGraphics::shader_3dBox.setUniform("color", Color(1, 1, 1, 1));

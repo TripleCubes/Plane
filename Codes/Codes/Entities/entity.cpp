@@ -1,6 +1,7 @@
 #include <Codes/Entities/entity.h>
 
 #include <Codes/Chunks/chunkLoader.h>
+#include <Codes/Game/GameSelection/gameSelection.h>
 #include <Codes/Types/intPos.h>
 #include <Codes/Time/time.h>
 #include <cmath>
@@ -242,7 +243,7 @@ void Entity::jump() {
     jumpRequested = true;
 }
 
-bool Entity::isOnGround() {
+bool Entity::isOnGround() const {
     return status_isOnGround;
 }
 
@@ -264,4 +265,15 @@ void Entity::fallAndJump() {
     gravity += Time::getDeltaTime() * FALL_ADD_GRAVITY;
 
     jumpRequested = false;
+}
+
+bool Entity::isSelected() const {
+    IntPos selectionStart = GameSelection::getSelectionTopLeft();
+    IntPos selectionEnd = GameSelection::getSelectionBottomRight();
+    if (pos.x < selectionStart.x || pos.x > selectionEnd.x 
+    || pos.z < selectionStart.z || pos.z > selectionEnd.z) {
+        return false;
+    } 
+
+    return true;
 }

@@ -5,6 +5,7 @@
 #include <Codes/Types/vec3.h>
 #include <Codes/Globals/globalConsts.h>
 #include <algorithm>
+#include <cmath>
 
 #include <Codes/Debug/print.h>
 
@@ -42,6 +43,18 @@ void GameSelection::discardSelection() {
     selectionStart = IntPos(0, 0, 0);
     selectionEnd = IntPos(0, 0, 0);
     updateMesh();
+}
+
+IntPos GameSelection::getSelectionTopLeft() {
+    return IntPos(std::min(selectionStart.x, selectionEnd.x), 
+                    std::min(selectionStart.y, selectionEnd.y), 
+                    std::min(selectionStart.z, selectionEnd.z));
+}
+
+IntPos GameSelection::getSelectionBottomRight() {
+    return IntPos(std::max(selectionStart.x, selectionEnd.x), 
+                    std::max(selectionStart.y, selectionEnd.y), 
+                    std::max(selectionStart.z, selectionEnd.z));
 }
 
 void GameSelection::updateMesh() {

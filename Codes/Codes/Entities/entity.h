@@ -18,7 +18,9 @@ public:
 
     void move(Vec3 moveVec);
     void jump();
-    bool isOnGround();
+    bool isOnGround() const;
+
+    bool isSelected() const;
 
 protected:
     void createPhysicPoints(int dir);

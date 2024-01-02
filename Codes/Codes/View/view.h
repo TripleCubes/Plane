@@ -7,6 +7,8 @@
 #include <Codes/GraphicTypes/texture.h>
 #include <glm/glm.hpp>
 
+class BoxBlur;
+
 class View {
 public:
     static void init();
@@ -28,10 +30,15 @@ private:
 
     static Shader shader_gameSelection;
 
+    static BoxBlur boxBlur;
+
     static void drawChunks();
     static void drawBlockSelection();
     static void drawGameSelection();
     static void drawEntities();
+
+    static Framebuffer framebuffer_entities_glow;
+    static void drawEntitiesGlow();
 
     #ifdef DEBUG
     static void drawDebug3dPoints();
