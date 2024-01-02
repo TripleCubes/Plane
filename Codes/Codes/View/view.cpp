@@ -217,6 +217,10 @@ void View::drawBlockSelection() {
     }
 
     GlobalGraphics::mesh_boxFrame.draw();
+
+    Vec3 chunkPos = savedBlockRayCastResult.selectedPos.getChunkPos();
+    DRAWSURFACE(Vec3(chunkPos.x*CHUNK_WIDTH, GROUND_HEIGHT, chunkPos.z*CHUNK_WIDTH), 
+                            Color(1, 1, 1, 1), Vec2(CHUNK_WIDTH, CHUNK_WIDTH));
 }
 
 void View::drawGameSelection() {
