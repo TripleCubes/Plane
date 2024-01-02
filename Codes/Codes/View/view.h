@@ -17,10 +17,6 @@ public:
     static const glm::mat4 &getProjectionMat() { return projectionMat; }; 
 
 private:
-    static const int GBUFFER_POS;
-    static const int GBUFFER_NORMAL;
-    static const int GBUFFER_COLOR;
-
     static glm::mat4 projectionMat;
     static glm::mat4 viewMat;
 

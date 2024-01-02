@@ -9,6 +9,8 @@
 #include <Codes/Entities/entityList.h>
 #include <Codes/Entities/entity.h>
 
+#include <Codes/GraphicEffects/boxBlur.h>
+
 #include <Codes/Types/color.h>
 #include <Codes/Types/vec2.h>
 #include <Codes/Types/vec3.h>
@@ -52,10 +54,6 @@ namespace GlobalGraphics {
     extern Shader shader_3dText;
 }
 extern BlockRayCastResult savedBlockRayCastResult;
-
-const int View::GBUFFER_POS = 0;
-const int View::GBUFFER_NORMAL = 1;
-const int View::GBUFFER_COLOR = 2;
 
 glm::mat4 View::projectionMat(1.0f);
 glm::mat4 View::viewMat(1.0f);
@@ -171,12 +169,16 @@ void View::draw() {
                         0, 0, currentWindowWidth, currentWindowHeight,
                         GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
+    // TEST
+    BoxBlur boxBlur;
+    boxBlur.createBlurredTexture(framebuffer_view.getTextureId(), 2, 3);
+
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glDisable(GL_DEPTH_TEST);
     GlobalGraphics::shader_windowRect.useProgram();
-    GlobalGraphics::shader_windowRect.setTextureUniform("windowRectTexture", framebuffer_view.getTextureId(GBUFFER_POS), 0, false);
+    GlobalGraphics::shader_windowRect.setTextureUniform("windowRectTexture", boxBlur.getBlurredTextureId(), 0, false);
     GlobalGraphics::mesh_windowRect.draw();
 }
 
