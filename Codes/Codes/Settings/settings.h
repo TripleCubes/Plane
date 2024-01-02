@@ -5,9 +5,9 @@ class Settings {
     friend class Controls;
     
 public:
-    static bool isFreeCam();
-    static bool isWireframeMode();
-    static bool isPerspectiveProjection();
+    static bool isFreeCam() { return freeCam; };
+    static bool isWireframeMode() { return wireframeMode; };
+    static bool isPerspectiveProjection() { return perspectiveProjection; };
 
 private:
     static bool freeCam;

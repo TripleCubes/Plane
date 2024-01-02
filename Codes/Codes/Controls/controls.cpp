@@ -4,16 +4,13 @@
 #include <Codes/View/camera.h>
 #include <Codes/Game/GameSelection/gameSelection.h>
 #include <Codes/RayCast/blockRayCast.h>
+#include <Codes/Chunks/chunkLoader.h>
 
 #include <Codes/Input/input.h>
 #include <Codes/Time/time.h>
 #include <Codes/Types/vec2.h>
 
 #include <Codes/Debug/print.h>
-
-#include <Codes/Entities/entityList.h> // TEST
-#include <Codes/Debug/debug3d.h> // TEST
-#include <Codes/Chunks/chunkLoader.h> // TEST
 
 extern BlockRayCastResult savedBlockRayCastResult;
 
@@ -22,8 +19,6 @@ void unlockMouse();
 
 float Controls::cameraRotationX = 0;
 float Controls::cameraRotationY = 0;
-IntPos Controls::startPathFindPos; // TEST
-AStarResult Controls::savedAStarResult; // TEST
 
 void Controls::update() {
     updateSettings();
@@ -35,9 +30,7 @@ void Controls::update() {
         updateGameSelection();
     }
 
-    updatePlaceBreak();
-
-    updateTestEntityPos();
+    // updatePlaceBreak();
 
     updateDebugLogKeys();
 }
@@ -154,63 +147,10 @@ void Controls::updateGameSelection() {
     }
 }
 
-void Controls::updateTestEntityPos() { // TEST
-    Vec3 moveDir;
-    if (Input::pressed("UP_ARROW")) {
-        moveDir += Vec3(0, 0, 1);
-    }
-    if (Input::pressed("DOWN_ARROW")) {
-        moveDir += Vec3(0, 0, -1);
-    }
-    if (Input::pressed("LEFT_ARROW")) {
-        moveDir += Vec3(-1, 0, 0);
-    }
-    if (Input::pressed("RIGHT_ARROW")) {
-        moveDir += Vec3(1, 0, 0);
-    }
-    // if (Input::pressed("P")) {
-    //     moveDir.y += 1;
-    // }
-    // if (Input::pressed("L")) {
-    //     moveDir.y -= 1;
-    // }
-    if (Input::justPressed("P")) {
-        EntityList::jumpEntity0();
-    }
-    
-    if (moveDir != Vec3(0, 0, 0)) {
-        EntityList::moveEntity0(moveDir * 7 * Time::getDeltaTime());
-    }
-}
-
 void Controls::updateDebugLogKeys() {
     if (Input::justPressed("1")) {
         if (savedBlockRayCastResult.found) {
             PRINTLN(savedBlockRayCastResult.selectedPos);
         }
     }
-
-    if (Input::justPressed("4")) {
-        if (savedBlockRayCastResult.found) {
-            PRINTLN(ChunkLoader::chunkLoadCheck_isSolidBlock(savedBlockRayCastResult.selectedPos));
-        }
-    }
-
-    // TEST
-    if (Input::justPressed("2")) {
-        if (savedBlockRayCastResult.hasPlacingPos) {
-            startPathFindPos = savedBlockRayCastResult.placingPos;
-        }
-    }
-
-    if (Input::justPressed("3")) {
-        if (savedBlockRayCastResult.hasPlacingPos) {
-            IntPos endPathFindPos = savedBlockRayCastResult.placingPos;
-            savedAStarResult = AStar::getPathBlock(startPathFindPos, endPathFindPos);
-        }
-    }
-
-    for (IntPos pos: savedAStarResult.pathReversed) {
-        DRAWSURFACE(pos + Vec3(0, -1, 0), Color(1, 1, 1, 1), Vec2(1, 1));
-    } 
 }
