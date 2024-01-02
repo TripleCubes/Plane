@@ -97,7 +97,7 @@ void GameSelection::createFaceCheckedList(std::unordered_map<IntPos, bool, IntPo
         for (int i = 0; i < CHUNK_VOLUME; i++) {
             IntPos blockPos = Chunk::indexToPos(i) + chunkPos * CHUNK_WIDTH;
 
-            if (!chunk->isSolidBlock(i)) {
+            if (blockPos.y != GROUND_HEIGHT && !chunk->isSolidBlock(i)) {
                 continue;
             }
 

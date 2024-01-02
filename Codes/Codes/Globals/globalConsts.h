@@ -3,5 +3,6 @@
 
 const int CHUNK_WIDTH = 16;
 const int CHUNK_VOLUME = CHUNK_WIDTH * CHUNK_WIDTH * CHUNK_WIDTH;
+const int GROUND_HEIGHT = 0;
 
 #endif

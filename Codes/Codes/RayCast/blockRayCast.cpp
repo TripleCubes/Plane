@@ -107,14 +107,15 @@ Vec3 nextCheckingPos(Vec3 checkingPos, Vec3 dir) {
 }
 
 // CAN BE OPTIMIZED: Skip chunk checking if chunk is unloaded
-BlockRayCastResult BlockRayCast::cast(Vec3 from, Vec3 dir, float range) {
+BlockRayCastResult BlockRayCast::cast(Vec3 from, Vec3 dir, float range, bool blockGroundHeight) {
     Vec3 checkingPos = from;
     Vec3 previousCheckingPos;
     bool hasPlacingPos = false;
     while (from.distance(checkingPos) < range) {
         IntPos checkingIntPos(checkingPos);
         BlockType blockType = ChunkLoader::chunkLoadCheck_getBlock(checkingIntPos);
-        if (blockType != BlockType::EMPTY) {
+        if ((blockGroundHeight && checkingIntPos.y == 0)
+        || (blockType != BlockType::EMPTY)) {
             BlockRayCastResult result;
             result.found = true;
             result.selectedType = blockType;

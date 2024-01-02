@@ -17,7 +17,7 @@ struct BlockRayCastResult {
 
 class BlockRayCast {
 public:
-    static BlockRayCastResult cast(Vec3 from, Vec3 dir, float range);
+    static BlockRayCastResult cast(Vec3 from, Vec3 dir, float range, bool blockGroundHeight);
 
 private:
 };
