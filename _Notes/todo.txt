@@ -1,4 +1,4 @@
-Test mesh releasing when chunk is unloaded
-Bloom effect
-Unit selection
-Unit path find
+[ ] Test mesh releasing when chunk is unloaded
+[x] Bloom effect
+[ ] Unit selection
+[ ] Unit path find
