@@ -3,6 +3,7 @@
 
 class Controls {
 public:
+    static void init();
     static void update();
 
 private:

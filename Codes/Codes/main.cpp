@@ -91,8 +91,6 @@ void initOpenGl() {
     glEnable(GL_CULL_FACE);
     glCullFace(GL_FRONT);
 
-    glfwSetInputMode(glfwWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED); 
-
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -103,6 +101,7 @@ int main() {
     initOpenGl();
 
     Input::init();
+    Controls::init();
     GlobalGraphics::init();
     UI::init();
     Text::init();

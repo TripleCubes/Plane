@@ -4,5 +4,5 @@
 GLFWwindow *glfwWindow;
 int currentWindowWidth = 1000;
 int currentWindowHeight = 600;
-bool mouseLocked = true;
+bool mouseLocked = false;
 BlockRayCastResult savedBlockRayCastResult;

@@ -10,6 +10,7 @@
 #include <Codes/Input/input.h>
 #include <Codes/Time/time.h>
 #include <Codes/Types/vec2.h>
+#include <Codes/Globals/pi.h>
 
 #include <Codes/Debug/print.h>
 
@@ -18,8 +19,12 @@ extern BlockRayCastResult savedBlockRayCastResult;
 void lockMouse();
 void unlockMouse();
 
-float Controls::cameraRotationX = 0;
-float Controls::cameraRotationY = 0;
+float Controls::cameraRotationX = -0.51381;
+float Controls::cameraRotationY = -0.7722;
+
+void Controls::init() {
+    updateCameraDir();
+}
 
 void Controls::update() {
     updateSettings();
@@ -62,18 +67,18 @@ void Controls::updateSettings() {
 void Controls::updateCameraDir() {
     Vec2 mouseMoveOffset = Input::getMouseMoveOffset();
 
-    cameraRotationX -= mouseMoveOffset.y * 0.17;
-    if (cameraRotationX > 89.99)
+    cameraRotationX -= mouseMoveOffset.y * 0.00297; // 0.17 deg
+    if (cameraRotationX > 0.4999*PI)
     {
-        cameraRotationX = 89.99;
+        cameraRotationX = 0.4999*PI;
     }
-    else if (cameraRotationX < -89.99)
+    else if (cameraRotationX < -0.4999*PI)
     {
-        cameraRotationX = -89.99;
+        cameraRotationX = -0.4999*PI;
     }
-    cameraRotationY -= mouseMoveOffset.x * 0.17;
+    cameraRotationY -= mouseMoveOffset.x * 0.00297; // 0.17 deg
 
-    Camera::dir = Vec3(0, 0, -1).rotateXYDeg(cameraRotationX, cameraRotationY);
+    Camera::dir = Vec3(0, 0, -1).rotateXYRad(cameraRotationX, cameraRotationY);
 }
 
 void Controls::updateMovements() {
