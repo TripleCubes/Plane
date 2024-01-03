@@ -11,6 +11,7 @@ class GameSelection {
 public:
     static void init();
 
+    static bool isSelecting() { return selecting; };
     static void startSelection(IntPos pos);
     static void setSelectionEndPos(IntPos pos);
     static void endSelection(IntPos pos);

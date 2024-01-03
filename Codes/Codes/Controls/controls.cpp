@@ -156,12 +156,18 @@ void Controls::updateGameSelection() {
     }
 
     if (Input::pressed(MouseButton::LEFT)) {
+        if (!GameSelection::isSelecting()) {
+            return;
+        }
         IntPos endPos = savedBlockRayCastResult.selectedPos;
         endPos.y = 100;
         GameSelection::setSelectionEndPos(endPos);
     }
 
     if (Input::justReleased(MouseButton::LEFT)) {
+        if (!GameSelection::isSelecting()) {
+            return;
+        }
         IntPos endPos = savedBlockRayCastResult.selectedPos;
         endPos.y = 100;
         GameSelection::endSelection(endPos);
