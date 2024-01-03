@@ -5,6 +5,7 @@
 #include <Codes/Game/GameSelection/gameSelection.h>
 #include <Codes/RayCast/blockRayCast.h>
 #include <Codes/Chunks/chunkLoader.h>
+#include <Codes/Entities/entityList.h>
 
 #include <Codes/Input/input.h>
 #include <Codes/Time/time.h>
@@ -166,6 +167,13 @@ void Controls::updateDebugLogKeys() {
     if (Input::justPressed("1")) {
         if (savedBlockRayCastResult.found) {
             PRINTLN(savedBlockRayCastResult.selectedPos);
+        }
+    }
+
+    if (Input::justPressed("2")) {
+        if (savedBlockRayCastResult.found) {
+            Vec3 pos = Vec3(savedBlockRayCastResult.selectedPos.x, 20, savedBlockRayCastResult.selectedPos.z);
+            EntityList::add(pos);
         }
     }
 }

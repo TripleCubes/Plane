@@ -11,6 +11,7 @@ public:
     void update();
     
     Vec3 getPos() const { return pos; };
+    void setPos(Vec3 pos) { this->pos = pos; };
     Vec3 getLookDir() const { return lookDir; };
 
     Vec3 getSize() const { return size; };

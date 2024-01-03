@@ -10,10 +10,10 @@ namespace GlobalGraphics {
 extern int currentWindowWidth;
 extern int currentWindowHeight;
 
-BoxBlur::BoxBlur() {
-    framebuffer_horizontalBlurred.init(currentWindowWidth, currentWindowHeight, 1, false);
-    framebuffer_verticalBlurred.init(currentWindowWidth, currentWindowHeight, 1, false);
-    shader_blur.init("Shaders/GraphicEffects/boxBlur");
+void BoxBlur::init() {
+    framebuffer_horizontalBlurred.init(0, 0, 1, false);
+    framebuffer_verticalBlurred.init(0, 0, 1, false);
+    shader_blur.init("Shaders/GraphicEffects/BoxBlur/boxBlur");
     shader_blur.useProgram();
     shader_blur.setUniform("windowSize", Vec2(currentWindowWidth, currentWindowHeight));
 }

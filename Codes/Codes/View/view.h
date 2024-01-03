@@ -31,13 +31,15 @@ private:
     static Shader shader_gameSelection;
 
     static BoxBlur boxBlur;
+    static Framebuffer framebuffer_glow;
+    static Shader shader_add;
+
+    static Framebuffer framebuffer_combined;
 
     static void drawChunks();
     static void drawBlockSelection();
     static void drawGameSelection();
     static void drawEntities();
-
-    static Framebuffer framebuffer_entities_glow;
     static void drawEntitiesGlow();
 
     #ifdef DEBUG

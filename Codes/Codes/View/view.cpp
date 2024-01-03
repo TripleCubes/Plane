@@ -66,6 +66,12 @@ Texture View::texture_colorPallete;
 
 Shader View::shader_gameSelection;
 
+BoxBlur View::boxBlur;
+Framebuffer View::framebuffer_glow;
+Shader View::shader_add;
+
+Framebuffer View::framebuffer_combined;
+
 void View::init() {
     framebuffer_view_multisampled.init(0, 0, 1, true);
     framebuffer_view.init(0, 0, 1, false);
@@ -75,7 +81,11 @@ void View::init() {
 
     shader_gameSelection.init("Shaders/View/gameSelection");
 
-    framebuffer_entities_glow.init(0, 0, 1, false);
+    framebuffer_glow.init(0, 0, 1, false);
+    shader_add.init("Shaders/View/add");
+    boxBlur.init();
+
+    framebuffer_combined.init(0, 0, 1, false);
 }
 
 void View::update() {
@@ -172,14 +182,23 @@ void View::draw() {
                         GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
     drawEntitiesGlow();
-    boxBlur.createBlurredTexture(framebuffer_entities_glow.getTextureId(), 2, 3);
+    boxBlur.createBlurredTexture(framebuffer_glow.getTextureId(), 2, 3);
+
+    framebuffer_combined.bind();
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glDisable(GL_DEPTH_TEST);
+    shader_add.useProgram();
+    shader_add.setTextureUniform("in_texture", framebuffer_view.getTextureId(), 0, false);
+    shader_add.setTextureUniform("blurredTexture", boxBlur.getBlurredTextureId(), 1, false);
+    GlobalGraphics::mesh_windowRect.draw();
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     glDisable(GL_DEPTH_TEST);
     GlobalGraphics::shader_windowRect.useProgram();
-    GlobalGraphics::shader_windowRect.setTextureUniform("windowRectTexture", framebuffer_view.getTextureId(), 0, false);
+    GlobalGraphics::shader_windowRect.setTextureUniform("windowRectTexture", framebuffer_combined.getTextureId(), 0, false);
     GlobalGraphics::mesh_windowRect.draw();
 }
 
@@ -260,7 +279,7 @@ void View::drawEntities() {
 }
 
 void View::drawEntitiesGlow() {
-    framebuffer_entities_glow.bind();
+    framebuffer_glow.bind();
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
@@ -274,7 +293,7 @@ void View::drawEntitiesGlow() {
 
         GlobalGraphics::shader_3dBox.setUniform("scale", entity->getSize());
         GlobalGraphics::shader_3dBox.setUniform("offset", entity->getOffset());
-        GlobalGraphics::shader_3dBox.setUniform("color", Color(1, 1, 1, 1));
+        GlobalGraphics::shader_3dBox.setUniform("color", Color(0, 0, 1, 1));
 
         glm::mat4 modelMat = glm::mat4(1.0f);
         modelMat = glm::translate(modelMat, entity->getPos().toGlmVec3());

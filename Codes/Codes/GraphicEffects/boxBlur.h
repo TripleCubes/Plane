@@ -6,7 +6,7 @@
 
 class BoxBlur {
 public:
-    BoxBlur();
+    void init();
     unsigned int getBlurredTextureId() const { return framebuffer_verticalBlurred.getTextureId(); };
     void createBlurredTexture(unsigned int in_textureId, int numPasses, int blurSizePx);
 
