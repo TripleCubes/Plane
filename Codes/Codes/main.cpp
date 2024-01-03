@@ -8,6 +8,7 @@
 #include <Codes/Graphics/text.h>
 #include <Codes/View/view.h>
 #include <Codes/Controls/controls.h>
+#include <Codes/Random/random.h>
 
 #include <Codes/Chunks/chunkLoader.h>
 #include <Codes/Chunks/terrain.h>
@@ -100,6 +101,7 @@ void initOpenGl() {
 int main() {
     initOpenGl();
 
+    Random::init();
     Input::init();
     Controls::init();
     GlobalGraphics::init();
