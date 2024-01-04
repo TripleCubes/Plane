@@ -1,5 +1,6 @@
 #include <Codes/PathFind/aStar.h>
 
+#include <Codes/Chunks/columnList.h>
 #include <Codes/Chunks/chunkLoader.h>
 #include <Codes/Types/intPos.h>
 #include <Codes/Types/vec3.h>
@@ -89,9 +90,24 @@ AStarResult AStar::getPathBlock(IntPos startPos, IntPos endPos) {
 }
 
 AStarResult AStar::getPathChunk(IntPos startPos, IntPos endPos) {
-    // auto canMoveToChunk = [](IntPos from, IntPos to) -> bool {
-        
-    // };
+    auto canMoveToBlock = [](IntPos world_from, IntPos dir) -> bool {
+        if (dir.y != 0) {
+            return false;
+        }
+
+        if (dir.x != 0 && dir.z != 0) {
+            return false;
+        }
+
+        IntPos world_to = world_from + dir;
+        if (!ColumnList::has(world_to.x, world_to.z)) {
+            return false;
+        }
+
+        return true;
+    };
+
+    return getPath(startPos, endPos, canMoveToBlock);
 }
 
 AStarResult AStar::getPath(IntPos world_startPos, IntPos world_endPos, 
@@ -152,7 +168,6 @@ AStarResult AStar::getPath(IntPos world_startPos, IntPos world_endPos,
                                                     + std::abs(comp_world.y - world_endPos.y)
                                                     + std::abs(comp_world.z - world_endPos.z)) * 100;
             markPosAsChecking(comp_index);
-            DRAWFADESURFACE(comp_world, Color(0, 1, 0, 1), Vec2(1, 1), 1);
             addedWorldPosList.push_back(comp_world);
         }
     }
