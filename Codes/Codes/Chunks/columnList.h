@@ -1,10 +1,12 @@
 #ifndef COLUMNLIST_H
 #define COLUMNLIST_H
 
+class IntPos2d;
+
 namespace ColumnList {
-    void add(int chunkX, int chunkZ);
-    void remove(int chunkX, int chunkZ);
-    bool has(int chunkX, int chunkZ);
+    void add(IntPos2d chunkPos);
+    void remove(IntPos2d chunkPos);
+    bool has(IntPos2d chunkPos);
 };
 
 #endif

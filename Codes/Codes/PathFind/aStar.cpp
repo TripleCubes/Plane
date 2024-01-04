@@ -3,6 +3,7 @@
 #include <Codes/Chunks/columnList.h>
 #include <Codes/Chunks/chunkLoader.h>
 #include <Codes/Types/intPos.h>
+#include <Codes/Types/intPos2d.h>
 #include <Codes/Types/vec3.h>
 #include <cmath>
 
@@ -100,7 +101,7 @@ AStarResult AStar::getPathChunk(IntPos startPos, IntPos endPos) {
         }
 
         IntPos world_to = world_from + dir;
-        if (!ColumnList::has(world_to.x, world_to.z)) {
+        if (!ColumnList::has(IntPos2d(world_to.x, world_to.z))) {
             return false;
         }
 

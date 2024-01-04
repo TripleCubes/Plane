@@ -4,6 +4,7 @@
 #include <Codes/Chunks/terrain.h>
 #include <Codes/Chunks/columnList.h>
 #include <Codes/Types/intPos.h>
+#include <Codes/Types/intPos2d.h>
 
 #include <Codes/Debug/print.h>
 
@@ -92,8 +93,8 @@ void ChunkLoader::checkLoadSideChunks(IntPos chunkPos) {
 }
 
 void ChunkLoader::loadChunkTerrain(int x, int z) {
-    if (!ColumnList::has(x, z)) {
-        ColumnList::add(x, z);
+    if (!ColumnList::has(IntPos2d(x, z))) {
+        ColumnList::add(IntPos2d(x, z));
     }
 
     for (int i = -3; i <= 3; i++) {
@@ -109,8 +110,8 @@ void ChunkLoader::loadChunkTerrain(int x, int z) {
 }
 
 void ChunkLoader::loadChunkTerrainAndMesh(int x, int z) {
-    if (!ColumnList::has(x, z)) {
-        ColumnList::add(x, z);
+    if (!ColumnList::has(IntPos2d(x, z))) {
+        ColumnList::add(IntPos2d(x, z));
     }
 
     for (int i = -3; i <= 3; i++) {
