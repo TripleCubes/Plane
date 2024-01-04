@@ -1,10 +1,6 @@
 #ifndef CONTROLS_H
 #define CONTROLS_H
 
-#include <vector> // TEST
-#include <Codes/Types/vec2.h> // TEST
-#include <Codes/Types/intPos.h> // TEST
-
 class Controls {
 public:
     static void init();
@@ -19,9 +15,6 @@ private:
     static void updateGameSelection();
 
     static void updateDebugLogKeys();
-    static std::vector<Vec2> highlights; // TEST
-    static IntPos startPos; // TEST
-    static IntPos endPos; // TEST
 
     static float cameraRotationX;
     static float cameraRotationY;

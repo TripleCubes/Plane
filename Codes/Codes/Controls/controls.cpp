@@ -14,9 +14,6 @@
 
 #include <Codes/Debug/print.h>
 
-#include <Codes/PathFind/aStar.h> // TEST
-#include <Codes/Debug/debug3d.h> // TEST
-
 extern BlockRayCastResult savedBlockRayCastResult;
 
 void lockMouse();
@@ -24,10 +21,6 @@ void unlockMouse();
 
 float Controls::cameraRotationX = -0.51381;
 float Controls::cameraRotationY = -0.7722;
-
-std::vector<Vec2> Controls::highlights; // TEST
-IntPos Controls::startPos; // TEST
-IntPos Controls::endPos; // TEST
 
 void Controls::init() {
     updateCameraDir();
@@ -193,33 +186,5 @@ void Controls::updateDebugLogKeys() {
             Vec3 pos = Vec3(savedBlockRayCastResult.selectedPos.x, 20, savedBlockRayCastResult.selectedPos.z);
             EntityList::add(pos);
         }
-    }
-
-    if (Input::justPressed("3")) {
-        if (savedBlockRayCastResult.found) {
-            startPos = savedBlockRayCastResult.selectedPos.getChunkPos();
-            PRINTLN(startPos);
-        }
-    }
-
-    if (Input::justPressed("4")) {
-        if (savedBlockRayCastResult.found) {
-            endPos = savedBlockRayCastResult.selectedPos.getChunkPos();
-            PRINTLN(endPos);
-
-            highlights.clear();
-            AStarResult result = AStar::getPathChunk(startPos, endPos);
-            if (result.foundResult == AStarFoundResult::FOUND) {
-                for (int i = 0; i < result.pathReversed.size(); i++) {
-                    highlights.push_back(Vec2(result.pathReversed[i].x, result.pathReversed[i].z));
-                }
-            } else {
-                PRINTLN("not found");
-            }
-        }
-    }
-
-    for (int i = 0; i < highlights.size(); i++) {
-        DRAWSURFACE(Vec3(highlights[i].x * 8, 5, highlights[i].y * 8), Color(0, 1, 0, 1), Vec2(8, 8));
     }
 }
