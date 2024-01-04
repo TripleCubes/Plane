@@ -135,8 +135,13 @@ void GameSelection::createFaceCheckedList(std::unordered_map<IntPos, bool, IntPo
         }
 
         const auto &chunk = chunkList.at(chunkPos);
+        Chunk *aboveChunk = nullptr;
+        if (ChunkLoader::chunkLoaded(chunkPos + IntPos(0, 1, 0))) {
+            aboveChunk = chunkList.at(chunkPos + IntPos(0, 1, 0)).get();
+        }
         for (int i = 0; i < CHUNK_VOLUME; i++) {
-            IntPos blockPos = Chunk::indexToPos(i) + chunkPos * CHUNK_WIDTH;
+            IntPos blockPosInChunk = Chunk::indexToPos(i);
+            IntPos blockPos = blockPosInChunk + chunkPos * CHUNK_WIDTH;
 
             if (blockPos.y != GROUND_HEIGHT && !chunk->isSolidBlock(i)) {
                 continue;
@@ -148,8 +153,12 @@ void GameSelection::createFaceCheckedList(std::unordered_map<IntPos, bool, IntPo
                 continue;
             }
 
-            // TO DO: Handle above chunk
-            if (blockPos.y < CHUNK_VOLUME - 1 && chunk->isSolidBlock(Chunk::addYToIndex(1, i))) {
+            if (blockPosInChunk.y < CHUNK_WIDTH - 1 && chunk->isSolidBlock(Chunk::addYToIndex(1, i))) {
+                continue;
+            }
+
+            if (aboveChunk != nullptr && blockPosInChunk.y == CHUNK_WIDTH - 1
+            && aboveChunk->isSolidBlock(IntPos(blockPosInChunk.x, 0, blockPosInChunk.z))) {
                 continue;
             }
 
